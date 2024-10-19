@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EBAH ERP | Admin</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/admin/header.css">
+    <link rel="stylesheet" href="../../css/darkMode.css">
+    <link rel="stylesheet" href="../../css/admin/responsive.css">
+    <link rel="stylesheet" href="../../css/admin/form.css">
+    <link rel="stylesheet" href="sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../../js/admin/dashboard.module.js"></script>
+
+</head>
+
+<body>
+    <%- include('../partials/admin.header.ejs') %> 
+        <!-- MAIN SECTION STARTS HERE  -->
+        <main class="main" data-app-page="form">
+            <div class="fcontainer">
+                <!-- -----------NEW PROJECT------------ -->
+                <div class="form-header">
+                    <h4 class="uppercase" id="p-name">Normal Project</h4>
+                    <div class="head-btns flex">
+                        <button class="uppercase" onclick="toggleForm('normalForm', this)" id="Normal Project">default</button>
+                        <button class="uppercase" onclick="toggleForm('misForm', this)" id="Misc Project">miscellaneous</button>
+                    </div>
+                </div>
+                <div class="formContainer">
+                    <div class="normalForm" id="normalForm">
+                        <form id="np-form-data">
+                            <h4 class="uppercase">contact details</h4>
+                            <div class="fgrid">
+                                <div class="field">
+                                    <label for="name">Name</label>
+                                    <input type="text" name="name" id="name" placeholder="e.g.: Pragyan Tamuli">
+                                </div>
+                                <div class="field">
+                                    <label for="cnumber">Phone Number</label>
+                                    <input type="text" name="contactNo" id="cnumber" placeholder="e.g.: 9874561230">
+                                </div>
+                                <div class="field">
+                                    <label for="email">Email</label>
+                                    <input type="text" name="email" id="email" placeholder="e.g.: ebah@gmail.com">
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label for="address">Address</label>
+                                <textarea name="city" id="address"></textarea>
+                            </div>
+                            <!-- ----------------------------------------------------------- -->
+                            <h4 class="uppercase">project details</h4>
+                            <div class="fgrid">
+                                <div class="field">
+                                    <label for="ref">Reference No</label>
+                                    <input type="text" name="rfNo" id="ref">
+                                </div>
+                                <div class="field">
+                                    <label for="workName">Name of The Project</label>
+                                    <input type="text" name="workName" id="workName">
+                                </div>
+                                <div class="field">
+                                    <label for="projectWork">Work Type</label>
+                                    <div class="ldflex">
+                                        <div class="type">
+                                            <input type="checkbox" name="task" id="arch" value="1">
+                                            <span>Architecture</span>
+                                        </div>
+                                        <div class="type">
+                                            <input type="checkbox" name="task" id="arch" value="2">
+                                            <span>Structural</span>
+                                        </div>
+                                        <div class="type">
+                                            <input type="checkbox" name="task" id="three" value="3">
+                                            <span>3D</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label for="amount">Total Amount</label>
+                                    <input type="text" name="TotalAm" id="amount" placeholder="&#8377;">
+                                </div>
+                                <div class="field">
+                                    <label for="amount">Advance Amount</label>
+                                    <input type="text" name="agreementAm" id="amount" placeholder="&#8377;">
+                                </div>
+                                <div class="field">
+                                    <label for="amount">Project deadline</label>
+                                    <input type="text" name="npdeadline" oninput="checkDeadline_Valid(this)" id="amount" placeholder="dd/mm/yyyy, Eg:01/06/2024">
+                                </div>
+                                <div class="field">
+                                    <label for="splitRatio">Amount Split Ratio</label>
+                                    <select name="split" id="splitRatio">
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- ---------- grid ends--------- -->
+                            <div class="field">
+                                <button type="submit" onclick="SubmitNormalFormData(event)" class="uppercase">submit</button>
+                                <!-- <input type="submit" name="submit" id="" value="submit"> -->
+                            </div>
+                        </form>
+                    </div>
+                    <!-- miscellaneous FORM  -->
+                    
+                    <div class="misForm hide" id="misForm">
+                        <form id="mp-form-data">
+                            <h4><span class="uppercase">contact details</span>  (Misc)</h4>
+                            <div class="fgrid">
+                                <div class="field">
+                                    <label for="name">Name</label>
+                                    <input type="text" name="name" id="name" placeholder="e.g.: Pragyan Tamuli">
+                                </div>
+                                <div class="field">
+                                    <label for="cnumber">Phone Number</label>
+                                    <input type="text" name="contactNo" id="cnumber" placeholder="e.g.: 9874561230">
+                                </div>
+                                <div class="field">
+                                    <label for="email">Email</label>
+                                    <input type="text" name="email" id="email" placeholder="e.g.: ebah@gmail.com">
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label for="address">Address</label>
+                                <textarea name="city" id="address"></textarea>
+                            </div>
+                            <!-- ----------------------------------------------------------- -->
+                            <h4><span class="uppercase">project details</span> (Misc)</h4>
+                            <div class="fgrid">
+                                <div class="field">
+                                    <label for="ref">Reference No</label>
+                                    <input type="text" name="rfNo" id="ref">
+                                </div>
+                                <div class="field">
+                                    <label for="workName">Name of The Project</label>
+                                    <input type="text" name="workName" id="workName">
+                                </div>
+                                <div class="field">
+                                    <label for="amount">Total Amount</label>
+                                    <input type="text" name="TotalAm" id="amount" placeholder="&#8377;">
+                                </div>
+                                <div class="field">
+                                    <label for="amount">Advance Amount</label>
+                                    <input type="text" name="agreementAm" id="amount" placeholder="&#8377;">
+                                </div>
+                                <div class="field">
+                                    <label for="amount">Deadline</label>
+                                    <input type="text" oninput="checkDeadline_Valid(this)" name="mpdeadline" id="amount" placeholder="dd/mm/yyyy Eg:01/06/2024">
+                                </div>
+                                <div class="field">
+                                    <label for="miswork">Types Of Work</label>
+                                    <select name="task" id="splitRatio">
+                                        <% results?.forEach((val)=>{ %>
+                                            <option value="<%= val.msub_task_id %>"><%= val.msub_task_name %></option>
+                                        <% }) %>
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- ---------- grid ends--------- -->
+                            <div class="field">
+                                <button type="submit" onclick="SubmitMiscFormData(event)" class="uppercase">submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </section>
+
+
+    <!-- JAVASCRIPT -->
+    <!-- <script src="/static/js/main.js"></script> -->
+    <script src="/js/admin/form.js"></script>
+    <script src="/js/admin/header.js"></script>
+</body>
+
+</html>
