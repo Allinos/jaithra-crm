@@ -42,14 +42,10 @@ app.use(cookieParser());
 // For Admin **********
 app.use('/admin', auth)
 app.use('/admin', indexRoutes)
-app.use('/admin/user-manager', userManager)
-app.use('/admin/settings', settings)
-app.use('/admin/finance', finance)
-app.use('/admin/finance/expenses', financeExpense)
+app.use('/admin/settings', setings)
+app.use('/admin/clients', finance)
 
-// app.use('/apiV1', tasks)
 app.use('/apiv1', apiRoute)
-app.use('/apiv1', nitify)
 
 
 
