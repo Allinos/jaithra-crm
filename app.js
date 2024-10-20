@@ -31,16 +31,6 @@ const nitify = require('./routes/admin/notificationRoute')
 const apiRoute = require('./routes/admin/projectRoute.js')
 
 
-// Employees
-const EmployeeAuth = require('./routes/employee/auth.js');
-const EmpMainRoute = require('./routes/employee/indexRoutes');
-const EmpNitify = require('./routes/employee/notificationRoute');
-const EmpPmRoute = require('./routes/employee/pm.emproute.js');
-
-// CA
-const caAuth = require('./routes/CA/auth');
-const caMainRoute = require('./routes/CA/indexRoutes');
-
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -60,17 +50,6 @@ app.use('/admin/finance/expenses', financeExpense)
 // app.use('/apiV1', tasks)
 app.use('/apiv1', apiRoute)
 app.use('/apiv1', nitify)
-
-
-// For Employees ************
-app.use('/', EmployeeAuth)
-app.use('/', EmpMainRoute)
-app.use('/apiv1', EmpNitify)
-app.use('/apiv1', EmpPmRoute)
-
-// For CA ************
-app.use('/ca', caAuth)
-app.use('/ca', caMainRoute)
 
 
 
