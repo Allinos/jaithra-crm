@@ -6,8 +6,8 @@ require('dotenv').config({path:path.resolve(__dirname,`./.env.${process.env.NODE
 const PORT = process.env.PORT || 3000;
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
-const LokiStore = require('connect-loki')(session);
 const { errHandler } = require('./middleware/error')
+const LokiStore = require('connect-loki')(session);
 let LokiConf = {path:'./sessions/loginAuth.db'}
 
 app.use(session({
@@ -22,11 +22,7 @@ app.use(session({
 // Administrator 
 const auth = require('./controllers/adminAuth')
 const indexRoutes = require('./routes/admin/indexRoutes')
-const userManager = require('./routes/admin/userManagerRoute.js')
 const settings = require('./routes/admin/settingRoute.js')
-const finance = require('./routes/admin/financeRoute')
-const financeExpense = require('./routes/admin/financeRoute.expance')
-const nitify = require('./routes/admin/notificationRoute')
 
 const apiRoute = require('./routes/admin/projectRoute.js')
 
@@ -42,8 +38,7 @@ app.use(cookieParser());
 // For Admin **********
 app.use('/admin', auth)
 app.use('/admin', indexRoutes)
-app.use('/admin/settings', setings)
-app.use('/admin/clients', finance)
+app.use('/admin/settings', settings)
 
 app.use('/apiv1', apiRoute)
 
