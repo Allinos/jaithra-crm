@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../../js/admin/dashboard.module.js"></script>
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 
 <body>
@@ -71,6 +71,7 @@
                                     <label for="workName">Owner Number</label>
                                     <input type="text" name="workName" id="workName">
                                 </div>
+                             
                                 <!-- <div class="field">
                                     <label for="projectWork">Work Type</label>
                                     <div class="ldflex">
@@ -90,6 +91,15 @@
                                 </div> -->
                                
                             </div>
+                            <div class="upload__box">
+                                <div class="upload__btn-box">
+                                  <label class="upload__btn">
+                                    <p>Upload images</p>
+                                    <input type="file" multiple="" data-max_length="20" class="upload__inputfile">
+                                  </label>
+                                </div>
+                                <div class="upload__img-wrap"></div>
+                              </div>
                             <!-- ---------- grid ends--------- -->
                             <div class="field">
                                 <button type="submit" onclick="SubmitNormalFormData(event)" class="uppercase">submit</button>

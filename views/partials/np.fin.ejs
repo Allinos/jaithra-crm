@@ -1,7 +1,7 @@
 <div class="accordion-content">
     <div class="ahead finegrid">
         <p class="ref">
-            <span class="uppercase hide block phead">Ref. No.</span>
+            <span class="uppercase hide block phead">No.</span>
             <span><%= fdata[0].reference_no %></span>
         </p>
         <p class="pro">
@@ -37,13 +37,10 @@
         </p>
     </div>
     <!-- ----------open data for accordion---------- -->
-    <div class="adata fdata">
-        <div class="project_expand grid">
-            <p class="none"></p>
-            <!-- tasks  -->
-            <% fdata?.forEach((task)=>{ %>
-                <%- include('../partials/task.fin.ejs', {task: task, ratio: task.split.split(':')}) %> 
-                <% }) %>   
-        </div>
-    </div>
+   
 </div>
+
+
+
+git config --global user.email "xendercage013@gmail.com"
+  git config --global user.name "msiend"

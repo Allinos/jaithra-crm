@@ -72,3 +72,60 @@ async function SubmitMiscFormData(e) {
   }
 
 })()
+
+
+
+
+document.addEventListener('DOMContentLoaded', function () {
+  ImgUpload();
+});
+
+function ImgUpload() {
+  var imgArray = [];
+
+  var inputFiles = document.querySelectorAll('.upload__inputfile');
+  inputFiles.forEach(function (inputFile) {
+      inputFile.addEventListener('change', function (e) {
+          var imgWrap = this.closest('.upload__box').querySelector('.upload__img-wrap');
+          var maxLength = parseInt(this.dataset.maxLength, 10);
+
+          var files = e.target.files;
+          var filesArr = Array.from(files);
+
+          filesArr.forEach(function (f) {
+              if (!f.type.match('image.*')) return;
+
+              if (imgArray.length >= maxLength) return;
+
+              imgArray.push(f);
+
+              var reader = new FileReader();
+              reader.onload = function (e) {
+                  var html = `
+                      <div class='upload__img-box'>
+                          <div style='background-image: url(${e.target.result})' 
+                               data-number='${document.querySelectorAll('.upload__img-close').length}' 
+                               data-file='${f.name}' 
+                               class='img-bg'>
+                              <div class='upload__img-close'></div>
+                          </div>
+                      </div>`;
+                  imgWrap.insertAdjacentHTML('beforeend', html);
+              };
+              reader.readAsDataURL(f);
+          });
+      });
+  });
+
+  document.body.addEventListener('click', function (e) {
+      if (e.target && e.target.classList.contains('upload__img-close')) {
+          var file = e.target.closest('.upload__img-box').querySelector('.img-bg').dataset.file;
+
+          imgArray = imgArray.filter(function (img) {
+              return img.name !== file;
+          });
+
+          e.target.closest('.upload__img-box').remove();
+      }
+  });
+}
