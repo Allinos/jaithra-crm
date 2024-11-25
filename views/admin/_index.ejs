@@ -58,6 +58,28 @@
                         <p class="text">In Progress</p>
                     </div>
                 </div>
+                <div class="not_start-data flex data">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="users-alt" class="svg">
+                        <path fill="##000000"
+                            d="M12.3,12.22A4.92,4.92,0,0,0,14,8.5a5,5,0,0,0-10,0,4.92,4.92,0,0,0,1.7,3.72A8,8,0,0,0,1,19.5a1,1,0,0,0,2,0,6,6,0,0,1,12,0,1,1,0,0,0,2,0A8,8,0,0,0,12.3,12.22ZM9,11.5a3,3,0,1,1,3-3A3,3,0,0,1,9,11.5Zm9.74.32A5,5,0,0,0,15,3.5a1,1,0,0,0,0,2,3,3,0,0,1,3,3,3,3,0,0,1-1.5,2.59,1,1,0,0,0-.5.84,1,1,0,0,0,.45.86l.39.26.13.07a7,7,0,0,1,4,6.38,1,1,0,0,0,2,0A9,9,0,0,0,18.74,11.82Z">
+                        </path>
+                    </svg>
+                    <div class="total_user_data">
+                        <p class="size">0</p>
+                        <p class="text">In Progress</p>
+                    </div>
+                </div>
+                <div class="not_start-data flex data">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="users-alt" class="svg">
+                        <path fill="##000000"
+                            d="M12.3,12.22A4.92,4.92,0,0,0,14,8.5a5,5,0,0,0-10,0,4.92,4.92,0,0,0,1.7,3.72A8,8,0,0,0,1,19.5a1,1,0,0,0,2,0,6,6,0,0,1,12,0,1,1,0,0,0,2,0A8,8,0,0,0,12.3,12.22ZM9,11.5a3,3,0,1,1,3-3A3,3,0,0,1,9,11.5Zm9.74.32A5,5,0,0,0,15,3.5a1,1,0,0,0,0,2,3,3,0,0,1,3,3,3,3,0,0,1-1.5,2.59,1,1,0,0,0-.5.84,1,1,0,0,0,.45.86l.39.26.13.07a7,7,0,0,1,4,6.38,1,1,0,0,0,2,0A9,9,0,0,0,18.74,11.82Z">
+                        </path>
+                    </svg>
+                    <div class="total_user_data">
+                        <p class="size">0</p>
+                        <p class="text">In Progress</p>
+                    </div>
+                </div>
             </div>
             <!-- ---------ALERT BOX----------- -->
             <div class="status hide">
@@ -103,8 +125,80 @@
                 <!-- ----------project information----------- -->
                 <div class="info-content">
                     <!-- --------1st project----------->
-                    <% sortedData?.forEach((el)=>{ %>
-                        <%- include('../partials/np.ejs', {pdata: el }) %>
+                    <% data?.forEach((e)=>{ %>
+                        <div class="accordion-content">
+                            <div class="ahead grid">
+                                <p class="ref">
+                                    <span class="uppercase hide block phead">Ref. No.</span>
+                                    <span id="refid" dataset-dealId="<%= e.id %>"><%= e.id %></span>
+                                </p>
+                                <p class="cli none"><%= e.name %></p>
+                                <p class="pro">
+                                    <span class="uppercase hide block phead">location</span>
+                                    <span><%= e.location %></span>
+                                </p>
+                                <p class="emp_date">
+                                    <span class="uppercase hide block phead">bhk</span>
+                                    <span><%= e.bhk %></span>
+                                </p>
+                                <p class="emp_date">
+                                    <span class="uppercase hide block phead">Floor</span>
+                                    <span>Floor- <%= e.floor %></span>
+                                </p>
+                                <p class="flexy">
+                                    <span class="edit-btn" data-dealid="<%= e.id %>" onclick="editProject(this, 'normal')">Edit</span>
+                                    <span class="butt" onclick="DeleteProject(this,<%= e.id %>)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="trash-alt"
+                                            class="icon">
+                                            <path fill=""
+                                                d="M10,18a1,1,0,0,0,1-1V11a1,1,0,0,0-2,0v6A1,1,0,0,0,10,18ZM20,6H16V5a3,3,0,0,0-3-3H11A3,3,0,0,0,8,5V6H4A1,1,0,0,0,4,8H5V19a3,3,0,0,0,3,3h8a3,3,0,0,0,3-3V8h1a1,1,0,0,0,0-2ZM10,5a1,1,0,0,1,1-1h2a1,1,0,0,1,1,1V6H10Zm7,14a1,1,0,0,1-1,1H8a1,1,0,0,1-1-1V8H17Zm-3-1a1,1,0,0,0,1-1V11a1,1,0,0,0-2,0v6A1,1,0,0,0,14,18Z">
+                                            </path>
+                                        </svg></span>
+                                        <span class="edit-btn butt"> <svg xmlns="http://www.w3.org/2000/svg" class="icon" x="0px" y="0px" viewBox="0 0 30 30">
+                                            <path d="M 23 3 A 4 4 0 0 0 19 7 A 4 4 0 0 0 19.09375 7.8359375 L 10.011719 12.376953 A 4 4 0 0 0 7 11 A 4 4 0 0 0 3 15 A 4 4 0 0 0 7 19 A 4 4 0 0 0 10.013672 17.625 L 19.089844 22.164062 A 4 4 0 0 0 19 23 A 4 4 0 0 0 23 27 A 4 4 0 0 0 27 23 A 4 4 0 0 0 23 19 A 4 4 0 0 0 19.986328 20.375 L 10.910156 15.835938 A 4 4 0 0 0 11 15 A 4 4 0 0 0 10.90625 14.166016 L 19.988281 9.625 A 4 4 0 0 0 23 11 A 4 4 0 0 0 27 7 A 4 4 0 0 0 23 3 z"></path>
+                                            </svg></span> 
+                                </p>
+                                <!-- <p class="arrow-down"> -->
+                                    <div class="prop-img">
+                                        <img src="/img/admin.jpg" alt="">
+                                    </div>
+                                <!-- </p> -->
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="angle-double-down"
+                                    class="svg">
+                                    <path fill="##000000"
+                                        d="M11.29,11.46a1,1,0,0,0,1.42,0l3-3A1,1,0,1,0,14.29,7L12,9.34,9.71,7A1,1,0,1,0,8.29,8.46Zm3,1.08L12,14.84l-2.29-2.3A1,1,0,0,0,8.29,14l3,3a1,1,0,0,0,1.42,0l3-3a1,1,0,0,0-1.42-1.42Z">
+                                    </path>
+                                </svg>
+                            </div>
+                            <!-- ----------open data for accordion---------- -->
+                            <div class="adata">
+                                <div class="oth-info grid none">
+                                    <p></p>
+                                    <p class="contact">
+                                        <span class="uppercase phead">Map Link</span>
+                                        <span class="contact_no">  <a href="<%= e.map_link %>">Map Link</a></span>
+                                    </p>
+                                    <p class="e-mail">
+                                        <span class="uppercase phead">Owner Name</span>
+                                        <span class="g-mail"><%= e.owner_name %></span>
+                                    </p>
+                                    <p class="agreement">
+                                        <span class="uppercase phead">Owner Number</span>
+                                        <span class="amount"> <%= e.owner_number %></span>
+                                    </p>
+                                    <p class="agreement">
+                                        <span class="uppercase phead">Images</span>
+                                        <span class="amount"> </span>
+                                    </p>
+                                    <p></p>
+                                </div>
+                                <div class="project_expand grid">
+                                    <p class="none"></p>
+                                    <!-- tasks  --> 
+                                  
+                                </div>
+                        
+                            </div>
+                        </div>
                             <% }) %>
                                 <!-- -------------------------------->
                 </div>

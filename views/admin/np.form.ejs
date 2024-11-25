@@ -32,7 +32,7 @@
                </div> -->
                 <div class="formContainer">
                     <div class="normalForm" id="normalForm">
-                        <form id="np-form-data">
+                        <form id="np-form-data" action="" method="post"  enctype="multipart/form-data">
                             <h4 class="uppercase">contact details</h4>
                             <div class="fgrid">
                                 <div class="field">
@@ -70,6 +70,21 @@
                                 <div class="field">
                                     <label for="workName">Owner Number</label>
                                     <input type="text" name="workName" id="workName">
+                                </div>
+                                <div class="field">
+                                    <label for="workName">Category</label>
+                                    <select name="category" id="category">
+                                        <option value="">Residential</option>
+                                        <optgroup >
+                                            <option value="">Residential Rent</option>
+                                            <option value="">Residential Sale</option>
+                                        </optgroup>
+                                        <option value="">Commercial</option>
+                                        <optgroup>
+                                            <option value="">Commercial Rent</option>
+                                            <option value="">Commercial Sale</option>
+                                        </optgroup>
+                                    </select>
                                 </div>
                              
                                 <!-- <div class="field">
@@ -155,11 +170,7 @@
                                 </div>
                                 <div class="field">
                                     <label for="miswork">Types Of Work</label>
-                                    <select name="task" id="splitRatio">
-                                        <% results?.forEach((val)=>{ %>
-                                            <option value="<%= val.msub_task_id %>"><%= val.msub_task_name %></option>
-                                        <% }) %>
-                                    </select>
+                                  
                                 </div>
                             </div>
                             <!-- ---------- grid ends--------- -->

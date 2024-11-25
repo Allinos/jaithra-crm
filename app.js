@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const path = require('path');
+const fileUpload = require('express-fileupload');
 const ejs = require('ejs');
 require('dotenv').config({path:path.resolve(__dirname,`./.env.${process.env.NODE_ENV}`)});
 const PORT = process.env.PORT || 3000;
@@ -34,6 +35,8 @@ app.use(express.static(path.join(__dirname, 'static')))
 app.set('views', __dirname + '/views')
 app.set('view engine', ejs)
 app.use(cookieParser());
+app.use(fileUpload()); 
+
 
 // For Admin **********
 app.use('/admin', auth)
@@ -49,8 +52,7 @@ app.get('*',(req,res)=>{
     res.render('../views/errorPage.ejs');
     })
 app.use(errHandler);
-app.listen(PORT,
-    () => {
+app.listen(PORT,() => {
         console.log(`working at port ${PORT} .env ${process.env.NODE_ENV}`);
     }
 )

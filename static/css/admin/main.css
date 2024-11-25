@@ -241,7 +241,7 @@
 
 .info-content .accordion-content {
     margin: 1rem;
-    padding: 0.8rem 0.5rem;
+    padding: 0.3rem 0.5rem;
     border-radius: var(--border-radius-1);
     cursor: pointer;
     transition: var(--transition-1);
@@ -305,7 +305,7 @@
     gap: 5px;
 }
 .accordion-content .butt{
-    width: 25px;
+    width: 32px;
     height: 25px;
     color: var(--ter-dark-color);
     background: var(--ter-light-color);
@@ -320,6 +320,10 @@
     width: 20px;
     height: 20px;
     fill: var(--ter-dark-color);
+}
+.prop-img img{
+    width: 50px;
+    border-radius: 10px;
 }
 /* HIDDEN CONTENT  */
 .adata {

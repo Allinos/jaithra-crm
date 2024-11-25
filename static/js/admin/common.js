@@ -139,10 +139,7 @@ let ReqHandler = {
 function closeMainDropdown() {
     document.querySelector(`.main-dropdown`).classList.remove(`hide`);
 }
-// if (pageNo + 2 == lastPageNo) {
-//     document.getElementById('way-2').style.display = `none`
-// } else {
-//     document.getElementById('way-2').style.display = `flex`}
+
 async function CheckNotification() {
     let nCtn = document.querySelector('.notification-column')
     let nCount = document.querySelector('#notification-count')
@@ -167,6 +164,6 @@ async function UpdateNotify(act, e) {
         if (res.status) { CheckNotification() }
     })
 }
-CheckNotification()
+// CheckNotification()
 
 
