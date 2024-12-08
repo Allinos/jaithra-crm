@@ -64,7 +64,6 @@ route.post('/auth', async (req, res) => {
             }
         } catch (error) {
             console.error(error);
-            throw new errorHandler(500, 'Something went wrong in this Mysql Admin Auth');
         }
     }
 });
