@@ -22,26 +22,50 @@ route.get('/login', (req, res) => {
 
 route.post('/auth', async (req, res) => {
     let Email = (req.body.Email).trim()
+    // if (Email && req.body.Password) {
+    //     const query = `SELECT email, password FROM adminauth WHERE email ='${Email}'`;
+    //     const hash = createHmac('sha256', 'secret').update(req.body.Password).digest('hex');
+    //     await databaseCon.query(query, (err, rows, fields) => {
+    //         if (err) throw new errorHandler(500, 'Something wents wrong in this Mysql Admin Auth')
+    //         if (rows.length > 0) {
+    //             if (Email == rows[0].email && hash == rows[0].password) {
+    //                 req.session.isLoggedIn = true;
+    //                 req.session.email_id = Email;
+    //                 req.session.role = 'admin';
+    //                 req.session.cookie.expires = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
+    //                 req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000;
+    //                 res.redirect(`/admin`);
+    //             } else {
+    //                 res.status(503).send('unauthorized')
+    //             }
+    //         } else {
+    //             res.redirect(`/admin/login`)
+    //         }
+    //     })
+    // }
     if (Email && req.body.Password) {
-        const query = `SELECT email, password FROM adminauth WHERE email ='${Email}'`;
-        const hash = createHmac('sha256', 'secret').update(req.body.Password).digest('hex');
-        await databaseCon.query(query, (err, rows, fields) => {
-            if (err) throw new errorHandler(500, 'Something wents wrong in this Mysql Admin Auth')
+        try {
+            const hash = createHmac('sha256', 'secret').update(req.body.Password).digest('hex');
+                const query = `SELECT email, password FROM adminauth WHERE email = ?`;
+                const [rows] = await databaseCon.promise().query(query, [Email]);
             if (rows.length > 0) {
-                if (Email == rows[0].email && hash == rows[0].password) {
+                if (Email === rows[0].email && hash === rows[0].password) {
                     req.session.isLoggedIn = true;
                     req.session.email_id = Email;
                     req.session.role = 'admin';
                     req.session.cookie.expires = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
                     req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000;
-                    res.redirect(`/admin`);
+                    return res.redirect(`/admin`);
                 } else {
-                    res.status(503).send('unauthorized')
+                    return res.status(503).send('Unauthorized');
                 }
             } else {
-                res.redirect(`/admin/login`)
+                return res.redirect(`/admin/login`);
             }
-        })
+        } catch (error) {
+            console.error(error);
+            throw new errorHandler(500, 'Something went wrong in this Mysql Admin Auth');
+        }
     }
 });
 
