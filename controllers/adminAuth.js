@@ -47,7 +47,7 @@ route.post('/auth', async (req, res) => {
         try {
             const hash = createHmac('sha256', 'secret').update(req.body.Password).digest('hex');
                 const query = `SELECT email, password FROM adminauth WHERE email = ?`;
-                const [rows] = await databaseCon.promise().query(query, [Email]);
+                const [rows] = await databaseCon.query(query, [Email]);
             if (rows.length > 0) {
                 if (Email === rows[0].email && hash === rows[0].password) {
                     req.session.isLoggedIn = true;
