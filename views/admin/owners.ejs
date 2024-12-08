@@ -19,7 +19,7 @@
 <body>
     <%- include('../partials/admin.header.ejs') %>
         <!-- MAIN SECTION STARTS HERE  -->
-        <main class="main" data-app-page="finance">
+        <main class="main" data-app-page="owners">
             <!------------- FINANCE-OVERALL-------------  -->
             <div class="main-data flex">
                 <!-- -------TOTAL AMOUNT--------- -->
@@ -68,11 +68,11 @@
                 <!-- headings -->
                 <div class="info-head finegrid">
                     <p class="uppercase phead none">No.</p>
-                    <p class="uppercase phead none">Client Name</p>
+                    <p class="uppercase phead none">Owner Name</p>
                     <p class="uppercase phead none">Number</p>
                     <p class="uppercase phead none">location</p>
-                    <p class="uppercase phead none">BHK </p>
-                    <p class="uppercase phead none">Budget</p>
+                    <p class="uppercase phead none"> </p>
+                    <p class="uppercase phead none"></p>
                     <p class="uppercase phead none">Action</p>
                     <!-- ------resposnive class------- -->
                     <p class="responsive uppercase phead hide block">project finances</p>
@@ -80,36 +80,48 @@
                 <!-- ----------project information----------- -->
                 <div class="info-content">
                     <!-- --------1st project---------  -->
-                    <%  sortedData?.forEach((el)=>{ %>
+                    <% data?.forEach((e)=>{ %>
                         <div class="accordion-content">
                             <div class="ahead finegrid">
                                 <p class="ref">
                                     <span class="uppercase hide block phead">No.</span>
-                                    <span><%= e[0].reference_no %></span>
+                                    <span>
+                                        <%= e?.id %>
+                                    </span>
                                 </p>
                                 <p class="pro">
-                                    <span class="uppercase hide block phead">name of work</span>
-                                    <span><%= e[0].deal_name %></span>
+                                    <span class="uppercase hide block phead">name</span>
+                                    <span>
+                                        <%= e?.name %>
+                                    </span>
                                 </p>
                                 <p class="emp_date">
-                                    <span class="uppercase hide block phead">location</span>
-                                    <span><%= e[0].city %></span>
+                                    <span class="uppercase hide block phead">number</span>
+                                    <span><%= e?.number %></span>
                                 </p>
                                 <p class="totalf">
                                     <span class="uppercase hide block phead">project amount</span>
-                                    &#8377;<span><%= e[0].totalamount %></span>/-
+                                    <span><%= e?.location %></span>
                                 </p>
-                                <%  const rAmount = e?.reduce((acc, curr) => acc + curr.amount_got, 0); %>
-                                <p class="totalf none">&#8377;<span><%= rAmount %></span>/-
-                                <span class="maka">Received</span></p>
-                                <p class="totalf none">&#8377;<span><%= e[0]?.totalamount - rAmount %></span>/-</p>
-                                <p class="split">
-                                    <span class="uppercase hide block phead">Split ratio</span>
-                                    <%= e[0].split %>
-                                </p>
+                                <p class="totalf none"><span><%= e?.bhk %></span>
+                                <p class="totalf none"><span><%= e?.budget %></span></p>
                                 <!-- <p class="farch cuck">&#8377;<span>40,000</span>/-</p>
                                 <p class="fstru cuck">&#8377;<span>40,000</span>/-</p>
                                 <p class="fthrd cuck">&#8377;<span>20,000</span>/-</p> -->
+                               
+                                <p class="flexy">
+                                    <span class="edit-btn" data-dealid="<%= e?.id %>" onclick="editProject(this, 'normal')">Edit</span>
+                                    <span class="butt" onclick="DeleteProject(this,<%= e?.id %>)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="trash-alt"
+                                            class="icon">
+                                            <path fill=""
+                                                d="M10,18a1,1,0,0,0,1-1V11a1,1,0,0,0-2,0v6A1,1,0,0,0,10,18ZM20,6H16V5a3,3,0,0,0-3-3H11A3,3,0,0,0,8,5V6H4A1,1,0,0,0,4,8H5V19a3,3,0,0,0,3,3h8a3,3,0,0,0,3-3V8h1a1,1,0,0,0,0-2ZM10,5a1,1,0,0,1,1-1h2a1,1,0,0,1,1,1V6H10Zm7,14a1,1,0,0,1-1,1H8a1,1,0,0,1-1-1V8H17Zm-3-1a1,1,0,0,0,1-1V11a1,1,0,0,0-2,0v6A1,1,0,0,0,14,18Z">
+                                            </path>
+                                        </svg></span>
+                                        <!-- <span class="edit-btn butt"> <svg xmlns="http://www.w3.org/2000/svg" class="icon" x="0px" y="0px" viewBox="0 0 30 30">
+                                            <path d="M 23 3 A 4 4 0 0 0 19 7 A 4 4 0 0 0 19.09375 7.8359375 L 10.011719 12.376953 A 4 4 0 0 0 7 11 A 4 4 0 0 0 3 15 A 4 4 0 0 0 7 19 A 4 4 0 0 0 10.013672 17.625 L 19.089844 22.164062 A 4 4 0 0 0 19 23 A 4 4 0 0 0 23 27 A 4 4 0 0 0 27 23 A 4 4 0 0 0 23 19 A 4 4 0 0 0 19.986328 20.375 L 10.910156 15.835938 A 4 4 0 0 0 11 15 A 4 4 0 0 0 10.90625 14.166016 L 19.988281 9.625 A 4 4 0 0 0 23 11 A 4 4 0 0 0 27 7 A 4 4 0 0 0 23 3 z"></path>
+                                            </svg></span>  -->
+                                </p>
+                               
                                 <p class="arrow-down">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="angle-double-down"
                                         class="svg">
@@ -118,35 +130,29 @@
                                         </path>
                                     </svg>
                                 </p>
+
                             </div>
                             <!-- ----------open data for accordion---------- -->
-                           
                         </div>
-                        
-                        
-                        
-                        
-                    <% }) %>
-                    <!-- ------------------------------ -->
-                </div>
+                        <% }) %>
 
+                            <!-- ------------------------------ -->
+
+                </div>
                 <!-- ----------PAGINATION--------- -->
                 <%- include('../partials/pagin.ejs') %>
             </div>
-
             <!-- -----DROPDOWN----- -->
             <div class="main-dropdown hide">
-                        
             </div>
-
         </main>
-    </section>
+        </section>
 
 
-    <!-- JAVASCRIPT -->
-    <script src="../../js/admin/header.js"></script>
-    <script src="../../js/admin/common.js"></script>
-    <script src="../../js/admin/np.finance.js"></script>
+        <!-- JAVASCRIPT -->
+        <script src="../../js/admin/header.js"></script>
+        <script src="../../js/admin/common.js"></script>
+        <script src="../../js/admin/np.finance.js"></script>
 </body>
 
 </html>

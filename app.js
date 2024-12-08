@@ -1,7 +1,6 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-const fileUpload = require('express-fileupload');
 const ejs = require('ejs');
 require('dotenv').config({path:path.resolve(__dirname,`./.env.${process.env.NODE_ENV}`)});
 const PORT = process.env.PORT || 3000;
@@ -9,7 +8,7 @@ const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const { errHandler } = require('./middleware/error')
 const LokiStore = require('connect-loki')(session);
-let LokiConf = {path:'./sessions/loginAuth.db'}
+let LokiConf = {path:'./session/loginAuth.db'}
 
 app.use(session({
     store: new LokiStore(LokiConf),
@@ -29,13 +28,14 @@ const apiRoute = require('./routes/admin/projectRoute.js')
 
 
 
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
+app.use(express.json({ limit: '50mb' }))
+app.use(express.urlencoded({ extended: true ,limit: '50mb' }))
 app.use(express.static(path.join(__dirname, 'static')))
 app.set('views', __dirname + '/views')
 app.set('view engine', ejs)
 app.use(cookieParser());
-app.use(fileUpload()); 
+app.use('/uploads', express.static('uploads'));
+
 
 
 // For Admin **********
