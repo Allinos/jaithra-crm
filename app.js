@@ -24,7 +24,7 @@ const auth = require('./controllers/adminAuth')
 const indexRoutes = require('./routes/admin/indexRoutes')
 const settings = require('./routes/admin/settingRoute.js')
 
-const apiRoute = require('./routes/admin/projectRoute.js')
+const apiRoute = require('./routes/admin/api_Route.js')
 
 
 
