@@ -203,7 +203,6 @@
                 editMenu.style.display = `block`;
                 const form = document.getElementById('mainForm');
                 form.action = `/admin/owners/update/${Id}`;
-                form.method = 'PUT';
 
                 const clientName = clientFields[3].textContent.trim();
                 const clientNumber = clientFields[5].textContent.trim();

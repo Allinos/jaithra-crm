@@ -6,17 +6,25 @@ const upload = require("../utils/uploadsHandler");
 // ---- All Index routes here ----
 exports.indexDeshboard = async (req, res) => {
   if (req.session.isLoggedIn == true && req.session.role == "admin") {
-    const q = `SELECT properties.*, MIN(prop_images.location) as imgLink FROM properties LEFT JOIN prop_images ON properties.id = prop_images.prop_id GROUP BY properties.id;`;
-    try {
-      const [results] = await db.query(q);
-      res.status(200).render("../views/admin/_index.ejs", { data: results });
-    } catch (error) {
-      console.error("Error fetching properties:", error);
-      res.status(500).send("Error fetching properties.");
+    const category = req.query.category;
+    let query = `SELECT properties.*, MIN(prop_images.location) AS imgLink 
+                 FROM properties 
+                 LEFT JOIN prop_images ON properties.id = prop_images.prop_id`;
+    if (category) {
+        query += ` WHERE properties.category = ?`;
     }
-  } else {
+    query += ` GROUP BY properties.id`;
+    try {
+        const [results] = await db.query(query, category ? [category] : []);
+        res.status(200).render("../views/admin/_index.ejs", { data: results });
+    } catch (error) {
+        console.error("Error fetching properties:", error);
+        res.status(500).send("Error fetching properties.");
+    }
+} else {
     res.redirect("/admin/login");
-  }
+}
+
 };
 
 exports.clientsPage = async (req, res) => {

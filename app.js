@@ -48,9 +48,9 @@ app.use('/admin', apiRoute)
 
 
 
-app.get('*',(req,res)=>{ 
-    res.render('../views/errorPage.ejs');
-    })
+// app.get('*',(req,res)=>{ 
+//     res.render('../views/errorPage.ejs');
+//     })
 app.use(errHandler);
 app.listen(PORT,() => {
         console.log(`working at port ${PORT} .env ${process.env.NODE_ENV}`);

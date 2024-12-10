@@ -81,10 +81,8 @@ exports.UpdateClientsByID = async (req, res) => {
       return res.status(404).json({ message: "Client not found. No update performed." });
     }
 
-    res.status(200).json({
-      message: "Client updated successfully.",
-      updatedFields: { name, number, location, bhk, budget },
-    });
+    res.redirect('/admin/clients');
+
   } catch (error) {
     console.error("Error updating client:", error.message);
     res.status(500).json({ error: "Internal server error.", details: error.message });
@@ -139,10 +137,8 @@ exports.UpdateOwnersByID = async (req, res) => {
       return res.status(404).json({ message: "Owner not found. No update performed." });
     }
 
-    res.status(200).json({
-      message: "Owner updated successfully.",
-      updatedFields: { name, number, location },
-    });
+    res.redirect('/admin/owners');
+
   } catch (error) {
     console.error("Error updating owner:", error.message);
     res.status(500).json({ error: "Internal server error.", details: error.message });
