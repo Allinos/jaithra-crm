@@ -6,7 +6,7 @@ const upload = require("../utils/uploadsHandler");
 // ---- All Index routes here ----
 exports.indexDeshboard = async (req, res) => {
   if (req.session.isLoggedIn == true && req.session.role == "admin") {
-    const q = `SELECT properties.*, prop_images.location as imgLink FROM properties left join prop_images on properties.id=prop_images.prop_id GROUP BY id; `;
+    const q = `SELECT properties.*, MIN(prop_images.location) as imgLink FROM properties LEFT JOIN prop_images ON properties.id = prop_images.prop_id GROUP BY properties.id;`;
     try {
       const [results] = await db.query(q);
       res.status(200).render("../views/admin/_index.ejs", { data: results });
@@ -111,7 +111,7 @@ exports.PropertiesForm = async (req, res) => {
   }
 };
 
-exports.PropertiesDetailsPage = async(req, res) => {
+exports.PropertiesDetailsPage = async (req, res) => {
   if (req.session.isLoggedIn == true && req.session.role == "admin") {
     const query = `select * from clients;`;
     try {
