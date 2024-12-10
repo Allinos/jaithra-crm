@@ -164,6 +164,5 @@ async function UpdateNotify(act, e) {
         if (res.status) { CheckNotification() }
     })
 }
-// CheckNotification()
 
 

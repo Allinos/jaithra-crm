@@ -43,7 +43,7 @@ app.use('/admin', auth)
 app.use('/admin', indexRoutes)
 app.use('/admin/settings', settings)
 
-app.use('/apiv1', apiRoute)
+app.use('/admin', apiRoute)
 
 
 

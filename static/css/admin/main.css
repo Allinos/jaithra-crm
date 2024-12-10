@@ -898,3 +898,36 @@
 .pages li:is(.active, :hover) svg {
     fill: var(--white);
 }
+
+/* /////// Add Button  */
+
+
+.button-container {
+
+}
+/* Add Client Button */
+.add-client-btn {
+    background: linear-gradient(90deg, #f6edff, #aac2eb);
+    color: #fff;
+    padding: 10px 20px;
+    margin-bottom: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    border: none;
+    color: var(--primary-color);
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.add-client-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(194, 194, 194, 0.2);
+    border: 1px solid var(--primary-color);
+}
+
+.add-client-btn:active {
+    transform: translateY(1px);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+}

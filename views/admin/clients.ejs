@@ -15,6 +15,9 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../../js/admin/dashboard.module.js"></script>
 </head>
+<style>
+
+</style>
 
 <body>
     <%- include('../partials/admin.header.ejs') %>
@@ -59,8 +62,9 @@
                     </div>
                 </div>
             </div>
-       
-
+            <div class="button-container" onclick="openDick()">
+                <button class="add-client-btn">Add Client</button>
+            </div>
             <!-- ----------- FINANCE TABLE----------- -->
             <div class="data-info box">
                 <!-- headings -->
@@ -95,31 +99,40 @@
                                 </p>
                                 <p class="emp_date">
                                     <span class="uppercase hide block phead">number</span>
-                                    <span><%= e.number %></span>
+                                    <span>
+                                        <%= e.number %>
+                                    </span>
                                 </p>
                                 <p class="totalf">
                                     <span class="uppercase hide block phead">project amount</span>
-                                    <span><%= e.location %></span>
+                                    <span>
+                                        <%= e.location %>
+                                    </span>
                                 </p>
-                                <p class="totalf none"><span><%= e.bhk %></span>
-                                <p class="totalf none"><span><%= e.budget %></span></p>
+                                <p class="totalf none"><span>
+                                        <%= e.bhk %>
+                                    </span>
+                                <p class="totalf none"><span>
+                                        <%= e.budget %>
+                                    </span></p>
                                 <!-- <p class="farch cuck">&#8377;<span>40,000</span>/-</p>
                                 <p class="fstru cuck">&#8377;<span>40,000</span>/-</p>
                                 <p class="fthrd cuck">&#8377;<span>20,000</span>/-</p> -->
-                               
+
                                 <p class="flexy">
-                                    <span class="edit-btn" data-dealid="<%= e.id %>" onclick="editProject(this, 'normal')">Edit</span>
-                                    <span class="butt" onclick="DeleteProject(this,<%= e.id %>)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="trash-alt"
+                                    <span class="edit-btn" onclick="editClient(this,<%= e.id %>)">Edit</span>
+                                    <span class="butt" onclick="DeleteItem(this,<%= e.id %>,'Clients')"><svg
+                                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="trash-alt"
                                             class="icon">
                                             <path fill=""
                                                 d="M10,18a1,1,0,0,0,1-1V11a1,1,0,0,0-2,0v6A1,1,0,0,0,10,18ZM20,6H16V5a3,3,0,0,0-3-3H11A3,3,0,0,0,8,5V6H4A1,1,0,0,0,4,8H5V19a3,3,0,0,0,3,3h8a3,3,0,0,0,3-3V8h1a1,1,0,0,0,0-2ZM10,5a1,1,0,0,1,1-1h2a1,1,0,0,1,1,1V6H10Zm7,14a1,1,0,0,1-1,1H8a1,1,0,0,1-1-1V8H17Zm-3-1a1,1,0,0,0,1-1V11a1,1,0,0,0-2,0v6A1,1,0,0,0,14,18Z">
                                             </path>
                                         </svg></span>
-                                        <!-- <span class="edit-btn butt"> <svg xmlns="http://www.w3.org/2000/svg" class="icon" x="0px" y="0px" viewBox="0 0 30 30">
+                                    <!-- <span class="edit-btn butt"> <svg xmlns="http://www.w3.org/2000/svg" class="icon" x="0px" y="0px" viewBox="0 0 30 30">
                                             <path d="M 23 3 A 4 4 0 0 0 19 7 A 4 4 0 0 0 19.09375 7.8359375 L 10.011719 12.376953 A 4 4 0 0 0 7 11 A 4 4 0 0 0 3 15 A 4 4 0 0 0 7 19 A 4 4 0 0 0 10.013672 17.625 L 19.089844 22.164062 A 4 4 0 0 0 19 23 A 4 4 0 0 0 23 27 A 4 4 0 0 0 27 23 A 4 4 0 0 0 23 19 A 4 4 0 0 0 19.986328 20.375 L 10.910156 15.835938 A 4 4 0 0 0 11 15 A 4 4 0 0 0 10.90625 14.166016 L 19.988281 9.625 A 4 4 0 0 0 23 11 A 4 4 0 0 0 27 7 A 4 4 0 0 0 23 3 z"></path>
                                             </svg></span>  -->
                                 </p>
-                               
+
                                 <p class="arrow-down">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="angle-double-down"
                                         class="svg">
@@ -142,6 +155,42 @@
             </div>
             <!-- -----DROPDOWN----- -->
             <div class="main-dropdown hide">
+                <div class="edit-menu common_dropdown">
+                    <form action="" id="mainForm" method="POST">
+                        <h4 class="uppercase">Client Details</h4>
+                        <div class="edit-grid">
+                            <div class="field">
+                                <label for="client-name">Client Name</label>
+                                <input type="text" name="name" id="client-name" placeholder="e.g.: Pragyan Tamuli"
+                                    required>
+                            </div>
+                            <div class="field">
+                                <label for="client-number">Phone Number</label>
+                                <input type="text" name="number" id="client-number" placeholder="e.g.: 9874561230"
+                                    pattern="[0-9]{10}" title="Please enter a valid 10-digit phone number" required>
+                            </div>
+                            <div class="field">
+                                <label for="client-location">Location</label>
+                                <input type="text" name="location" id="client-location"
+                                    placeholder="e.g.: Guwahati, Assam" required>
+                            </div>
+                            <div class="field">
+                                <label for="client-bhk">BHK</label>
+                                <input type="number" name="bhk" id="client-bhk" placeholder="e.g.: 3" min="1" required>
+                            </div>
+                            <div class="field">
+                                <label for="client-budget">Budget</label>
+                                <input type="text" name="budget" id="client-budget"
+                                    placeholder="e.g.: &#8377; 50,00,000" required>
+                            </div>
+                        </div>
+                        <div class="drop-btn flex">
+                            <button type="submit" class="uppercase">Done</button>
+                            <button type="button" class="uppercase" onclick="CloseModel()">Cancel</button>
+                        </div>
+                    </form>
+
+                </div>
             </div>
         </main>
         </section>
@@ -150,7 +199,46 @@
         <!-- JAVASCRIPT -->
         <script src="../../js/admin/header.js"></script>
         <script src="../../js/admin/common.js"></script>
-        <script src="../../js/admin/np.finance.js"></script>
+        <script src="../../js/admin/client_owner.js"></script>
+
+
+
+        <script>
+            // Function to populate the form with existing client details
+            function editClient(e, Id) {
+                let parentCtn = e.parentElement.parentElement
+                const clientData = document.getElementById("client-data");
+                const clientFields = parentCtn.querySelectorAll("span");
+                document.getElementsByClassName("main")[0].classList.add("flow");
+                const maindropDown = document.querySelector(`.main-dropdown`);
+                const editMenu = document.querySelector(`.edit-menu`);
+                maindropDown.style.display = `block`;
+                editMenu.style.display = `block`;
+                const form = document.getElementById('mainForm');
+                form.action = `/clients/update/${Id}`;
+                form.method = 'PUT';
+
+
+                // Extract values
+                const clientName = clientFields[3].textContent.trim();
+                const clientNumber = clientFields[5].textContent.trim();
+                const clientLocation = clientFields[7].textContent.trim();
+                const clientBHK = clientFields[8].textContent.trim();
+                const clientBudget = clientFields[9].textContent.trim();
+
+                // Populate the form
+                document.getElementById("client-name").value = clientName;
+                document.getElementById("client-number").value = clientNumber;
+                document.getElementById("client-location").value = clientLocation;
+                document.getElementById("client-bhk").value = clientBHK;
+                document.getElementById("client-budget").value = clientBudget;
+
+
+            }
+
+
+
+        </script>
 </body>
 
 </html>

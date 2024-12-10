@@ -16,11 +16,114 @@
     " rel="stylesheet"> -->
     <title>Admin | Zroperties</title>
 </head>
+<style>
+    #popupCtn {
+
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f5f5f5;
+        z-index: 1000;
+        position: absolute;
+    }
+
+    .image-icon {
+        width: 50px;
+        height: 50px;
+        cursor: pointer;
+    }
+
+    .popup {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8);
+        display: none;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .popup-content {
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        width: 80%;
+        height: 80vh;
+        max-width: 600px;
+        overflow-y: auto;
+    }
+
+    .gallery {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .gallery img {
+        width: calc(33.33% - 10px);
+        cursor: pointer;
+        border-radius: 4px;
+    }
+
+    .large-image-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.9);
+        display: none;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .large-image {
+        width: 50vw;
+        height: fit-content;
+        max-width: 90%;
+        max-height: 90%;
+        cursor: pointer;
+        border-radius: 9px;
+    }
+
+    .arrow {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 2rem;
+        color: white;
+        cursor: pointer;
+        user-select: none;
+    }
+
+    .arrow.left {
+        left: 20px;
+    }
+
+    .arrow.right {
+        right: 20px;
+    }
+
+    .close-btn {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        color: white;
+        font-size: 24px;
+        cursor: pointer;
+    }
+</style>
 
 <body>
     <%- include('../partials/admin.header.ejs') %>
         <main class="main" data-app-page="dashboard">
-            <!------------- DATA-OVERALL-------------  -->
+            <!-------------      -------------  -->
             <div class="main-data flex">
                 <!-- -------TOTAL PROJECTS--------- -->
                 <div class="total-data flex data">
@@ -200,7 +303,8 @@
                                     <p></p>
                                     <p class="contact">
                                         <span class="uppercase phead">Map Link</span>
-                                        <span class="contact_no"> <a href="<%= e.map_link %>">Map Link</a></span>
+                                        <span class="contact_no"> <a href="<%= e.map_link %>" target="_blank">Map
+                                                Link</a></span>
                                     </p>
                                     <p class="e-mail">
                                         <span class="uppercase phead">Owner Name</span>
@@ -216,7 +320,7 @@
                                     </p>
                                     <p class="agreement">
                                         <span class="uppercase phead">Images</span>
-                                        <span class="amount" onclick="showImage(<%= e.id %>)">
+                                        <span class="amount" onclick=" loadGallery(<%= e.id %>);">
                                             <img src="/img/img-icon.svg" style="border-radius:0 ;" alt="">
                                             <img src="/img/img-icon.svg" style="border-radius:0 ;" alt="">
                                             <img src="/img/img-icon.svg" style="border-radius:0 ;" alt="">
@@ -326,9 +430,22 @@
                     </form>
                 </div>
             </div>
-
         </main>
         </section>
+        <div id="popupCtn">
+            <div class="popup" id="popup">
+                <div class="close-btn" id="closePopup">&times;</div>
+                <div class="popup-content" id="popupContent">
+                    <p>Loading images...</p>
+                </div>
+            </div>
+
+            <div class="large-image-container" id="largeImageContainer">
+                <span class="arrow left" id="prevImage">&#10094;</span>
+                <img src="" alt="Large View" class="large-image" id="largeImage">
+                <span class="arrow right" id="nextImage">&#10095;</span>
+            </div>
+        </div>
 
 
         <!-- JAVASCRIPT -->
@@ -337,6 +454,144 @@
         <script src="../../js/admin/common.js"></script>
         <script src="../../js/admin/dashboard.render.js"></script>
         <script src="../../js/admin/dashboard.js"></script>
+        <!-- <script>
+    
+            const images = [
+                'https://via.placeholder.com/600x400',
+                'https://via.placeholder.com/600x300', 'https://via.placeholder.com/600x400',
+                'https://via.placeholder.com/600x300', 'https://via.placeholder.com/600x400',
+                'https://via.placeholder.com/600x300', 'https://via.placeholder.com/600x400',
+                'https://via.placeholder.com/600x300', 'https://via.placeholder.com/600x400',
+                'https://via.placeholder.com/600x300', 'https://via.placeholder.com/600x400',
+                'https://via.placeholder.com/600x300',
+                'https://via.placeholder.com/600x500'
+            ];
+            let currentImageIndex = 0;
+
+
+            function loadGallery() {
+                const popup = document.getElementById('popup');
+                const popupContent = document.getElementById('popupContent');
+
+                popup.style.display = 'flex';
+
+                // Simulate server request
+                setTimeout(() => {
+                    popupContent.innerHTML = '<div class="gallery" id="gallery"></div>';
+                    const gallery = document.getElementById('gallery');
+
+                    images.forEach((src, index) => {
+                        const img = document.createElement('img');
+                        img.src = src;
+                        img.dataset.index = index;
+                        gallery.appendChild(img);
+
+                        img.addEventListener('click', () => {
+                            showLargeImage(index);
+                        });
+                    });
+                }, 1000);
+            }
+
+            document.getElementById('closePopup').addEventListener('click', function () {
+                document.getElementById('popup').style.display = 'none';
+            });
+
+            const largeImageContainer = document.getElementById('largeImageContainer');
+            const largeImage = document.getElementById('largeImage');
+
+            function showLargeImage(index) {
+                currentImageIndex = index;
+                largeImage.src = images[index];
+                largeImageContainer.style.display = 'flex';
+            }
+
+            largeImage.addEventListener('click', () => {
+                largeImageContainer.style.display = 'none';
+            });
+
+            document.getElementById('prevImage').addEventListener('click', () => {
+                currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+                largeImage.src = images[currentImageIndex];
+            });
+
+            document.getElementById('nextImage').addEventListener('click', () => {
+                currentImageIndex = (currentImageIndex + 1) % images.length;
+                largeImage.src = images[currentImageIndex];
+            });
+        </script> -->
+
+        <script>
+        let currentImageIndex = 0;
+            let images = []; // Initialize an empty array to store image URLs
+
+            async function loadGallery(e) {
+                const popup = document.getElementById('popup');
+                const popupContent = document.getElementById('popupContent');
+
+                popup.style.display = 'flex';
+                popupContent.innerHTML = '<p>Loading...</p>'; // Show loading indicator
+
+                try {
+                    // Fetch images from the API
+                    const response = await fetch('http://localhost:5000/admin/get-image/'+e); // Replace '17' with the dynamic ID
+                    const data = await response.json();
+
+                    if (data.data && data.data.length > 0) {
+                        // Populate the images array with URLs from the API response
+                        images = data.data.map(img => `http://localhost:5000/uploads/${img.location}`);
+
+                        // Create gallery
+                        popupContent.innerHTML = '<div class="gallery" id="gallery"></div>';
+                        const gallery = document.getElementById('gallery');
+
+                        images.forEach((src, index) => {
+                            const img = document.createElement('img');
+                            img.src = src;
+                            img.dataset.index = index;
+                            gallery.appendChild(img);
+
+                            img.addEventListener('click', () => {
+                                showLargeImage(index);
+                            });
+                        });
+                    } else {
+                        popupContent.innerHTML = '<p>No images found.</p>';
+                    }
+                } catch (error) {
+                    console.error('Error fetching images:', error);
+                    popupContent.innerHTML = '<p>Failed to load images.</p>';
+                }
+            }
+
+            document.getElementById('closePopup').addEventListener('click', function () {
+                document.getElementById('popup').style.display = 'none';
+            });
+
+            const largeImageContainer = document.getElementById('largeImageContainer');
+            const largeImage = document.getElementById('largeImage');
+
+            function showLargeImage(index) {
+                currentImageIndex = index;
+                largeImage.src = images[index];
+                largeImageContainer.style.display = 'flex';
+            }
+
+            largeImage.addEventListener('click', () => {
+                largeImageContainer.style.display = 'none';
+            });
+
+            document.getElementById('prevImage').addEventListener('click', () => {
+                currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+                largeImage.src = images[currentImageIndex];
+            });
+
+            document.getElementById('nextImage').addEventListener('click', () => {
+                currentImageIndex = (currentImageIndex + 1) % images.length;
+                largeImage.src = images[currentImageIndex];
+            });
+        </script>
+
 </body>
 
 </html>

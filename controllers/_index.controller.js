@@ -6,7 +6,7 @@ const upload = require("../utils/uploadsHandler");
 // ---- All Index routes here ----
 exports.indexDeshboard = async (req, res) => {
   if (req.session.isLoggedIn == true && req.session.role == "admin") {
-    const q = `SELECT properties.*, prop_images.location as imgLink FROM properties left join prop_images  on properties.id=prop_images.prop_id; `;
+    const q = `SELECT properties.*, prop_images.location as imgLink FROM properties left join prop_images on properties.id=prop_images.prop_id GROUP BY id; `;
     try {
       const [results] = await db.query(q);
       res.status(200).render("../views/admin/_index.ejs", { data: results });
@@ -111,11 +111,15 @@ exports.PropertiesForm = async (req, res) => {
   }
 };
 
-// exports.settings = (req, res) => {
-//   if (req.session.isLoggedIn == true && req.session.role == "admin") {
-//     const query = `select * from subtask;select * from mis_subtask;select * from amount_split`;
-//     db.query(query, (err, result, field) => {
-//       res.status(200).render("../views/admin/settings.ejs", { data: result });
-//     });
-//   }
-// };
+exports.PropertiesDetailsPage = async(req, res) => {
+  if (req.session.isLoggedIn == true && req.session.role == "admin") {
+    const query = `select * from clients;`;
+    try {
+      const [results] = await db.query(query);
+      res.status(200).render("../views/admin/clients.ejs", { data: results });
+    } catch (error) {
+      console.error("E rror fetching properties:", error);
+      res.status(500).send("Error fetching properties.");
+    }
+  }
+};
