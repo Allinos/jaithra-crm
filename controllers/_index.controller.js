@@ -113,7 +113,7 @@ exports.insertProp = async (req, res) => {
 
 exports.PropertiesForm = async (req, res) => {
   if (req.session.isLoggedIn == true && req.session.role == "admin") {
-    res.status(200).render("../views/admin/np.form.ejs");
+    res.status(200).render("../views/admin/form.ejs");
   } else {
     res.status(500).send({ msg: "Some internal error has occurred !!" });
   }
