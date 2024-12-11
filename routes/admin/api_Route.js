@@ -5,6 +5,7 @@ const NormalAPI = require('../../controllers/api.crud')
 
 
 api.get('/get-image/:id', NormalAPI.GetImagesByID)
+api.get('/prop/delete/:id', NormalAPI.PropertieDelete)
 
 api.post('/clients', NormalAPI.AddClient)
 api.post('/clients/update/:id', NormalAPI.UpdateClientsByID)

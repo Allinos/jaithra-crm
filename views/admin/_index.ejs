@@ -118,6 +118,28 @@
         font-size: 24px;
         cursor: pointer;
     }
+
+    .alert {
+        position: fixed;
+        bottom: 20px;
+        right: 0%;
+        transform: translateX(-50%) translateY(50px);
+        background: linear-gradient(90deg, #f6edff, #aac2eb);
+        color: var(--primary-color);
+        padding: 10px 20px;
+        border-radius: 5px;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease, transform 0.3s ease;
+        z-index: 1000;
+    }
+
+    .alert.show {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+        pointer-events: auto;
+    }
 </style>
 
 <body>
@@ -137,7 +159,7 @@
                         <p class="text">_</p>
                     </div>
                 </div>
-                <div class="total-data flex data"  onclick="FillterOps('ResidentialRent')">
+                <div class="total-data flex data" onclick="FillterOps('ResidentialRent')">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="users-alt" class="svg">
                         <path fill="##000000"
                             d="M12.3,12.22A4.92,4.92,0,0,0,14,8.5a5,5,0,0,0-10,0,4.92,4.92,0,0,0,1.7,3.72A8,8,0,0,0,1,19.5a1,1,0,0,0,2,0,6,6,0,0,1,12,0,1,1,0,0,0,2,0A8,8,0,0,0,12.3,12.22ZM9,11.5a3,3,0,1,1,3-3A3,3,0,0,1,9,11.5Zm9.74.32A5,5,0,0,0,15,3.5a1,1,0,0,0,0,2,3,3,0,0,1,3,3,3,3,0,0,1-1.5,2.59,1,1,0,0,0-.5.84,1,1,0,0,0,.45.86l.39.26.13.07a7,7,0,0,1,4,6.38,1,1,0,0,0,2,0A9,9,0,0,0,18.74,11.82Z">
@@ -148,7 +170,7 @@
                         <p class="text">Residential</p>
                     </div>
                 </div>
-                <div class="total-data flex data"  onclick="FillterOps('ResidentialSale')">
+                <div class="total-data flex data" onclick="FillterOps('ResidentialSale')">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="users-alt" class="svg">
                         <path fill="##000000"
                             d="M12.3,12.22A4.92,4.92,0,0,0,14,8.5a5,5,0,0,0-10,0,4.92,4.92,0,0,0,1.7,3.72A8,8,0,0,0,1,19.5a1,1,0,0,0,2,0,6,6,0,0,1,12,0,1,1,0,0,0,2,0A8,8,0,0,0,12.3,12.22ZM9,11.5a3,3,0,1,1,3-3A3,3,0,0,1,9,11.5Zm9.74.32A5,5,0,0,0,15,3.5a1,1,0,0,0,0,2,3,3,0,0,1,3,3,3,3,0,0,1-1.5,2.59,1,1,0,0,0-.5.84,1,1,0,0,0,.45.86l.39.26.13.07a7,7,0,0,1,4,6.38,1,1,0,0,0,2,0A9,9,0,0,0,18.74,11.82Z">
@@ -166,12 +188,12 @@
                             d="M12.3,12.22A4.92,4.92,0,0,0,14,8.5a5,5,0,0,0-10,0,4.92,4.92,0,0,0,1.7,3.72A8,8,0,0,0,1,19.5a1,1,0,0,0,2,0,6,6,0,0,1,12,0,1,1,0,0,0,2,0A8,8,0,0,0,12.3,12.22ZM9,11.5a3,3,0,1,1,3-3A3,3,0,0,1,9,11.5Zm9.74.32A5,5,0,0,0,15,3.5a1,1,0,0,0,0,2,3,3,0,0,1,3,3,3,3,0,0,1-1.5,2.59,1,1,0,0,0-.5.84,1,1,0,0,0,.45.86l.39.26.13.07a7,7,0,0,1,4,6.38,1,1,0,0,0,2,0A9,9,0,0,0,18.74,11.82Z">
                         </path>
                     </svg>
-                    <div class="total_user_data"  >
+                    <div class="total_user_data">
                         <p class="size">Commecial</p>
                         <p class="text">_</p>
                     </div>
                 </div>
-                <div class="in_progress-data flex data"  onclick="FillterOps('CommecialRent')">
+                <div class="in_progress-data flex data" onclick="FillterOps('CommecialRent')">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="users-alt" class="svg">
                         <path fill="##000000"
                             d="M12.3,12.22A4.92,4.92,0,0,0,14,8.5a5,5,0,0,0-10,0,4.92,4.92,0,0,0,1.7,3.72A8,8,0,0,0,1,19.5a1,1,0,0,0,2,0,6,6,0,0,1,12,0,1,1,0,0,0,2,0A8,8,0,0,0,12.3,12.22ZM9,11.5a3,3,0,1,1,3-3A3,3,0,0,1,9,11.5Zm9.74.32A5,5,0,0,0,15,3.5a1,1,0,0,0,0,2,3,3,0,0,1,3,3,3,3,0,0,1-1.5,2.59,1,1,0,0,0-.5.84,1,1,0,0,0,.45.86l.39.26.13.07a7,7,0,0,1,4,6.38,1,1,0,0,0,2,0A9,9,0,0,0,18.74,11.82Z">
@@ -188,7 +210,7 @@
                             d="M12.3,12.22A4.92,4.92,0,0,0,14,8.5a5,5,0,0,0-10,0,4.92,4.92,0,0,0,1.7,3.72A8,8,0,0,0,1,19.5a1,1,0,0,0,2,0,6,6,0,0,1,12,0,1,1,0,0,0,2,0A8,8,0,0,0,12.3,12.22ZM9,11.5a3,3,0,1,1,3-3A3,3,0,0,1,9,11.5Zm9.74.32A5,5,0,0,0,15,3.5a1,1,0,0,0,0,2,3,3,0,0,1,3,3,3,3,0,0,1-1.5,2.59,1,1,0,0,0-.5.84,1,1,0,0,0,.45.86l.39.26.13.07a7,7,0,0,1,4,6.38,1,1,0,0,0,2,0A9,9,0,0,0,18.74,11.82Z">
                         </path>
                     </svg>
-                    <div class="total_user_data" >
+                    <div class="total_user_data">
                         <p class="size">Sale</p>
                         <p class="text">Commecial</p>
                     </div>
@@ -269,17 +291,17 @@
                                     <span>Floor- <%= e.floor %></span>
                                 </p>
                                 <p class="flexy">
-                                    <span class="edit-btn" data-dealid="<%= e.id %>"
-                                        onclick="editProject(this, 'normal')">Edit</span>
-                                    <span class="butt" onclick="DeleteProject(this,<%= e.id %>)"><svg
-                                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="trash-alt"
+                                    <span class="edit-btn" onclick="EditPropertie(this, <%= e.id %>)">Edit</span>
+                                    <span class="butt" onclick="DeleteProp(this,<%= e.id %>)">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="trash-alt"
                                             class="icon">
                                             <path fill=""
                                                 d="M10,18a1,1,0,0,0,1-1V11a1,1,0,0,0-2,0v6A1,1,0,0,0,10,18ZM20,6H16V5a3,3,0,0,0-3-3H11A3,3,0,0,0,8,5V6H4A1,1,0,0,0,4,8H5V19a3,3,0,0,0,3,3h8a3,3,0,0,0,3-3V8h1a1,1,0,0,0,0-2ZM10,5a1,1,0,0,1,1-1h2a1,1,0,0,1,1,1V6H10Zm7,14a1,1,0,0,1-1,1H8a1,1,0,0,1-1-1V8H17Zm-3-1a1,1,0,0,0,1-1V11a1,1,0,0,0-2,0v6A1,1,0,0,0,14,18Z">
                                             </path>
                                         </svg></span>
-                                    <span class="edit-btn butt"> <svg xmlns="http://www.w3.org/2000/svg" class="icon"
-                                            x="0px" y="0px" viewBox="0 0 30 30">
+                                    <span class="edit-btn butt" onclick="copyLink('adfgasf')"> <svg
+                                            xmlns="http://www.w3.org/2000/svg" class="icon" x="0px" y="0px"
+                                            viewBox="0 0 30 30">
                                             <path
                                                 d="M 23 3 A 4 4 0 0 0 19 7 A 4 4 0 0 0 19.09375 7.8359375 L 10.011719 12.376953 A 4 4 0 0 0 7 11 A 4 4 0 0 0 3 15 A 4 4 0 0 0 7 19 A 4 4 0 0 0 10.013672 17.625 L 19.089844 22.164062 A 4 4 0 0 0 19 23 A 4 4 0 0 0 23 27 A 4 4 0 0 0 27 23 A 4 4 0 0 0 23 19 A 4 4 0 0 0 19.986328 20.375 L 10.910156 15.835938 A 4 4 0 0 0 11 15 A 4 4 0 0 0 10.90625 14.166016 L 19.988281 9.625 A 4 4 0 0 0 23 11 A 4 4 0 0 0 27 7 A 4 4 0 0 0 23 3 z">
                                             </path>
@@ -318,116 +340,100 @@
                                             <%= e.owner_number %>
                                         </span>
                                     </p>
-                                    <p class="agreement">
+                                    <p class="image">
                                         <span class="uppercase phead">Images</span>
-                                        <span class="amount" onclick=" loadGallery(<%= e.id %>);">
+                                        <span class="amount" onclick="loadGallery(<%= e.id %>);">
                                             <img src="/img/img-icon.svg" style="border-radius:0 ;" alt="">
                                             <img src="/img/img-icon.svg" style="border-radius:0 ;" alt="">
                                             <img src="/img/img-icon.svg" style="border-radius:0 ;" alt="">
                                         </span>
                                     </p>
-                                    <p></p>
+                                    <p class="category">
+                                        <span class="uppercase phead">Category</span>
+                                        <span class="amount">
+                                            <%= e.category %>
+                                        </span>
+                                    </p>
                                 </div>
                                 <div class="project_expand grid">
                                     <p class="none"></p>
                                     <!-- tasks  -->
-
                                 </div>
-
                             </div>
                         </div>
                         <% }) %>
-                            <!-- -------------------------------->
                 </div>
 
+                <!-- -------------------------------->
                 <!-- ----------PAGINATION--------- -->
                 <%- include('../partials/pagin.ejs') %>
+
             </div>
 
             <!-- ----------POPUPS----------------- -->
             <div class="main-dropdown">
-                <!-- <div class="status-dropdown-menu common_dropdown">
-                <ul>
-                    <li class="red">
-                        <input type="radio" name="start">
-                        <span data-name="start">Not Started</span>
-                    </li>
-                    <li class="blue">
-                        <input type="radio" name="start">
-                        <span>In Progress</span>
-                    </li>
-                    <li class="green">
-                        <input type="radio" name="start">
-                        <span>Completed</span>
-                    </li>
-                </ul>
-            </div> -->
-                <!-- <div class="emp-drop-menu common_dropdown">
-                <ul>
-                    <li>
-                        <input type="checkbox" name="employee">
-                        <span>Anand Kumar</span>
-                    </li>
-                </ul>
-                <button class="uppercase">update</button>
-            </div> -->
-                <!-- <div class="deadline-drop-menu common_dropdown">
-                <p class="uppercase"><span>Architecture</span> Deadline</p>
-                <input type="text">
-                <div class="drop-btn flex">
-                    <button class="uppercase">update</button>
-                    <button class="uppercase">Cancel</button>
-                </div>
-            </div> -->
                 <div class="edit-menu common_dropdown">
-                    <form action="">
-                        <h4 class="uppercase">contact details</h4>
+                    <form action="" method="POST">
+                        <h4 class="uppercase">Contact Details</h4>
                         <div class="edit-grid">
                             <div class="field">
-                                <label for="name">Name</label>
-                                <input type="text" name="name" id="ename" placeholder="e.g.: Pragyan Tamuli">
+                                <label for="name">Flat Name</label>
+                                <input type="text" name="name" id="ename" placeholder="e.g.: Mintu Sharma">
                             </div>
                             <div class="field">
-                                <label for="cnumber">Phone Number</label>
-                                <input type="text" name="econtact" id="enumber" placeholder="e.g.: 9874561230">
+                                <label for="cnumber">Flat Number</label>
+                                <input type="text" name="contact" id="enumber" placeholder="e.g.: 9874561230">
                             </div>
                             <div class="field">
-                                <label for="email">Email</label>
-                                <input type="text" name="egmail" id="egmail" placeholder="e.g.: ebah@gmail.com">
+                                <label for="address">Location</label>
+                                <input type="text" name="location" id="location" placeholder="e.g.: Nagaon">
                             </div>
                             <div class="field">
-                                <label for="address">Address</label>
-                                <input type="text" name="ecity" id="eaddress">
+                                <label for="address">BHK</label>
+                                <input type="text" name="location" id="location" placeholder="e.g.: Nagaon">
                             </div>
                         </div>
-                        <h4 class="uppercase">project details</h4>
+
                         <div class="edit-grid">
                             <div class="field">
-                                <label for="ref">Reference No</label>
-                                <input type="text" name="eref" id="eref">
+                                <label for="floor">Floor</label>
+                                <input type="number" name="floor" id="floor" placeholder="e.g.: 4">
                             </div>
                             <div class="field">
-                                <label for="workName">Name of The Project</label>
-                                <input type="text" name="ework" id="ework">
+                                <label for="mapLink">Map Link</label>
+                                <input type="url" name="map_link" id="mapLink"
+                                    placeholder="e.g.: https://maps.google.com/...">
                             </div>
                             <div class="field">
-                                <label for="amount">Total Amount</label>
-                                <input type="text" name="etotal" id="eamount" placeholder="&#8377;">
+                                <label for="ownerName">Owner Name</label>
+                                <input type="text" name="owner_name" id="ownerName" placeholder="e.g.: Mintu Sharma">
                             </div>
                             <div class="field">
-                                <label for="amount">Advance Amount</label>
-                                <input type="text" name="eagre" id="eaamount" placeholder="&#8377;">
+                                <label for="ownerNumber">Owner Number</label>
+                                <input type="text" name="owner_number" id="ownerNumber" placeholder="e.g.: 9874561230">
                             </div>
                             <div class="field">
-                                <label for="amount">Project deadline</label>
-                                <input type="text" name="edeadline" id="" placeholder="dd/mm/yyyy, Eg:01/06/2024">
+                                <label for="category">Category</label>
+                                <select name="category" id="category">
+                                    <option value="Residential">Residential</option>
+                                    <optgroup label="Residential">
+                                        <option value="ResidentialRent"> Rent</option>
+                                        <option value="ResidentialSale"> Sale</option>
+                                    </optgroup>
+                                    <option value="Commercial">Commercial</option>
+                                    <optgroup label="Commercial">
+                                        <option value="CommercialRent"> Rent</option>
+                                        <option value="CommercialSale"> Sale</option>
+                                    </optgroup>
+                                </select>
                             </div>
                         </div>
                         <div class="drop-btn flex">
-                            <button type="button" class="uppercase">Update</button>
-                            <button type="button" class="uppercase">Cancel</button>
+                            <button type="submit" class="uppercase">Update</button>
+                            <button type="reset" class="uppercase">Cancel</button>
                         </div>
                     </form>
+
                 </div>
             </div>
         </main>
@@ -436,16 +442,16 @@
             <div class="popup" id="popup">
                 <div class="close-btn" id="closePopup">&times;</div>
                 <div class="popup-content" id="popupContent">
-                    <p>Loading images...</p>
                 </div>
             </div>
-
             <div class="large-image-container" id="largeImageContainer">
                 <span class="arrow left" id="prevImage">&#10094;</span>
                 <img src="" alt="Large View" class="large-image" id="largeImage">
                 <span class="arrow right" id="nextImage">&#10095;</span>
             </div>
         </div>
+
+        <div id="copyAlert" class="alert">Link copied to clipboard!</div>
 
 
         <!-- JAVASCRIPT -->
@@ -522,8 +528,8 @@
         </script> -->
 
         <script>
-        let currentImageIndex = 0;
-            let images = []; 
+            let currentImageIndex = 0;
+            let images = [];
             async function loadGallery(e) {
                 const popup = document.getElementById('popup');
                 const popupContent = document.getElementById('popupContent');
@@ -531,11 +537,11 @@
                 popup.style.display = 'flex';
                 popupContent.innerHTML = '<p>Loading...</p>';
                 try {
-                    const response = await fetch('http://localhost:5000/admin/get-image/'+e);
+                    const response = await fetch(location.origin + '/admin/get-image/' + e);
                     const data = await response.json();
 
                     if (data.data && data.data.length > 0) {
-                        images = data.data.map(img => `http://localhost:5000/uploads/${img.location}`);
+                        images = data.data.map(img => `${location.origin}/uploads/${img.location}`);
                         popupContent.innerHTML = '<div class="gallery" id="gallery"></div>';
                         const gallery = document.getElementById('gallery');
                         images.forEach((src, index) => {
@@ -583,9 +589,23 @@
                 largeImage.src = images[currentImageIndex];
             });
             function FillterOps(e) {
-                location.href=location.origin+location.pathname+`?category=${e}`
-                
+                location.href = location.origin + location.pathname + `?category=${e}`
             }
+            function copyLink(e) {
+                const alertBox = document.getElementById("copyAlert");
+                navigator.clipboard
+                    .writeText(e)
+                    .then(() => {
+                        alertBox.classList.add("show");
+                        setTimeout(() => {
+                            alertBox.classList.remove("show");
+                        }, 3000);
+                    })
+                    .catch((err) => {
+                        console.error("Failed to copy text:", err);
+                    });
+            }
+
         </script>
 
 </body>

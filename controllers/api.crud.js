@@ -1,5 +1,7 @@
 const databaseCon = require("../config/db.config.js");
 // const { EmailSender } = require("../utils/emailSender.js");
+const fs = require("fs");
+const path = require("path");
 
 exports.GetImagesByID = async (req, res) => {
   if (req.session.isLoggedIn == true && req.session.role == "admin") {
@@ -12,14 +14,65 @@ exports.GetImagesByID = async (req, res) => {
       res.status(500).send("Error fetching properties.");
     }
   } else {
-    res.redirect("/admin/login");
+    res.redirect("/admin/dashboard");
+  }
+};
+exports.PropertieDelete = async (req, res) => {
+  if (req.session.isLoggedIn == true && req.session.role == "admin") {
+    const propertyId = req.params.id;
+    try {
+      const fetchImagesQuery = `SELECT location FROM prop_images WHERE prop_id = ?`;
+      const [images] = await databaseCon.query(fetchImagesQuery, [propertyId]);
+      images.forEach((image) => {
+        const filePath = path.join(
+          __dirname,
+          "../static/uploads",
+          image.location
+        );
+        fs.unlink(filePath, (err) => {
+          console.log(filePath);
+          if (err) {
+            console.error(`Failed to delete file ${filePath}:`, err);
+          }
+        });
+      });
+      const deleteImagesQuery = `DELETE FROM prop_images WHERE prop_id = ?`;
+      await databaseCon.query(deleteImagesQuery, [propertyId]);
+      const deletePropertyQuery = `DELETE FROM properties WHERE id = ?`;
+      const [result] = await databaseCon.query(deletePropertyQuery, [
+        propertyId,
+      ]);
+      if (result.affectedRows === 0) {
+        return res
+          .status(404)
+          .send({
+            status: false,
+            msg: "Property not found or already deleted.",
+          });
+      }
+      res
+        .status(200)
+        .send({
+          status: true,
+          msg: "Property and associated images deleted successfully! 😊",
+        });
+    } catch (error) {
+      console.error("Error deleting property:", error);
+      res
+        .status(500)
+        .send({ status: false, msg: "Failed to delete property." });
+    }
+  } else {
+    res.redirect("/admin/dashboard");
   }
 };
 
 // Add Client
 exports.AddClient = async (req, res) => {
   if (!req.session.isLoggedIn || req.session.role !== "admin") {
-    return res.status(403).json({ message: "Unauthorized access. Admin role required." });
+    return res
+      .status(403)
+      .json({ message: "Unauthorized access. Admin role required." });
   }
   const { name, number, location, bhk, budget } = req.body;
   try {
@@ -27,17 +80,21 @@ exports.AddClient = async (req, res) => {
       "INSERT INTO clients (name, number, location, bhk, budget) VALUES (?, ?, ?, ?, ?)",
       [name, number, location, bhk, budget]
     );
-    res.redirect('/admin/clients');
+    res.redirect("/admin/clients");
   } catch (error) {
     console.error("Error adding client:", error.message);
-    res.status(500).json({ error: "Internal server error.", details: error.message });
+    res
+      .status(500)
+      .json({ error: "Internal server error.", details: error.message });
   }
 };
 
 // Add Owner
 exports.AddOwner = async (req, res) => {
   if (!req.session.isLoggedIn || req.session.role !== "admin") {
-    return res.status(403).json({ message: "Unauthorized access. Admin role required." });
+    return res
+      .status(403)
+      .json({ message: "Unauthorized access. Admin role required." });
   }
 
   const { name, number, location } = req.body;
@@ -51,17 +108,21 @@ exports.AddOwner = async (req, res) => {
       "INSERT INTO owners (name, number, location) VALUES (?, ?, ?)",
       [name, number, location]
     );
-    res.redirect('/admin/owners');
+    res.redirect("/admin/owners");
   } catch (error) {
     console.error("Error adding owner:", error.message);
-    res.status(500).json({ error: "Internal server error.", details: error.message });
+    res
+      .status(500)
+      .json({ error: "Internal server error.", details: error.message });
   }
 };
 
 // Update Clients by ID
 exports.UpdateClientsByID = async (req, res) => {
   if (!req.session.isLoggedIn || req.session.role !== "admin") {
-    return res.status(403).json({ message: "Unauthorized access. Admin role required." });
+    return res
+      .status(403)
+      .json({ message: "Unauthorized access. Admin role required." });
   }
 
   const { id } = req.params;
@@ -76,23 +137,26 @@ exports.UpdateClientsByID = async (req, res) => {
       "UPDATE clients SET name = ?, number = ?, location = ?, bhk = ?, budget = ? WHERE id = ?",
       [name, number, location, bhk, budget, id]
     );
-
     if (result.affectedRows === 0) {
-      return res.status(404).json({ message: "Client not found. No update performed." });
+      return res
+        .status(404)
+        .json({ message: "Client not found. No update performed." });
     }
-
-    res.redirect('/admin/clients');
-
+    res.redirect("/admin/clients");
   } catch (error) {
     console.error("Error updating client:", error.message);
-    res.status(500).json({ error: "Internal server error.", details: error.message });
+    res
+      .status(500)
+      .json({ error: "Internal server error.", details: error.message });
   }
 };
 
 // Delete Clients by ID
 exports.DeleteClientsByID = async (req, res) => {
   if (!req.session.isLoggedIn || req.session.role !== "admin") {
-    return res.status(403).json({ message: "Unauthorized access. Admin role required." });
+    return res
+      .status(403)
+      .json({ message: "Unauthorized access. Admin role required." });
   }
   const { id } = req.params;
   try {
@@ -101,7 +165,9 @@ exports.DeleteClientsByID = async (req, res) => {
       [id]
     );
     if (result.affectedRows === 0) {
-      return res.status(404).json({ message: "Client not found. No deletion performed." });
+      return res
+        .status(404)
+        .json({ message: "Client not found. No deletion performed." });
     }
     res.status(200).json({
       status: true,
@@ -110,14 +176,18 @@ exports.DeleteClientsByID = async (req, res) => {
     });
   } catch (error) {
     console.error("Error deleting client:", error.message);
-    res.status(500).json({ error: "Internal server error.", details: error.message });
+    res
+      .status(500)
+      .json({ error: "Internal server error.", details: error.message });
   }
 };
 
 // Update Owners by ID
 exports.UpdateOwnersByID = async (req, res) => {
   if (!req.session.isLoggedIn || req.session.role !== "admin") {
-    return res.status(403).json({ message: "Unauthorized access. Admin role required." });
+    return res
+      .status(403)
+      .json({ message: "Unauthorized access. Admin role required." });
   }
 
   const { id } = req.params;
@@ -134,14 +204,17 @@ exports.UpdateOwnersByID = async (req, res) => {
     );
 
     if (result.affectedRows === 0) {
-      return res.status(404).json({ message: "Owner not found. No update performed." });
+      return res
+        .status(404)
+        .json({ message: "Owner not found. No update performed." });
     }
 
-    res.redirect('/admin/owners');
-
+    res.redirect("/admin/owners");
   } catch (error) {
     console.error("Error updating owner:", error.message);
-    res.status(500).json({ error: "Internal server error.", details: error.message });
+    res
+      .status(500)
+      .json({ error: "Internal server error.", details: error.message });
   }
 };
 
@@ -165,9 +238,11 @@ exports.DeleteOwnersByID = async (req, res) => {
         .json({ message: "Owner not found. No deletion performed." });
     }
 
-    res
-      .status(200)
-      .json({status:true, message: "Owner deleted successfully.", deletedOwnerID: id });
+    res.status(200).json({
+      status: true,
+      message: "Owner deleted successfully.",
+      deletedOwnerID: id,
+    });
   } catch (error) {
     console.error("Error deleting owner:", error.message);
     res

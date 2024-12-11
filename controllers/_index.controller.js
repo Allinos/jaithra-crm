@@ -11,20 +11,19 @@ exports.indexDeshboard = async (req, res) => {
                  FROM properties 
                  LEFT JOIN prop_images ON properties.id = prop_images.prop_id`;
     if (category) {
-        query += ` WHERE properties.category = ?`;
+      query += ` WHERE properties.category = ?`;
     }
     query += ` GROUP BY properties.id`;
     try {
-        const [results] = await db.query(query, category ? [category] : []);
-        res.status(200).render("../views/admin/_index.ejs", { data: results });
+      const [results] = await db.query(query, category ? [category] : []);
+      res.status(200).render("../views/admin/_index.ejs", { data: results });
     } catch (error) {
-        console.error("Error fetching properties:", error);
-        res.status(500).send("Error fetching properties.");
+      console.error("Error fetching properties:", error);
+      res.status(500).send("Error fetching properties.");
     }
-} else {
+  } else {
     res.redirect("/admin/login");
-}
-
+  }
 };
 
 exports.clientsPage = async (req, res) => {
@@ -97,10 +96,7 @@ exports.insertProp = async (req, res) => {
         });
         await Promise.all(imagePromises);
         console.log("All images inserted successfully");
-        res.status(200).send({
-          msg: "New property entered successfully! 😍",
-          uploadedFiles,
-        });
+        res.redirect("/admin/dashboard");
       } catch (error) {
         console.error("Error inserting property:", error);
         res.status(500).send({ msg: "Failed to insert property." });
