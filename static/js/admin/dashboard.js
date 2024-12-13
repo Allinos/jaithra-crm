@@ -89,20 +89,35 @@ function EditPropertie(e, o) {
   maindropDown.style.display = `block`;
   editMenu.style.display = `block`;
   let main = e.parentElement.parentElement.parentElement;
-  //   const refId = main.querySelector("#refid").dataset.dealid;
+  const refId = main.querySelector("#refid").dataset.id;
   const flatName = main.querySelector(".cli").textContent.trim();
-  const location = main.querySelector(".pro span").textContent.trim();
-  const bhk = main.querySelectorAll(".emp_date span")[1].textContent.trim();
-  const floor = main.querySelectorAll(".emp_date span")[2].textContent.trim().replace("Floor-", "").trim();
+  const location = main.querySelectorAll(".pro span")[1].textContent.trim();
+  const bhk = main.querySelectorAll(".emp_bhk span")[1].textContent.trim();
+  const floor = main
+    .querySelectorAll(".emp_date span")[1]
+    .textContent.trim()
+    .replace("Floor-", "")
+    .trim();
   const mapLink = main.querySelector(".contact_no a")?.href || "";
   const ownerName = main.querySelector(".g-mail").textContent.trim();
-  const ownerNumber = main.querySelector(".agreement .amount").textContent.trim();
+  const ownerNumber = main
+    .querySelector(".agreement .amount")
+    .textContent.trim();
   const category = main.querySelector(".category .amount").textContent.trim();
 
-  console.log(flatName,location,category,floor,mapLink,ownerName,ownerNumber,bhk);
-  
+  console.log(
+    flatName,
+    location,
+    category,
+    floor,
+    mapLink,
+    ownerName,
+    ownerNumber,
+    bhk
+  );
+
+  editMenu.querySelector("#id").value = refId;
   editMenu.querySelector("#ename").value = flatName;
-  // editMenu.querySelector("#enumber").value = refId;
   editMenu.querySelector("#location").value = location;
   editMenu.querySelector("#bhk").value = bhk;
   editMenu.querySelector("#floor").value = floor;
@@ -110,4 +125,63 @@ function EditPropertie(e, o) {
   editMenu.querySelector("#ownerName").value = ownerName;
   editMenu.querySelector("#ownerNumber").value = ownerNumber;
   editMenu.querySelector("#category").value = category;
+}
+function updateProperty(event) {
+  event.preventDefault();
+  let id = document.getElementById("id").value;
+  const propertyData = {
+    id: id,
+    name: document.getElementById("ename").value,
+    location: document.getElementById("location").value,
+    bhk: document.getElementById("bhk").value,
+    floor: document.getElementById("floor").value,
+    map_link: document.getElementById("mapLink").value,
+    owner_name: document.getElementById("ownerName").value,
+    owner_number: document.getElementById("ownerNumber").value,
+    category: document.getElementById("category").value,
+  };
+
+  fetch(`/admin/prop/update/${id}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(propertyData),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.status ===true) {
+        Swal.fire({
+          title: "Success!",
+          text: "Property updated successfully!",
+          icon: "success",
+          confirmButtonText: "OK",
+        });
+      } else {
+        Swal.fire({
+          title: "Error!",
+          text: "Failed to update property. Please try again.",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+      }
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      Swal.fire({
+        title: "Error!",
+        text: "An error occurred while updating the property.",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    });
+}
+const form = document.querySelector("#updatesForm");
+form.addEventListener("submit", updateProperty);
+function CloseForm() {
+  document.getElementsByClassName("main")[0].classList.remove("flow");
+  const maindropDown = document.querySelector(`.main-dropdown`);
+  const editMenu = document.querySelector(`.edit-menu`);
+  maindropDown.style.display = `none`;
+  editMenu.style.display = `none`;
 }

@@ -267,7 +267,7 @@
                             <div class="ahead grid">
                                 <p class="ref">
                                     <span class="uppercase hide block phead">Ref. No.</span>
-                                    <span id="refid" dataset-dealId="<%= e.id %>">
+                                    <span id="refid" data-id="<%= e.id %>">
                                         <%= e.id %>
                                     </span>
                                 </p>
@@ -280,7 +280,7 @@
                                         <%= e.location %>
                                     </span>
                                 </p>
-                                <p class="emp_date">
+                                <p class="emp_bhk">
                                     <span class="uppercase hide block phead">bhk</span>
                                     <span>
                                         <%= e.bhk %>
@@ -299,7 +299,7 @@
                                                 d="M10,18a1,1,0,0,0,1-1V11a1,1,0,0,0-2,0v6A1,1,0,0,0,10,18ZM20,6H16V5a3,3,0,0,0-3-3H11A3,3,0,0,0,8,5V6H4A1,1,0,0,0,4,8H5V19a3,3,0,0,0,3,3h8a3,3,0,0,0,3-3V8h1a1,1,0,0,0,0-2ZM10,5a1,1,0,0,1,1-1h2a1,1,0,0,1,1,1V6H10Zm7,14a1,1,0,0,1-1,1H8a1,1,0,0,1-1-1V8H17Zm-3-1a1,1,0,0,0,1-1V11a1,1,0,0,0-2,0v6A1,1,0,0,0,14,18Z">
                                             </path>
                                         </svg></span>
-                                    <span class="edit-btn butt" onclick="copyLink('adfgasf')"> <svg
+                                    <span class="edit-btn butt" onclick="copyLink('<%= e.id %>')"> <svg
                                             xmlns="http://www.w3.org/2000/svg" class="icon" x="0px" y="0px"
                                             viewBox="0 0 30 30">
                                             <path
@@ -373,24 +373,28 @@
             <!-- ----------POPUPS----------------- -->
             <div class="main-dropdown">
                 <div class="edit-menu common_dropdown">
-                    <form action="" method="POST">
+                    <form action="" id="updatesForm" method="POST">
                         <h4 class="uppercase">Contact Details</h4>
                         <div class="edit-grid">
+                            <div class="field block" >
+                                <label for="name">Id</label>
+                                <input type="text" name="id" id="id" placeholder="">
+                            </div>
                             <div class="field">
                                 <label for="name">Flat Name</label>
                                 <input type="text" name="name" id="ename" placeholder="e.g.: Mintu Sharma">
                             </div>
-                            <div class="field">
+                            <!-- <div class="field">
                                 <label for="cnumber">Flat Number</label>
                                 <input type="text" name="contact" id="enumber" placeholder="e.g.: 9874561230">
-                            </div>
+                            </div> -->
                             <div class="field">
                                 <label for="address">Location</label>
                                 <input type="text" name="location" id="location" placeholder="e.g.: Nagaon">
                             </div>
                             <div class="field">
                                 <label for="address">BHK</label>
-                                <input type="text" name="location" id="location" placeholder="e.g.: Nagaon">
+                                <input type="text" name="location" id="bhk" placeholder="e.g.: Nagaon">
                             </div>
                         </div>
 
@@ -430,7 +434,7 @@
                         </div>
                         <div class="drop-btn flex">
                             <button type="submit" class="uppercase">Update</button>
-                            <button type="reset" class="uppercase">Cancel</button>
+                            <button type="reset" onclick="CloseForm()" class="uppercase">Cancel</button>
                         </div>
                     </form>
 
@@ -594,7 +598,7 @@
             function copyLink(e) {
                 const alertBox = document.getElementById("copyAlert");
                 navigator.clipboard
-                    .writeText(e)
+                    .writeText(location.origin+`/property/`+e)
                     .then(() => {
                         alertBox.classList.add("show");
                         setTimeout(() => {
@@ -607,7 +611,5 @@
             }
 
         </script>
-
 </body>
-
 </html>
