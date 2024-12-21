@@ -5,7 +5,6 @@ const mainController = require("../../controllers/_index.controller");
 // ----index pages-----
 
 router.get("/dashboard", mainController.indexDeshboard);
-router.get("/property/:id", mainController.PropertiesDetailsPage);
 router.get("/form", mainController.PropertiesForm);
 router.post("/form", mainController.insertProp);
 router.get("/clients", mainController.clientsPage);

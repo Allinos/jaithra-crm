@@ -23,6 +23,8 @@ app.use(session({
 const auth = require('./controllers/adminAuth')
 const indexRoutes = require('./routes/admin/indexRoutes')
 const settings = require('./routes/admin/settingRoute.js')
+const mainController = require("./controllers/_index.controller");
+
 
 const apiRoute = require('./routes/admin/api_Route.js')
 
@@ -42,6 +44,8 @@ app.use('/uploads', express.static('uploads'));
 app.use('/admin', auth)
 app.use('/admin', indexRoutes)
 app.use('/admin/settings', settings)
+app.get("/property/:id", mainController.PropertiesDetailsPage);
+
 
 app.use('/admin', apiRoute)
 

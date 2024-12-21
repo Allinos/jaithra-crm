@@ -116,14 +116,34 @@ exports.PropertiesForm = async (req, res) => {
 };
 
 exports.PropertiesDetailsPage = async (req, res) => {
-  if (req.session.isLoggedIn == true && req.session.role == "admin") {
-    const query = `select * from clients;`;
-    try {
-      const [results] = await db.query(query);
-      res.status(200).render("../views/admin/clients.ejs", { data: results });
-    } catch (error) {
-      console.error("E rror fetching properties:", error);
-      res.status(500).send("Error fetching properties.");
+  const query = `SELECT properties.id AS property_id,
+    properties.name,properties.number,properties.bhk,properties.floor,properties.map_link,properties.owner_name,properties.owner_number,properties.category,prop_images.prop_id,
+    prop_images.location AS image_location,prop_images.pref AS image_pref FROM properties LEFT JOIN prop_images ON prop_images.prop_id = properties.id WHERE properties.id = ?;`;
+  try {
+    const [results] = await db.query(query, [req.params.id]);
+    if (results.length === 0) {
+      return res.status(404).send("Property not found.");
     }
+    const metadata = {
+      id: results[0].property_id,
+      name: results[0].name,
+      number: results[0].number,
+      bhk: results[0].bhk,
+      floor: results[0].floor,
+      map_link: results[0].map_link,
+      owner_name: results[0].owner_name,
+      owner_number: results[0].owner_number,
+      category: results[0].category,
+      prop_id: results[0].prop_id,
+    };
+    const images = results.map((row) => ({
+      location: row.image_location,
+      pref: row.image_pref,
+    }));
+    const responseData = { metadata, images };
+    res.status(200).render("../views/admin/propertieDetails.ejs", { data: responseData });
+  } catch (error) {
+    console.error("Error fetching properties:", error);
+    res.status(500).send("Error fetching properties.");
   }
 };

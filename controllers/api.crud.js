@@ -63,22 +63,61 @@ exports.PropertieDelete = async (req, res) => {
   }
 };
 
-
 exports.PropertieUpdate = async (req, res) => {
-  const { id, name, location, bhk, floor, map_link, owner_name, owner_number, category } = req.body;
-  console.log(id, name, location, bhk, floor, map_link, owner_name, owner_number, category );
-  
+  const {
+    id,
+    name,
+    location,
+    bhk,
+    floor,
+    map_link,
+    owner_name,
+    owner_number,
+    category,
+  } = req.body;
+  console.log(
+    id,
+    name,
+    location,
+    bhk,
+    floor,
+    map_link,
+    owner_name,
+    owner_number,
+    category
+  );
+
   const sql = `UPDATE properties SET location = ?, bhk = ?, floor = ?, map_link = ?, owner_name = ?, owner_number = ?, category = ?, name = ? WHERE id = ? `;
   try {
-    const [result] = await databaseCon.query(sql,[location, bhk, floor, map_link, owner_name, owner_number, category, name, id]);
-    if (result.affectedRows === 0) {return res.status(404).json({ message: "Property not found. No update performed." });}
-   else{ res.status(200).json({status:true, error: "Updates Successfully", });}
+    const [result] = await databaseCon.query(sql, [
+      location,
+      bhk,
+      floor,
+      map_link,
+      owner_name,
+      owner_number,
+      category,
+      name,
+      id,
+    ]);
+    if (result.affectedRows === 0) {
+      return res
+        .status(404)
+        .json({ message: "Property not found. No update performed." });
+    } else {
+      res.status(200).json({ status: true, error: "Updates Successfully" });
+    }
   } catch (error) {
     console.error("Error updating Property:", error.message);
-    res.status(500).json({status:false, error: "Internal server error.", details: error.message });
+    res
+      .status(500)
+      .json({
+        status: false,
+        error: "Internal server error.",
+        details: error.message,
+      });
   }
 };
-
 
 // Add Client
 exports.AddClient = async (req, res) => {
