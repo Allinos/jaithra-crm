@@ -117,7 +117,7 @@ exports.PropertiesForm = async (req, res) => {
 
 exports.PropertiesDetailsPage = async (req, res) => {
   const query = `SELECT properties.id AS property_id,
-    properties.name,properties.number,properties.bhk,properties.floor,properties.map_link,properties.owner_name,properties.owner_number,properties.category,prop_images.prop_id,
+    properties.name,properties.number,properties.location,properties.bhk,properties.floor,properties.map_link,properties.owner_name,properties.owner_number,properties.category,prop_images.prop_id,
     prop_images.location AS image_location,prop_images.pref AS image_pref FROM properties LEFT JOIN prop_images ON prop_images.prop_id = properties.id WHERE properties.id = ?;`;
   try {
     const [results] = await db.query(query, [req.params.id]);
@@ -128,6 +128,7 @@ exports.PropertiesDetailsPage = async (req, res) => {
       id: results[0].property_id,
       name: results[0].name,
       number: results[0].number,
+      location: results[0].location,
       bhk: results[0].bhk,
       floor: results[0].floor,
       map_link: results[0].map_link,
