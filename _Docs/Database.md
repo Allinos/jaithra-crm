@@ -202,3 +202,4 @@ ADD lastLoginAt VARCHAR(50),
 ADD lastLogoutAt VARCHAR(50), 
 ADD status  VARCHAR(50);
 
+ALTER TABLE `clients` ADD `status` VARCHAR(20) NOT NULL AFTER `budget`, ADD `date` VARCHAR(11) NOT NULL AFTER `status`;

@@ -11,11 +11,11 @@ exports.indexDeshboard = async (req, res) => {
                  FROM properties 
                  LEFT JOIN prop_images ON properties.id = prop_images.prop_id`;
     if (category) {
-      query += ` WHERE properties.category = ?`;
+      query += ` WHERE  properties.category LIKE  ?`;
     }
     query += ` GROUP BY properties.id`;
     try {
-      const [results] = await db.query(query, category ? [category] : []);
+      const [results] = await db.query(query, category ? [`%${category}%`] : []);
       res.status(200).render("../views/admin/_index.ejs", { data: results });
     } catch (error) {
       console.error("Error fetching properties:", error);
