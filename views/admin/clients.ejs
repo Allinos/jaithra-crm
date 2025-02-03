@@ -210,11 +210,11 @@
                                     <span>
                                         <select class="followstatus">
                                             <option data-val="n/a" value="0">Not Set</option>
-                                            <option data-val="Schedule" value="3" <%=e.status=="3" ? "selected" : "" %>
+                                            <option data-val="Schedule" value="3" <%=e?.status=="3" ? "selected" : "" %>
                                                 >Schedule</option>
-                                            <option data-val="Call not Pickup" value="1" <%=e.status=="1" ? "selected"
+                                            <option data-val="Call not Pickup" value="1" <%=e?.status=="1" ? "selected"
                                                 : "" %>>Call not Pickup</option>
-                                            <option data-val="Followed Up" value="2" <%=e.status=="2" ? "selected" : ""
+                                            <option data-val="Followed Up" value="2" <%=e?.status=="2" ? "selected" : ""
                                                 %>>Followed Up</option>
                                         </select>
                                     </span>
@@ -222,7 +222,7 @@
                                 <p class="totalf none">
                                     <span>
                                         <label style="display: none;">
-                                            <%= (e.date).slice(-6) %>
+                                            <%= (e.date)?.slice(-6) %>
                                         </label>
                                         <input type="date" value="<%= e.date %>">
                                     </span>
