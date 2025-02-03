@@ -357,286 +357,232 @@
             max-width: unset;
         }
     }
+
     @media (min-width: 1300px) and (max-width:1500px) {
         .cards_item {
             width: 25%;
         }
 
     }
+
     @media (min-width: 1500px) and (max-width:2500px) {
         .cards_item {
             width: 20%;
         }
 
     }
-
 </style>
 
 <body>
     <%- include('../partials/admin.header.ejs') %>
-    <main class="main" data-app-page="dashboard">
-        <!-------------      -------------  -->
-        <div class="main-data flex">
-            <!-- -------TOTAL PROJECTS--------- -->
-            <div class="total-data flex data" onclick="FillterOps('Residential')">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="users-alt" class="svg">
-                    <path fill="##000000"
-                        d="M12.3,12.22A4.92,4.92,0,0,0,14,8.5a5,5,0,0,0-10,0,4.92,4.92,0,0,0,1.7,3.72A8,8,0,0,0,1,19.5a1,1,0,0,0,2,0,6,6,0,0,1,12,0,1,1,0,0,0,2,0A8,8,0,0,0,12.3,12.22ZM9,11.5a3,3,0,1,1,3-3A3,3,0,0,1,9,11.5Zm9.74.32A5,5,0,0,0,15,3.5a1,1,0,0,0,0,2,3,3,0,0,1,3,3,3,3,0,0,1-1.5,2.59,1,1,0,0,0-.5.84,1,1,0,0,0,.45.86l.39.26.13.07a7,7,0,0,1,4,6.38,1,1,0,0,0,2,0A9,9,0,0,0,18.74,11.82Z">
-                    </path>
-                </svg>
-                <div class="total_user_data">
-                    <p class="size">Residential</p>
-                    <p class="text">_</p>
-                </div>
-            </div>
-            <div class="total-data flex data" onclick="FillterOps('ResidentialRent')">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="users-alt" class="svg">
-                    <path fill="##000000"
-                        d="M12.3,12.22A4.92,4.92,0,0,0,14,8.5a5,5,0,0,0-10,0,4.92,4.92,0,0,0,1.7,3.72A8,8,0,0,0,1,19.5a1,1,0,0,0,2,0,6,6,0,0,1,12,0,1,1,0,0,0,2,0A8,8,0,0,0,12.3,12.22ZM9,11.5a3,3,0,1,1,3-3A3,3,0,0,1,9,11.5Zm9.74.32A5,5,0,0,0,15,3.5a1,1,0,0,0,0,2,3,3,0,0,1,3,3,3,3,0,0,1-1.5,2.59,1,1,0,0,0-.5.84,1,1,0,0,0,.45.86l.39.26.13.07a7,7,0,0,1,4,6.38,1,1,0,0,0,2,0A9,9,0,0,0,18.74,11.82Z">
-                    </path>
-                </svg>
-                <div class="total_user_data">
-                    <p class="size">Rent</p>
-                    <p class="text">Residential</p>
-                </div>
-            </div>
-            <div class="total-data flex data" onclick="FillterOps('ResidentialSale')">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="users-alt" class="svg">
-                    <path fill="##000000"
-                        d="M12.3,12.22A4.92,4.92,0,0,0,14,8.5a5,5,0,0,0-10,0,4.92,4.92,0,0,0,1.7,3.72A8,8,0,0,0,1,19.5a1,1,0,0,0,2,0,6,6,0,0,1,12,0,1,1,0,0,0,2,0A8,8,0,0,0,12.3,12.22ZM9,11.5a3,3,0,1,1,3-3A3,3,0,0,1,9,11.5Zm9.74.32A5,5,0,0,0,15,3.5a1,1,0,0,0,0,2,3,3,0,0,1,3,3,3,3,0,0,1-1.5,2.59,1,1,0,0,0-.5.84,1,1,0,0,0,.45.86l.39.26.13.07a7,7,0,0,1,4,6.38,1,1,0,0,0,2,0A9,9,0,0,0,18.74,11.82Z">
-                    </path>
-                </svg>
-                <div class="total_user_data">
-                    <p class="size">Sale</p>
-                    <p class="text">Residential</p>
-                </div>
-            </div>
-            <!-- ---------------cOMPLETED PROJECTS ------------ -->
-            <div class="in_progress-data flex data" onclick="FillterOps('Commercial')">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="users-alt" class="svg">
-                    <path fill="##000000"
-                        d="M12.3,12.22A4.92,4.92,0,0,0,14,8.5a5,5,0,0,0-10,0,4.92,4.92,0,0,0,1.7,3.72A8,8,0,0,0,1,19.5a1,1,0,0,0,2,0,6,6,0,0,1,12,0,1,1,0,0,0,2,0A8,8,0,0,0,12.3,12.22ZM9,11.5a3,3,0,1,1,3-3A3,3,0,0,1,9,11.5Zm9.74.32A5,5,0,0,0,15,3.5a1,1,0,0,0,0,2,3,3,0,0,1,3,3,3,3,0,0,1-1.5,2.59,1,1,0,0,0-.5.84,1,1,0,0,0,.45.86l.39.26.13.07a7,7,0,0,1,4,6.38,1,1,0,0,0,2,0A9,9,0,0,0,18.74,11.82Z">
-                    </path>
-                </svg>
-                <div class="total_user_data">
-                    <p class="size">Commercial</p>
-                    <p class="text">_</p>
-                </div>
-            </div>
-            <div class="in_progress-data flex data" onclick="FillterOps('CommercialRent')">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="users-alt" class="svg">
-                    <path fill="##000000"
-                        d="M12.3,12.22A4.92,4.92,0,0,0,14,8.5a5,5,0,0,0-10,0,4.92,4.92,0,0,0,1.7,3.72A8,8,0,0,0,1,19.5a1,1,0,0,0,2,0,6,6,0,0,1,12,0,1,1,0,0,0,2,0A8,8,0,0,0,12.3,12.22ZM9,11.5a3,3,0,1,1,3-3A3,3,0,0,1,9,11.5Zm9.74.32A5,5,0,0,0,15,3.5a1,1,0,0,0,0,2,3,3,0,0,1,3,3,3,3,0,0,1-1.5,2.59,1,1,0,0,0-.5.84,1,1,0,0,0,.45.86l.39.26.13.07a7,7,0,0,1,4,6.38,1,1,0,0,0,2,0A9,9,0,0,0,18.74,11.82Z">
-                    </path>
-                </svg>
-                <div class="total_user_data">
-                    <p class="size">Rent</p>
-                    <p class="text">Commercial</p>
-                </div>
-            </div>
-            <div class="in_progress-data flex data" onclick="FillterOps('CommercialSale')">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="users-alt" class="svg">
-                    <path fill="##000000"
-                        d="M12.3,12.22A4.92,4.92,0,0,0,14,8.5a5,5,0,0,0-10,0,4.92,4.92,0,0,0,1.7,3.72A8,8,0,0,0,1,19.5a1,1,0,0,0,2,0,6,6,0,0,1,12,0,1,1,0,0,0,2,0A8,8,0,0,0,12.3,12.22ZM9,11.5a3,3,0,1,1,3-3A3,3,0,0,1,9,11.5Zm9.74.32A5,5,0,0,0,15,3.5a1,1,0,0,0,0,2,3,3,0,0,1,3,3,3,3,0,0,1-1.5,2.59,1,1,0,0,0-.5.84,1,1,0,0,0,.45.86l.39.26.13.07a7,7,0,0,1,4,6.38,1,1,0,0,0,2,0A9,9,0,0,0,18.74,11.82Z">
-                    </path>
-                </svg>
-                <div class="total_user_data">
-                    <p class="size">Sale</p>
-                    <p class="text">Commercial</p>
-                </div>
-            </div>
-        </div>
-        <!-- ---------IN PROGRESS----------- -->
-
-        <!-- ---------ALERT BOX----------- -->
-        <div class="status hide">
-            <div class="alert flex green">
-                <span class="hide">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="exclamation-triangle" class="alove">
+        <main class="main" data-app-page="dashboard">
+            <!-------------      -------------  -->
+            <div class="main-data flex">
+                <!-- -------TOTAL PROJECTS--------- -->
+                <div class="total-data flex data" onclick="FillterOps('Residential')">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="users-alt" class="svg">
                         <path fill="##000000"
-                            d="M12,16a1,1,0,1,0,1,1A1,1,0,0,0,12,16Zm10.67,1.47-8.05-14a3,3,0,0,0-5.24,0l-8,14A3,3,0,0,0,3.94,22H20.06a3,3,0,0,0,2.61-4.53Zm-1.73,2a1,1,0,0,1-.88.51H3.94a1,1,0,0,1-.88-.51,1,1,0,0,1,0-1l8-14a1,1,0,0,1,1.78,0l8.05,14A1,1,0,0,1,20.94,19.49ZM12,8a1,1,0,0,0-1,1v4a1,1,0,0,0,2,0V9A1,1,0,0,0,12,8Z">
+                            d="M12.3,12.22A4.92,4.92,0,0,0,14,8.5a5,5,0,0,0-10,0,4.92,4.92,0,0,0,1.7,3.72A8,8,0,0,0,1,19.5a1,1,0,0,0,2,0,6,6,0,0,1,12,0,1,1,0,0,0,2,0A8,8,0,0,0,12.3,12.22ZM9,11.5a3,3,0,1,1,3-3A3,3,0,0,1,9,11.5Zm9.74.32A5,5,0,0,0,15,3.5a1,1,0,0,0,0,2,3,3,0,0,1,3,3,3,3,0,0,1-1.5,2.59,1,1,0,0,0-.5.84,1,1,0,0,0,.45.86l.39.26.13.07a7,7,0,0,1,4,6.38,1,1,0,0,0,2,0A9,9,0,0,0,18.74,11.82Z">
                         </path>
                     </svg>
-                </span>
-                <span>
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="check-circle" class="alove">
-                        <path fill="##000000"
-                            d="M14.72,8.79l-4.29,4.3L8.78,11.44a1,1,0,1,0-1.41,1.41l2.35,2.36a1,1,0,0,0,.71.29,1,1,0,0,0,.7-.29l5-5a1,1,0,0,0,0-1.42A1,1,0,0,0,14.72,8.79ZM12,2A10,10,0,1,0,22,12,10,10,0,0,0,12,2Zm0,18a8,8,0,1,1,8-8A8,8,0,0,1,12,20Z">
-                        </path>
-                    </svg>
-                </span>
-                <p>Project work is due on <span>19/05/23</span> </p>
-                <span class="caution" onclick="closeAlert()">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="times" class="svg">
-                        <path fill="##000000"
-                            d="M13.41,12l4.3-4.29a1,1,0,1,0-1.42-1.42L12,10.59,7.71,6.29A1,1,0,0,0,6.29,7.71L10.59,12l-4.3,4.29a1,1,0,0,0,0,1.42,1,1,0,0,0,1.42,0L12,13.41l4.29,4.3a1,1,0,0,0,1.42,0,1,1,0,0,0,0-1.42Z">
-                        </path>
-                    </svg>
-                </span>
-            </div>
-        </div>
-
-        <div class="main-card">
-            <ul class="cards">
-                <% data?.forEach((e)=>{ %>
-                <li class="cards_item">
-                    <div class="card">
-                        <div class="card_image">
-                            <span class="note note-left" id="refid" data-id="<%= e.id %>">#<%= e.id %></span>
-                            <span class="note">
-                                <%= e.category %>
-                            </span>
-                            <span class="note moreImg" onclick="loadGallery(<%= e.id %>)">
-                                <img src="/img/img-icon.svg" class="svg" style="border-radius:0 ;" alt="">+
-                            </span>
-                            <img src="/uploads/<%= e.imgLink %>" />
-                            <span class="card_price"><span>BHK:</span>
-                                <%= e.bhk %>
-                            </span>
-                        </div>
-                        <div class="card_content">
-                            <h2 class="card_title">Apartment- <%= e.name %>
-                            </h2>
-                            <div class="card_text">
-                                <!-- <hr /> -->
-                                <p><strong>Location:</strong>
-                                    <%= e.location %>
-                                </p>
-                                <p><strong>Floor:</strong>
-                                    <%= e.floor %>
-                                </p>
-                                <p><strong>Owner:</strong>
-                                    <%= e.owner_name %>
-                                </p>
-                                <p><strong>Contact:</strong>
-                                    <%= e.owner_number %>
-                                </p>
-                                <a href="#" target="_blank">
-                                    <span class="view-map">View on Map
-                                        <svg width="15" height="14" xmlns="http://www.w3.org/2000/svg" version="1.1"
-                                            fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"
-                                            stroke-width="1.5">
-                                            <polyline points="8.25 2.75,2.75 2.75,2.75 13.25,13.25 13.25,13.25 7.75" />
-                                            <path d="m13.25 2.75-5.5 5.5m3-6.5h3.5v3.5" />
-                                        </svg></span>
-                                </a>
-                            </div>
-                            <span class="note share" onclick="copyLink('<%= e.id %>')"><svg
-                                    xmlns="http://www.w3.org/2000/svg" class="svg" x="0px" y="0px" viewBox="0 0 30 30">
-                                    <path d="M 23 3 A 4 4 0 0 0 19 7 A 4 4 0 0 0 19.09375 7.8359375 L 10.011719 12.376953 A 4 4 0 0 0 7 11 A 4 4 0 0 0 3 15 A 4 4 0 0 0 7 19 A 4 4 0 0 0 10.013672 17.625 L 19.089844 22.164062 A 4 4 0 0 0 19 23 A 4 4 0 0 0 23 27 A 4 4 0 0 0 27 23 A 4 4 0 0 0 23 19 A 4 4 0 0 0 19.986328 20.375 L 10.910156 15.835938 A 4 4 0 0 0 11 15 A 4 4 0 0 0 10.90625 14.166016 L 19.988281 9.625 A 4 4 0 0 0 23 11 A 4 4 0 0 0 27 7 A 4 4 0 0 0 23 3 z">
-                                    </path>
-                                </svg></span>
-                        </div>
+                    <div class="total_user_data">
+                        <p class="size">Residential</p>
+                        <p class="text">_</p>
                     </div>
-                </li>
-                <% }) %>
-            </ul>
-        </div>
-        <!-- -------------------------------->
-        <!-- ----------PAGINATION--------- -->
-        <%- include('../partials/pagin.ejs') %>
+                </div>
+                <div class="total-data flex data" onclick="FillterOps('ResidentialRent')">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="users-alt" class="svg">
+                        <path fill="##000000"
+                            d="M12.3,12.22A4.92,4.92,0,0,0,14,8.5a5,5,0,0,0-10,0,4.92,4.92,0,0,0,1.7,3.72A8,8,0,0,0,1,19.5a1,1,0,0,0,2,0,6,6,0,0,1,12,0,1,1,0,0,0,2,0A8,8,0,0,0,12.3,12.22ZM9,11.5a3,3,0,1,1,3-3A3,3,0,0,1,9,11.5Zm9.74.32A5,5,0,0,0,15,3.5a1,1,0,0,0,0,2,3,3,0,0,1,3,3,3,3,0,0,1-1.5,2.59,1,1,0,0,0-.5.84,1,1,0,0,0,.45.86l.39.26.13.07a7,7,0,0,1,4,6.38,1,1,0,0,0,2,0A9,9,0,0,0,18.74,11.82Z">
+                        </path>
+                    </svg>
+                    <div class="total_user_data">
+                        <p class="size">Rent</p>
+                        <p class="text">Residential</p>
+                    </div>
+                </div>
+                <div class="total-data flex data" onclick="FillterOps('ResidentialSale')">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="users-alt" class="svg">
+                        <path fill="##000000"
+                            d="M12.3,12.22A4.92,4.92,0,0,0,14,8.5a5,5,0,0,0-10,0,4.92,4.92,0,0,0,1.7,3.72A8,8,0,0,0,1,19.5a1,1,0,0,0,2,0,6,6,0,0,1,12,0,1,1,0,0,0,2,0A8,8,0,0,0,12.3,12.22ZM9,11.5a3,3,0,1,1,3-3A3,3,0,0,1,9,11.5Zm9.74.32A5,5,0,0,0,15,3.5a1,1,0,0,0,0,2,3,3,0,0,1,3,3,3,3,0,0,1-1.5,2.59,1,1,0,0,0-.5.84,1,1,0,0,0,.45.86l.39.26.13.07a7,7,0,0,1,4,6.38,1,1,0,0,0,2,0A9,9,0,0,0,18.74,11.82Z">
+                        </path>
+                    </svg>
+                    <div class="total_user_data">
+                        <p class="size">Sale</p>
+                        <p class="text">Residential</p>
+                    </div>
+                </div>
+                <!-- ---------------cOMPLETED PROJECTS ------------ -->
+                <div class="in_progress-data flex data" onclick="FillterOps('Commercial')">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="users-alt" class="svg">
+                        <path fill="##000000"
+                            d="M12.3,12.22A4.92,4.92,0,0,0,14,8.5a5,5,0,0,0-10,0,4.92,4.92,0,0,0,1.7,3.72A8,8,0,0,0,1,19.5a1,1,0,0,0,2,0,6,6,0,0,1,12,0,1,1,0,0,0,2,0A8,8,0,0,0,12.3,12.22ZM9,11.5a3,3,0,1,1,3-3A3,3,0,0,1,9,11.5Zm9.74.32A5,5,0,0,0,15,3.5a1,1,0,0,0,0,2,3,3,0,0,1,3,3,3,3,0,0,1-1.5,2.59,1,1,0,0,0-.5.84,1,1,0,0,0,.45.86l.39.26.13.07a7,7,0,0,1,4,6.38,1,1,0,0,0,2,0A9,9,0,0,0,18.74,11.82Z">
+                        </path>
+                    </svg>
+                    <div class="total_user_data">
+                        <p class="size">Commercial</p>
+                        <p class="text">_</p>
+                    </div>
+                </div>
+                <div class="in_progress-data flex data" onclick="FillterOps('CommercialRent')">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="users-alt" class="svg">
+                        <path fill="##000000"
+                            d="M12.3,12.22A4.92,4.92,0,0,0,14,8.5a5,5,0,0,0-10,0,4.92,4.92,0,0,0,1.7,3.72A8,8,0,0,0,1,19.5a1,1,0,0,0,2,0,6,6,0,0,1,12,0,1,1,0,0,0,2,0A8,8,0,0,0,12.3,12.22ZM9,11.5a3,3,0,1,1,3-3A3,3,0,0,1,9,11.5Zm9.74.32A5,5,0,0,0,15,3.5a1,1,0,0,0,0,2,3,3,0,0,1,3,3,3,3,0,0,1-1.5,2.59,1,1,0,0,0-.5.84,1,1,0,0,0,.45.86l.39.26.13.07a7,7,0,0,1,4,6.38,1,1,0,0,0,2,0A9,9,0,0,0,18.74,11.82Z">
+                        </path>
+                    </svg>
+                    <div class="total_user_data">
+                        <p class="size">Rent</p>
+                        <p class="text">Commercial</p>
+                    </div>
+                </div>
+                <div class="in_progress-data flex data" onclick="FillterOps('CommercialSale')">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="users-alt" class="svg">
+                        <path fill="##000000"
+                            d="M12.3,12.22A4.92,4.92,0,0,0,14,8.5a5,5,0,0,0-10,0,4.92,4.92,0,0,0,1.7,3.72A8,8,0,0,0,1,19.5a1,1,0,0,0,2,0,6,6,0,0,1,12,0,1,1,0,0,0,2,0A8,8,0,0,0,12.3,12.22ZM9,11.5a3,3,0,1,1,3-3A3,3,0,0,1,9,11.5Zm9.74.32A5,5,0,0,0,15,3.5a1,1,0,0,0,0,2,3,3,0,0,1,3,3,3,3,0,0,1-1.5,2.59,1,1,0,0,0-.5.84,1,1,0,0,0,.45.86l.39.26.13.07a7,7,0,0,1,4,6.38,1,1,0,0,0,2,0A9,9,0,0,0,18.74,11.82Z">
+                        </path>
+                    </svg>
+                    <div class="total_user_data">
+                        <p class="size">Sale</p>
+                        <p class="text">Commercial</p>
+                    </div>
+                </div>
+            </div>
+            <!-- ---------IN PROGRESS----------- -->
 
-        <!-- </div> -->
+            <!-- ---------ALERT BOX----------- -->
+            <div class="status hide">
+                <div class="alert flex green">
+                    <span class="hide">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="exclamation-triangle"
+                            class="alove">
+                            <path fill="##000000"
+                                d="M12,16a1,1,0,1,0,1,1A1,1,0,0,0,12,16Zm10.67,1.47-8.05-14a3,3,0,0,0-5.24,0l-8,14A3,3,0,0,0,3.94,22H20.06a3,3,0,0,0,2.61-4.53Zm-1.73,2a1,1,0,0,1-.88.51H3.94a1,1,0,0,1-.88-.51,1,1,0,0,1,0-1l8-14a1,1,0,0,1,1.78,0l8.05,14A1,1,0,0,1,20.94,19.49ZM12,8a1,1,0,0,0-1,1v4a1,1,0,0,0,2,0V9A1,1,0,0,0,12,8Z">
+                            </path>
+                        </svg>
+                    </span>
+                    <span>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="check-circle" class="alove">
+                            <path fill="##000000"
+                                d="M14.72,8.79l-4.29,4.3L8.78,11.44a1,1,0,1,0-1.41,1.41l2.35,2.36a1,1,0,0,0,.71.29,1,1,0,0,0,.7-.29l5-5a1,1,0,0,0,0-1.42A1,1,0,0,0,14.72,8.79ZM12,2A10,10,0,1,0,22,12,10,10,0,0,0,12,2Zm0,18a8,8,0,1,1,8-8A8,8,0,0,1,12,20Z">
+                            </path>
+                        </svg>
+                    </span>
+                    <p>Project work is due on <span>19/05/23</span> </p>
+                    <span class="caution" onclick="closeAlert()">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="times" class="svg">
+                            <path fill="##000000"
+                                d="M13.41,12l4.3-4.29a1,1,0,1,0-1.42-1.42L12,10.59,7.71,6.29A1,1,0,0,0,6.29,7.71L10.59,12l-4.3,4.29a1,1,0,0,0,0,1.42,1,1,0,0,0,1.42,0L12,13.41l4.29,4.3a1,1,0,0,0,1.42,0,1,1,0,0,0,0-1.42Z">
+                            </path>
+                        </svg>
+                    </span>
+                </div>
+            </div>
 
-        <!-- ----------POPUPS----------------- -->
-        <div class="main-dropdown">
-            <div class="edit-menu common_dropdown">
-                <form action="" id="updatesForm" method="POST">
-                    <h4 class="uppercase">Contact Details</h4>
-                    <div class="edit-grid">
-                        <div class="field block">
-                            <label for="name">Id</label>
-                            <input type="text" name="id" id="id" placeholder="">
-                        </div>
-                        <div class="field">
-                            <label for="name">Flat Name</label>
-                            <input type="text" name="name" id="ename" placeholder="e.g.: Mintu Sharma">
-                        </div>
-                        <!-- <div class="field">
+            <!-- ----------- DATA Grid or Table----------- -->
+            <% if (viewMode === "grid") { %>
+                <%- include('./index.table.view/gridView.ejs') %>
+            <% } else { %>
+                <%- include('./index.table.view/tableView') %>
+            <% } %>
+            <!-- ----------POPUPS----------------- -->
+            <div class="main-dropdown">
+                <div class="edit-menu common_dropdown">
+                    <form action="" id="updatesForm" method="POST">
+                        <h4 class="uppercase">Contact Details</h4>
+                        <div class="edit-grid">
+                            <div class="field block">
+                                <label for="name">Id</label>
+                                <input type="text" name="id" id="id" placeholder="">
+                            </div>
+                            <div class="field">
+                                <label for="name">Flat Name</label>
+                                <input type="text" name="name" id="ename" placeholder="e.g.: Mintu Sharma">
+                            </div>
+                            <!-- <div class="field">
                                 <label for="cnumber">Flat Number</label>
                                 <input type="text" name="contact" id="enumber" placeholder="e.g.: 9874561230">
                             </div> -->
-                        <div class="field">
-                            <label for="address">Location</label>
-                            <input type="text" name="location" id="location" placeholder="e.g.: Nagaon">
+                            <div class="field">
+                                <label for="address">Location</label>
+                                <input type="text" name="location" id="location" placeholder="e.g.: Nagaon">
+                            </div>
+                            <div class="field">
+                                <label for="address">BHK</label>
+                                <input type="text" name="location" id="bhk" placeholder="e.g.: Nagaon">
+                            </div>
                         </div>
-                        <div class="field">
-                            <label for="address">BHK</label>
-                            <input type="text" name="location" id="bhk" placeholder="e.g.: Nagaon">
-                        </div>
-                    </div>
 
-                    <div class="edit-grid">
-                        <div class="field">
-                            <label for="floor">Floor</label>
-                            <input type="number" name="floor" id="floor" placeholder="e.g.: 4">
+                        <div class="edit-grid">
+                            <div class="field">
+                                <label for="floor">Floor</label>
+                                <input type="number" name="floor" id="floor" placeholder="e.g.: 4">
+                            </div>
+                            <div class="field">
+                                <label for="mapLink">Map Link</label>
+                                <input type="url" name="map_link" id="mapLink"
+                                    placeholder="e.g.: https://maps.google.com/...">
+                            </div>
+                            <div class="field">
+                                <label for="ownerName">Owner Name</label>
+                                <input type="text" name="owner_name" id="ownerName" placeholder="e.g.: Mintu Sharma">
+                            </div>
+                            <div class="field">
+                                <label for="ownerNumber">Owner Number</label>
+                                <input type="text" name="owner_number" id="ownerNumber" placeholder="e.g.: 9874561230">
+                            </div>
+                            <div class="field">
+                                <label for="category">Category</label>
+                                <select name="category" id="category">
+                                    <option value="Residential">Residential</option>
+                                    <optgroup label="Residential">
+                                        <option value="ResidentialRent"> Rent</option>
+                                        <option value="ResidentialSale"> Sale</option>
+                                    </optgroup>
+                                    <option value="Commercial">Commercial</option>
+                                    <optgroup label="Commercial">
+                                        <option value="CommercialRent"> Rent</option>
+                                        <option value="CommercialSale"> Sale</option>
+                                    </optgroup>
+                                </select>
+                            </div>
                         </div>
-                        <div class="field">
-                            <label for="mapLink">Map Link</label>
-                            <input type="url" name="map_link" id="mapLink"
-                                placeholder="e.g.: https://maps.google.com/...">
+                        <div class="drop-btn flex">
+                            <button type="submit" class="uppercase">Update</button>
+                            <button type="reset" onclick="CloseForm()" class="uppercase">Cancel</button>
                         </div>
-                        <div class="field">
-                            <label for="ownerName">Owner Name</label>
-                            <input type="text" name="owner_name" id="ownerName" placeholder="e.g.: Mintu Sharma">
-                        </div>
-                        <div class="field">
-                            <label for="ownerNumber">Owner Number</label>
-                            <input type="text" name="owner_number" id="ownerNumber" placeholder="e.g.: 9874561230">
-                        </div>
-                        <div class="field">
-                            <label for="category">Category</label>
-                            <select name="category" id="category">
-                                <option value="Residential">Residential</option>
-                                <optgroup label="Residential">
-                                    <option value="ResidentialRent"> Rent</option>
-                                    <option value="ResidentialSale"> Sale</option>
-                                </optgroup>
-                                <option value="Commercial">Commercial</option>
-                                <optgroup label="Commercial">
-                                    <option value="CommercialRent"> Rent</option>
-                                    <option value="CommercialSale"> Sale</option>
-                                </optgroup>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="drop-btn flex">
-                        <button type="submit" class="uppercase">Update</button>
-                        <button type="reset" onclick="CloseForm()" class="uppercase">Cancel</button>
-                    </div>
-                </form>
+                    </form>
 
+                </div>
+            </div>
+        </main>
+        </section>
+        <div id="popupCtn">
+            <div class="popup" id="popup">
+                <div class="close-btn" id="closePopup"> <span class="close"><svg xmlns="http://www.w3.org/2000/svg"
+                            x="0px" y="0px" width="50" height="50" fill="white" viewBox="0 0 50 50">
+                            <path
+                                d="M25,2C12.319,2,2,12.319,2,25s10.319,23,23,23s23-10.319,23-23S37.681,2,25,2z M33.71,32.29c0.39,0.39,0.39,1.03,0,1.42	C33.51,33.9,33.26,34,33,34s-0.51-0.1-0.71-0.29L25,26.42l-7.29,7.29C17.51,33.9,17.26,34,17,34s-0.51-0.1-0.71-0.29	c-0.39-0.39-0.39-1.03,0-1.42L23.58,25l-7.29-7.29c-0.39-0.39-0.39-1.03,0-1.42c0.39-0.39,1.03-0.39,1.42,0L25,23.58l7.29-7.29	c0.39-0.39,1.03-0.39,1.42,0c0.39,0.39,0.39,1.03,0,1.42L26.42,25L33.71,32.29z">
+                            </path>
+                        </svg></span></div>
+                <div class="popup-content" id="popupContent">
+                </div>
+            </div>
+            <div class="large-image-container" id="largeImageContainer">
+                <span class="arrow left" id="prevImage">&#10094;</span>
+                <img src="" alt="Large View" class="large-image" id="largeImage">
+                <span class="arrow right" id="nextImage">&#10095;</span>
             </div>
         </div>
-    </main>
-    </section>
-    <div id="popupCtn">
-        <div class="popup" id="popup">
-            <div class="close-btn" id="closePopup"> <span class="close"><svg xmlns="http://www.w3.org/2000/svg" x="0px"
-                        y="0px" width="50" height="50" fill="white" viewBox="0 0 50 50">
-                        <path
-                            d="M25,2C12.319,2,2,12.319,2,25s10.319,23,23,23s23-10.319,23-23S37.681,2,25,2z M33.71,32.29c0.39,0.39,0.39,1.03,0,1.42	C33.51,33.9,33.26,34,33,34s-0.51-0.1-0.71-0.29L25,26.42l-7.29,7.29C17.51,33.9,17.26,34,17,34s-0.51-0.1-0.71-0.29	c-0.39-0.39-0.39-1.03,0-1.42L23.58,25l-7.29-7.29c-0.39-0.39-0.39-1.03,0-1.42c0.39-0.39,1.03-0.39,1.42,0L25,23.58l7.29-7.29	c0.39-0.39,1.03-0.39,1.42,0c0.39,0.39,0.39,1.03,0,1.42L26.42,25L33.71,32.29z">
-                        </path>
-                    </svg></span></div>
-            <div class="popup-content" id="popupContent">
-            </div>
-        </div>
-        <div class="large-image-container" id="largeImageContainer">
-            <span class="arrow left" id="prevImage">&#10094;</span>
-            <img src="" alt="Large View" class="large-image" id="largeImage">
-            <span class="arrow right" id="nextImage">&#10095;</span>
-        </div>
-    </div>
 
-    <div id="copyAlert" class="alert">Link copied to clipboard!</div>
+        <div id="copyAlert" class="alert">Link copied to clipboard!</div>
 
-    <!-- JAVASCRIPT -->
+        <!-- JAVASCRIPT -->
 
-    <script src="../../js/admin/header.js"></script>
-    <script src="../../js/admin/common.js"></script>
-    <script src="../../js/admin/dashboard.render.js"></script>
-    <script src="../../js/admin/dashboard.js"></script>
-    <!-- <script>
+        <script src="../../js/admin/header.js"></script>
+        <script src="../../js/admin/common.js"></script>
+        <script src="../../js/admin/dashboard.render.js"></script>
+        <script src="../../js/admin/dashboard.js"></script>
+        <!-- <script>
     
             const images = [
                 'https://via.placeholder.com/600x400',
@@ -703,80 +649,80 @@
             });
         </script> -->
 
-    <script>
-        let currentImageIndex = 0;
-        let images = [];
-        async function loadGallery(e) {
-            const popup = document.getElementById('popup');
-            const popupContent = document.getElementById('popupContent');
-            popup.style.display = 'flex';
-            popupContent.innerHTML = '<p>Loading...</p>';
-            try {
-                const response = await fetch(location.origin + '/admin/get-image/' + e);
-                const data = await response.json();
-                if (data.data && data.data.length > 0) {
-                    images = data.data.map(img => `${location.origin}/uploads/${img.location}`);
-                    popupContent.innerHTML = '<div class="gallery" id="gallery"></div>';
-                    const gallery = document.getElementById('gallery');
-                    images.forEach((src, index) => {
-                        const img = document.createElement('img');
-                        img.src = src;
-                        img.dataset.index = index;
-                        gallery.appendChild(img);
-                        img.addEventListener('click', () => {
-                            showLargeImage(index);
+        <script>
+            let currentImageIndex = 0;
+            let images = [];
+            async function loadGallery(e) {
+                const popup = document.getElementById('popup');
+                const popupContent = document.getElementById('popupContent');
+                popup.style.display = 'flex';
+                popupContent.innerHTML = '<p>Loading...</p>';
+                try {
+                    const response = await fetch(location.origin + '/admin/get-image/' + e);
+                    const data = await response.json();
+                    if (data.data && data.data.length > 0) {
+                        images = data.data.map(img => `${location.origin}/uploads/${img.location}`);
+                        popupContent.innerHTML = '<div class="gallery" id="gallery"></div>';
+                        const gallery = document.getElementById('gallery');
+                        images.forEach((src, index) => {
+                            const img = document.createElement('img');
+                            img.src = src;
+                            img.dataset.index = index;
+                            gallery.appendChild(img);
+                            img.addEventListener('click', () => {
+                                showLargeImage(index);
+                            });
                         });
-                    });
-                } else {
-                    popupContent.innerHTML = '<p>No images found.</p>';
+                    } else {
+                        popupContent.innerHTML = '<p>No images found.</p>';
+                    }
+                } catch (error) {
+                    console.error('Error fetching images:', error);
+                    popupContent.innerHTML = '<p>Failed to load images.</p>';
                 }
-            } catch (error) {
-                console.error('Error fetching images:', error);
-                popupContent.innerHTML = '<p>Failed to load images.</p>';
             }
-        }
-        document.getElementById('closePopup').addEventListener('click', function() {
-            document.getElementById('popup').style.display = 'none';
-        });
-        const largeImageContainer = document.getElementById('largeImageContainer');
-        const largeImage = document.getElementById('largeImage');
+            document.getElementById('closePopup').addEventListener('click', function () {
+                document.getElementById('popup').style.display = 'none';
+            });
+            const largeImageContainer = document.getElementById('largeImageContainer');
+            const largeImage = document.getElementById('largeImage');
 
-        function showLargeImage(index) {
-            currentImageIndex = index;
-            largeImage.src = images[index];
-            largeImageContainer.style.display = 'flex';
-        }
-        largeImage.addEventListener('click', () => {
-            largeImageContainer.style.display = 'none';
-        });
-        document.getElementById('prevImage').addEventListener('click', () => {
-            currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
-            largeImage.src = images[currentImageIndex];
-        });
-        document.getElementById('nextImage').addEventListener('click', () => {
-            currentImageIndex = (currentImageIndex + 1) % images.length;
-            largeImage.src = images[currentImageIndex];
-        });
+            function showLargeImage(index) {
+                currentImageIndex = index;
+                largeImage.src = images[index];
+                largeImageContainer.style.display = 'flex';
+            }
+            largeImage.addEventListener('click', () => {
+                largeImageContainer.style.display = 'none';
+            });
+            document.getElementById('prevImage').addEventListener('click', () => {
+                currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+                largeImage.src = images[currentImageIndex];
+            });
+            document.getElementById('nextImage').addEventListener('click', () => {
+                currentImageIndex = (currentImageIndex + 1) % images.length;
+                largeImage.src = images[currentImageIndex];
+            });
 
-        function FillterOps(e) {
-            location.href = location.origin + location.pathname + `?category=${e}`
-        }
+            function FillterOps(e) {
+                location.href = location.origin + location.pathname + `?category=${e}`
+            }
 
-        function copyLink(e) {
-            const alertBox = document.getElementById("copyAlert");
-            navigator.clipboard
-                .writeText(location.origin + `/property/` + e)
-                .then(() => {
-                    alertBox.classList.add("show");
-                    setTimeout(() => {
-                        alertBox.classList.remove("show");
-                    }, 3000);
-                })
-                .catch((err) => {
-                    console.error("Failed to copy text:", err);
-                });
-        }
-    </script>
+            function copyLink(e) {
+                const alertBox = document.getElementById("copyAlert");
+                navigator.clipboard
+                    .writeText(location.origin + `/property/` + e)
+                    .then(() => {
+                        alertBox.classList.add("show");
+                        setTimeout(() => {
+                            alertBox.classList.remove("show");
+                        }, 3000);
+                    })
+                    .catch((err) => {
+                        console.error("Failed to copy text:", err);
+                    });
+            }
+        </script>
 </body>
 
 </html>

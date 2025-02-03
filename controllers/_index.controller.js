@@ -6,6 +6,7 @@ const upload = require("../utils/uploadsHandler");
 // ---- All Index routes here ----
 exports.indexDeshboard = async (req, res) => {
   if (req.session.isLoggedIn == true && req.session.role == "admin") {
+    const viewMode = req.query.viewMode || "grid";
     const category = req.query.category;
     let query = `SELECT properties.*, MIN(prop_images.location) AS imgLink 
                  FROM properties 
@@ -16,7 +17,7 @@ exports.indexDeshboard = async (req, res) => {
     query += ` GROUP BY properties.id`;
     try {
       const [results] = await db.query(query, category ? [`%${category}%`] : []);
-      res.status(200).render("../views/admin/_index.ejs", { data: results });
+      res.status(200).render("../views/admin/_index.ejs", { data: results,viewMode });
     } catch (error) {
       console.error("Error fetching properties:", error);
       res.status(500).send("Error fetching properties.");
