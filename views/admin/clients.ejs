@@ -16,7 +16,92 @@
     <script src="../../js/admin/dashboard.module.js"></script>
 </head>
 <style>
+    .grid {
+        grid-template-columns: 3rem repeat(2, minmax(0, 1fr)) 12rem 5rem 1.5rem;
+    }
 
+    .adata.open {
+        padding-top: .2rem;
+        padding: 5px .5rem;
+    }
+
+    .info-content .field input,
+    select {
+        width: 140px;
+        height: unset;
+        margin-top: 0;
+        padding: 5px;
+        font-size: 14px;
+
+    }
+
+    .info-content .field input,
+    input {
+        width: 120px;
+        height: unset;
+        margin-top: 0;
+        outline: 1px solid var(--black-light);
+        padding: 5px 10px;
+        font-weight: 500;
+        border-radius: var(--border-radius-1);
+        background: var(--bg-2);
+        word-wrap: break-word;
+
+    }
+
+    .data-info .info-head {
+        padding-right: 49px;
+    }
+
+    .data-info .finegrid {
+
+        grid-template-columns: 2rem 1fr 1fr 1fr 2rem 5rem 1fr 1fr 5rem 1.5rem;
+        align-items: center;
+        justify-items: flex-start;
+        gap: 10px;
+    }
+
+    .main .red {
+        border: 1px solid var(--ter-dark-color);
+        background: var(--ter-light-color);
+        color: var(--ter-dark-color);
+    }
+
+    .main .green {
+        border: 1px solid var(--green);
+        background: var(--green-light);
+        color: var(--green);
+    }
+
+    .main.blue {
+        border: 1px solid var(--blue);
+        background: var(--blue-light);
+        color: var(--blue);
+    }
+
+    .followstatus.option-0 {
+  
+    }
+
+    /* Not Set */
+    .followstatus.option-1 {
+        background-color: rgba(247, 178, 178, 0.644);
+        color: rgb(119, 0, 0);
+    }
+
+    /* Call not Pickup */
+    .followstatus.option-2 {
+        background-color: rgba(176, 219, 248, 0.63);
+        color: rgb(0, 42, 105);
+    }
+
+    /* Followed Up */
+    .followstatus.option-3 {
+        background-color: rgba(169, 253, 169, 0.582);
+        color: rgb(3, 82, 0);
+    }
+
+    /* Schedule */
 </style>
 
 <body>
@@ -75,6 +160,8 @@
                     <p class="uppercase phead none">location</p>
                     <p class="uppercase phead none">BHK </p>
                     <p class="uppercase phead none">Budget</p>
+                    <p class="uppercase phead none">Status</p>
+                    <p class="uppercase phead none">Shedule</p>
                     <p class="uppercase phead none">Action</p>
                     <!-- ------resposnive class------- -->
                     <p class="responsive uppercase phead hide block">project finances</p>
@@ -109,16 +196,37 @@
                                         <%= e.location %>
                                     </span>
                                 </p>
-                                <p class="totalf none"><span>
+                                <p class="totalf none">
+                                    <span>
                                         <%= e.bhk %>
                                     </span>
-                                <p class="totalf none"><span>
+                                </p>
+                                <p class="totalf none">
+                                    <span>
                                         <%= e.budget %>
-                                    </span></p>
-                                <!-- <p class="farch cuck">&#8377;<span>40,000</span>/-</p>
-                                <p class="fstru cuck">&#8377;<span>40,000</span>/-</p>
-                                <p class="fthrd cuck">&#8377;<span>20,000</span>/-</p> -->
-
+                                    </span>
+                                </p>
+                                <p class="totalf none">
+                                    <span>
+                                        <select class="followstatus">
+                                            <option data-val="n/a" value="0">Not Set</option>
+                                            <option data-val="Schedule" value="3" <%=e.status=="3" ? "selected" : "" %>
+                                                >Schedule</option>
+                                            <option data-val="Call not Pickup" value="1" <%=e.status=="1" ? "selected"
+                                                : "" %>>Call not Pickup</option>
+                                            <option data-val="Followed Up" value="2" <%=e.status=="2" ? "selected" : ""
+                                                %>>Followed Up</option>
+                                        </select>
+                                    </span>
+                                </p>
+                                <p class="totalf none">
+                                    <span>
+                                        <label style="display: none;">
+                                            <%= (e.date).slice(-6) %>
+                                        </label>
+                                        <input type="date" value="<%= e.date %>">
+                                    </span>
+                                </p>
                                 <p class="flexy">
                                     <span class="edit-btn" onclick="editClient(this,<%= e.id %>)">Edit</span>
                                     <span class="butt" onclick="DeleteItem(this,<%= e.id %>,'Clients')"><svg

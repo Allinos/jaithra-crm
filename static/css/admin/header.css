@@ -594,3 +594,6 @@ nav .nav-lists svg {
     height: 205vh;
     }
 
+    nav .nav-lists::-webkit-scrollbar{
+        display: none;
+    }

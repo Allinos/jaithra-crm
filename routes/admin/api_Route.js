@@ -9,6 +9,8 @@ api.post("/prop/update/:id", NormalAPI.PropertieUpdate);
 api.post("/clients", NormalAPI.AddClient);
 api.post("/clients/update/:id", NormalAPI.UpdateClientsByID);
 api.delete("/clients/delete/:id", NormalAPI.DeleteClientsByID);
+api.put("/clients/update/status/:id", NormalAPI.StatusOfClientsByID);
+api.put("/clients/update/date/:id", NormalAPI.DateofClientsByID);
 
 api.post("/owners", NormalAPI.AddOwner);
 api.post("/owners/update/:id", NormalAPI.UpdateOwnersByID);

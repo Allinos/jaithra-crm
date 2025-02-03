@@ -109,13 +109,11 @@ exports.PropertieUpdate = async (req, res) => {
     }
   } catch (error) {
     console.error("Error updating Property:", error.message);
-    res
-      .status(500)
-      .json({
-        status: false,
-        error: "Internal server error.",
-        details: error.message,
-      });
+    res.status(500).json({
+      status: false,
+      error: "Internal server error.",
+      details: error.message,
+    });
   }
 };
 
@@ -202,7 +200,69 @@ exports.UpdateClientsByID = async (req, res) => {
       .json({ error: "Internal server error.", details: error.message });
   }
 };
+exports.StatusOfClientsByID = async (req, res) => {
+  if (!req.session.isLoggedIn || req.session.role !== "admin") {
+    return res
+      .status(403)
+      .json({ message: "Unauthorized access. Admin role required." });
+  }
+  const { id } = req.params;
+  const { status } = req.body;
 
+  if (!status) {
+    return res.status(400).json({ message: "fields are required." });
+  }
+
+  try {
+    const [result] = await databaseCon.query(
+      "UPDATE clients SET status = ? WHERE id = ?",
+      [status, id]
+    );
+    if (result.affectedRows === 0) {
+      return res
+        .status(404)
+        .json({ message: "Client not found. No update performed." });
+    }
+    res.status(200).send({
+      status: true,
+      msg: "Client Updated successfully! 😊",
+    });
+  } catch (error) {
+    console.error("Error updating client:", error.message);
+    res
+      .status(500)
+      .json({ error: "Internal server error.", details: error.message });
+  }
+};
+exports.DateofClientsByID = async (req, res) => {
+  if (!req.session.isLoggedIn || req.session.role !== "admin") {
+    return res
+      .status(403)
+      .json({ message: "Unauthorized access. Admin role required." });
+  }
+  const { id } = req.params;
+  const { date } = req.body;
+  try {
+    const [result] = await databaseCon.query(
+      "UPDATE clients SET date = ? WHERE id = ?",
+      [date, id]
+    );
+    if (result.affectedRows === 0) {
+      return res
+        .status(404)
+        .json({ message: "Client not found. No update performed." });
+    }
+    res.status(200).send({
+      status: true,
+      msg: "Client Updated successfully! 😊",
+    });
+  } catch (error) {
+    console.error("Error updating client:", error.message);
+    res
+      .status(500)
+      .json({ error: "Internal server error.", details: error.message });
+  }
+};
 // Delete Clients by ID
 exports.DeleteClientsByID = async (req, res) => {
   if (!req.session.isLoggedIn || req.session.role !== "admin") {
