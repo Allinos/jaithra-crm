@@ -41,15 +41,15 @@
                         <span>Floor- <%= e.floor %></span>
                     </p>
                     <p class="flexy">
-                        <span class="edit-btn" onclick="EditPropertie(this, <%= e.id %>)">Edit</span>
-                        <span class="butt" onclick="DeleteProp(this,<%= e.id %>)">
+                        <span class="edit-btn pressEffect" onclick="EditPropertie(this, <%= e.id %>)">Edit</span>
+                        <span class="butt pressEffect" onclick="DeleteProp(this,<%= e.id %>)">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="trash-alt"
                                 class="icon">
                                 <path fill=""
                                     d="M10,18a1,1,0,0,0,1-1V11a1,1,0,0,0-2,0v6A1,1,0,0,0,10,18ZM20,6H16V5a3,3,0,0,0-3-3H11A3,3,0,0,0,8,5V6H4A1,1,0,0,0,4,8H5V19a3,3,0,0,0,3,3h8a3,3,0,0,0,3-3V8h1a1,1,0,0,0,0-2ZM10,5a1,1,0,0,1,1-1h2a1,1,0,0,1,1,1V6H10Zm7,14a1,1,0,0,1-1,1H8a1,1,0,0,1-1-1V8H17Zm-3-1a1,1,0,0,0,1-1V11a1,1,0,0,0-2,0v6A1,1,0,0,0,14,18Z">
                                 </path>
                             </svg></span>
-                        <span class="edit-btn butt" onclick="copyLink('<%= e.id %>')"> <svg
+                        <span class="edit-btn butt pressEffect" onclick="copyLink('<%= e.id %>')"> <svg
                                 xmlns="http://www.w3.org/2000/svg" class="icon" x="0px" y="0px"
                                 viewBox="0 0 30 30">
                                 <path
@@ -72,7 +72,7 @@
                     <div class="oth-info grid none">
                         <p></p>
                         <p class="contact">
-                            <span class="uppercase phead">Map Link</span>
+                            <span class="uppercase phead pressEffect">Map Link</span>
                             <span class="contact_no"> <a href="<%= e.map_link %>" target="_blank">Map
                                     Link</a></span>
                         </p>
@@ -90,7 +90,7 @@
                         </p>
                         <p class="image">
                             <span class="uppercase phead">Images</span>
-                            <span class="amount" onclick="loadGallery(<%= e.id %>);">
+                            <span class="amount pressEffect" onclick="loadGallery(<%= e.id %>);">
                                 <img src="/img/img-icon.svg" style="border-radius:0 ;" alt="">
                                 <img src="/img/img-icon.svg" style="border-radius:0 ;" alt="">
                                 <img src="/img/img-icon.svg" style="border-radius:0 ;" alt="">

@@ -568,7 +568,7 @@
         </section>
         <div id="popupCtn">
             <div class="popup" id="popup">
-                <div class="close-btn" id="closePopup"> <span class="close"><svg xmlns="http://www.w3.org/2000/svg"
+                <div class="close-btn " id="closePopup"> <span class="close pressEffect"><svg xmlns="http://www.w3.org/2000/svg"
                             x="0px" y="0px" width="50" height="50" fill="white" viewBox="0 0 50 50">
                             <path
                                 d="M25,2C12.319,2,2,12.319,2,25s10.319,23,23,23s23-10.319,23-23S37.681,2,25,2z M33.71,32.29c0.39,0.39,0.39,1.03,0,1.42	C33.51,33.9,33.26,34,33,34s-0.51-0.1-0.71-0.29L25,26.42l-7.29,7.29C17.51,33.9,17.26,34,17,34s-0.51-0.1-0.71-0.29	c-0.39-0.39-0.39-1.03,0-1.42L23.58,25l-7.29-7.29c-0.39-0.39-0.39-1.03,0-1.42c0.39-0.39,1.03-0.39,1.42,0L25,23.58l7.29-7.29	c0.39-0.39,1.03-0.39,1.42,0c0.39,0.39,0.39,1.03,0,1.42L26.42,25L33.71,32.29z">
@@ -578,12 +578,11 @@
                 </div>
             </div>
             <div class="large-image-container" id="largeImageContainer">
-                <span class="arrow left" id="prevImage">&#10094;</span>
+                <span class="arrow left pressEffect" id="prevImage">&#10094;</span>
                 <img src="" alt="Large View" class="large-image" id="largeImage">
-                <span class="arrow right" id="nextImage">&#10095;</span>
+                <span class="arrow right pressEffect" id="nextImage">&#10095;</span>
             </div>
         </div>
-
         <div id="copyAlert" class="alert">Link copied to clipboard!</div>
 
         <!-- JAVASCRIPT -->
@@ -592,73 +591,6 @@
         <script src="../../js/admin/common.js"></script>
         <script src="../../js/admin/dashboard.render.js"></script>
         <script src="../../js/admin/dashboard.js"></script>
-        <!-- <script>
-    
-            const images = [
-                'https://via.placeholder.com/600x400',
-                'https://via.placeholder.com/600x300', 'https://via.placeholder.com/600x400',
-                'https://via.placeholder.com/600x300', 'https://via.placeholder.com/600x400',
-                'https://via.placeholder.com/600x300', 'https://via.placeholder.com/600x400',
-                'https://via.placeholder.com/600x300', 'https://via.placeholder.com/600x400',
-                'https://via.placeholder.com/600x300', 'https://via.placeholder.com/600x400',
-                'https://via.placeholder.com/600x300',
-                'https://via.placeholder.com/600x500'
-            ];
-            let currentImageIndex = 0;
-
-
-            function loadGallery() {
-                const popup = document.getElementById('popup');
-                const popupContent = document.getElementById('popupContent');
-
-                popup.style.display = 'flex';
-
-                // Simulate server request
-                setTimeout(() => {
-                    popupContent.innerHTML = '<div class="gallery" id="gallery"></div>';
-                    const gallery = document.getElementById('gallery');
-
-                    images.forEach((src, index) => {
-                        const img = document.createElement('img');
-                        img.src = src;
-                        img.dataset.index = index;
-                        gallery.appendChild(img);
-
-                        img.addEventListener('click', () => {
-                            showLargeImage(index);
-                        });
-                    });
-                }, 1000);
-            }
-
-            document.getElementById('closePopup').addEventListener('click', function () {
-                document.getElementById('popup').style.display = 'none';
-            });
-
-            const largeImageContainer = document.getElementById('largeImageContainer');
-            const largeImage = document.getElementById('largeImage');
-
-            function showLargeImage(index) {
-                currentImageIndex = index;
-                largeImage.src = images[index];
-                largeImageContainer.style.display = 'flex';
-            }
-
-            largeImage.addEventListener('click', () => {
-                largeImageContainer.style.display = 'none';
-            });
-
-            document.getElementById('prevImage').addEventListener('click', () => {
-                currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
-                largeImage.src = images[currentImageIndex];
-            });
-
-            document.getElementById('nextImage').addEventListener('click', () => {
-                currentImageIndex = (currentImageIndex + 1) % images.length;
-                largeImage.src = images[currentImageIndex];
-            });
-        </script> -->
-
         <script>
             let currentImageIndex = 0;
             let images = [];

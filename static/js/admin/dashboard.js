@@ -185,3 +185,6 @@ function CloseForm() {
   maindropDown.style.display = `none`;
   editMenu.style.display = `none`;
 }
+function ViewChanger(e) {
+  location.href=location.href+"&viewMode="+e;
+}

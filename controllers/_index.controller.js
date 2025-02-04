@@ -6,14 +6,15 @@ const upload = require("../utils/uploadsHandler");
 // ---- All Index routes here ----
 exports.indexDeshboard = async (req, res) => {
   if (req.session.isLoggedIn == true && req.session.role == "admin") {
-    const viewMode = req.query.viewMode || "grid";
-    const category = req.query.category;
-    let query = `SELECT properties.*, MIN(prop_images.location) AS imgLink 
-                 FROM properties 
-                 LEFT JOIN prop_images ON properties.id = prop_images.prop_id`;
-    if (category) {
-      query += ` WHERE  properties.category LIKE  ?`;
+    const viewMode = req.query.viewMode||req.session.viewMode||"table";
+    if (req.query.viewMode) {
+      req.session.viewMode = viewMode;
+      res.redirect("/admin/dashboard?from=0&to=1")
+      return;
     }
+    const category = req.query.category;
+    let query = `SELECT properties.*, MIN(prop_images.location) AS imgLink FROM properties LEFT JOIN prop_images ON properties.id = prop_images.prop_id`;
+    if (category) {query += ` WHERE  properties.category LIKE  ?`;}
     query += ` GROUP BY properties.id`;
     try {
       const [results] = await db.query(query, category ? [`%${category}%`] : []);
