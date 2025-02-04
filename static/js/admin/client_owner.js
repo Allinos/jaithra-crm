@@ -138,7 +138,7 @@ document.addEventListener("DOMContentLoaded", function () {
       var selectElement = event.target || event;
       var selectedOption = selectElement.options[selectElement.selectedIndex];
       var selectedValue = selectedOption.value;
-      selectElement.classList.remove("option-0", "option-1", "option-2", "option-3");
+      selectElement.classList.remove("option-0", "option-1", "option-2", "option-3", "option-4");
       selectElement.classList.add("option-" + selectedValue);
   }
 

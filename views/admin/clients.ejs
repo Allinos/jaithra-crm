@@ -79,11 +79,9 @@
         color: var(--blue);
     }
 
-    .followstatus.option-0 {
-  
-    }
+    .followstatus.option-0 {}
 
-    /* Not Set */
+     /* Schedule */
     .followstatus.option-1 {
         background-color: rgba(247, 178, 178, 0.644);
         color: rgb(119, 0, 0);
@@ -100,8 +98,14 @@
         background-color: rgba(169, 253, 169, 0.582);
         color: rgb(3, 82, 0);
     }
+        /* Important */
+        .followstatus.option-4 {
+        background-color: rgb(1, 30, 32);
+        /* color: rgb(1, 255, 255); */
+        color: #FFD700;
+    }
 
-    /* Schedule */
+   
 </style>
 
 <body>
@@ -216,6 +220,8 @@
                                                 : "" %>>Call not Pickup</option>
                                             <option data-val="Followed Up" value="2" <%=e?.status=="2" ? "selected" : ""
                                                 %>>Followed Up</option>
+                                            <option data-val="Important" value="4" <%=e?.status=="4" ? "selected" : ""
+                                                %>>Important</option>
                                         </select>
                                     </span>
                                 </p>
