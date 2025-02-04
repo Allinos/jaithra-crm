@@ -52,6 +52,18 @@ exports.ownersPage = async (req, res) => {
     }
   }
 };
+exports.queriesPage = async (req, res) => {
+  if (req.session.isLoggedIn == true && req.session.role == "admin") {
+    const query = `select * from queries;`;
+    try {
+      const [results] = await db.query(query);
+      res.status(200).render("../views/admin/queries.ejs", { data: results });
+    } catch (error) {
+      console.error("E rror fetching properties:", error);
+      res.status(500).send("Error fetching properties.");
+    }
+  }
+};
 
 exports.insertProp = async (req, res) => {
   if (req.session.isLoggedIn == true && req.session.role == "admin") {
@@ -98,7 +110,7 @@ exports.insertProp = async (req, res) => {
         });
         await Promise.all(imagePromises);
         console.log("All images inserted successfully");
-        res.redirect("/admin/dashboard");
+        res.redirect("/admin/dashboard?from=0&to=1");
       } catch (error) {
         console.error("Error inserting property:", error);
         res.status(500).send({ msg: "Failed to insert property." });

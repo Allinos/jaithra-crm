@@ -9,6 +9,7 @@ router.get("/form", mainController.PropertiesForm);
 router.post("/form", mainController.insertProp);
 router.get("/clients", mainController.clientsPage);
 router.get("/owners", mainController.ownersPage);
+// router.get("/queries", mainController.ownersPage);
 
 
 module.exports = router;

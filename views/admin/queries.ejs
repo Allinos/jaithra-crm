@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EBAH ERP | Admin</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/admin/main.css">
+    <link rel="stylesheet" href="../../css/darkMode.css">
+    <link rel="stylesheet" href="../../css/admin/header.css">
+    <link rel="stylesheet" href="../../css/admin/responsive.css">
+    <link rel="stylesheet" href="../../css/admin/np.finance.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../../js/admin/dashboard.module.js"></script>
+</head>
+
+<body>
+    <%- include('../partials/admin.header.ejs') %>
+        <!-- MAIN SECTION STARTS HERE  -->
+        <main class="main" data-app-page="queries">
+            <!------------- FINANCE-OVERALL-------------  -->
+            <div style="display: none;" class="main-data flex">
+                <!-- -------TOTAL AMOUNT--------- -->
+                <div class="total-amount flex data ">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="money-bill-stack" class="svg">
+                        <path fill="##000000"
+                            d="M20,1H4A3,3,0,0,0,1,4V20a3,3,0,0,0,3,3H20a3,3,0,0,0,3-3V4A3,3,0,0,0,20,1ZM8,21H4a1,1,0,0,1-1-1V18.82A3,3,0,0,0,4,19H8Zm0-4H4a1,1,0,0,1-1-1V14.82A3,3,0,0,0,4,15H8Zm0-4H4a1,1,0,0,1-1-1V4A1,1,0,0,1,4,3H8Zm6,8H10V15h4Zm0-8H10V3h4Zm7,7a1,1,0,0,1-1,1H16V19h4a3,3,0,0,0,1-.18Zm0-4a1,1,0,0,1-1,1H16V15h4a3,3,0,0,0,1-.18Zm0-4a1,1,0,0,1-1,1H16V3h4a1,1,0,0,1,1,1ZM18,7a1,1,0,1,0,1,1A1,1,0,0,0,18,7ZM6,9A1,1,0,1,0,5,8,1,1,0,0,0,6,9Z">
+                        </path>
+                    </svg>
+                    <div class="total_user_data">
+                        <p class="size">&#8377;<span></span>/-</p>
+                        <p class="text">Total Amount</p>
+                    </div>
+                </div>
+                <!-- ---------------AMOUNT IN BANK ------------ -->
+                <div class="amount_in-bank flex data">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="money-bill-stack" class="svg">
+                        <path fill="##000000"
+                            d="M20,1H4A3,3,0,0,0,1,4V20a3,3,0,0,0,3,3H20a3,3,0,0,0,3-3V4A3,3,0,0,0,20,1ZM8,21H4a1,1,0,0,1-1-1V18.82A3,3,0,0,0,4,19H8Zm0-4H4a1,1,0,0,1-1-1V14.82A3,3,0,0,0,4,15H8Zm0-4H4a1,1,0,0,1-1-1V4A1,1,0,0,1,4,3H8Zm6,8H10V15h4Zm0-8H10V3h4Zm7,7a1,1,0,0,1-1,1H16V19h4a3,3,0,0,0,1-.18Zm0-4a1,1,0,0,1-1,1H16V15h4a3,3,0,0,0,1-.18Zm0-4a1,1,0,0,1-1,1H16V3h4a1,1,0,0,1,1,1ZM18,7a1,1,0,1,0,1,1A1,1,0,0,0,18,7ZM6,9A1,1,0,1,0,5,8,1,1,0,0,0,6,9Z">
+                        </path>
+                    </svg>
+                    <div class="total_user_data">
+                        <p class="size">&#8377;<span></span>/-</p>
+                        <p class="text">Cash in Hand</p>
+                    </div>
+                </div>
+                <!-- ---------CASH IN HAND----------- -->
+                <div class="cash_in-hand flex data">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="money-bill-stack" class="svg">
+                        <path fill="##000000"
+                            d="M20,1H4A3,3,0,0,0,1,4V20a3,3,0,0,0,3,3H20a3,3,0,0,0,3-3V4A3,3,0,0,0,20,1ZM8,21H4a1,1,0,0,1-1-1V18.82A3,3,0,0,0,4,19H8Zm0-4H4a1,1,0,0,1-1-1V14.82A3,3,0,0,0,4,15H8Zm0-4H4a1,1,0,0,1-1-1V4A1,1,0,0,1,4,3H8Zm6,8H10V15h4Zm0-8H10V3h4Zm7,7a1,1,0,0,1-1,1H16V19h4a3,3,0,0,0,1-.18Zm0-4a1,1,0,0,1-1,1H16V15h4a3,3,0,0,0,1-.18Zm0-4a1,1,0,0,1-1,1H16V3h4a1,1,0,0,1,1,1ZM18,7a1,1,0,1,0,1,1A1,1,0,0,0,18,7ZM6,9A1,1,0,1,0,5,8,1,1,0,0,0,6,9Z">
+                        </path>
+                    </svg>
+                    <div class="total_user_data">
+                        <p class="size">&#8377;<span></span>/-</p>
+                        <p class="text">Amount in Bank</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- <div class="button-container" onclick="openDick()">
+                <button class="add-client-btn">Add Owner</button>
+            </div> -->
+            <!-- ----------- FINANCE TABLE----------- -->
+            <div class="data-info box">
+                <!-- headings -->
+                <div class="info-head finegrid">
+                    <p class="uppercase phead none">No.</p>
+                    <p class="uppercase phead none">Name</p>
+                    <p class="uppercase phead none">Number</p>
+                    <p class="uppercase phead none">location</p>
+                    <p class="uppercase phead none"> </p>
+                    <p class="uppercase phead none"></p>
+                    <p class="uppercase phead none">Action</p>
+                    <!-- ------resposnive class------- -->
+                    <!-- <p class="responsive uppercase phead hide block">project finances</p> -->
+                </div>
+                <!-- ----------project information----------- -->
+                <div class="info-content">
+                    <!-- --------1st project---------  -->
+                    <% data?.forEach((e)=>{ %>
+                        <div class="accordion-content">
+                            <div class="ahead finegrid">
+                                <p class="ref">
+                                    <span class="uppercase hide block phead">No.</span>
+                                    <span>
+                                        <%= e?.id %>
+                                    </span>
+                                </p>
+                                <p class="pro">
+                                    <span class="uppercase hide block phead">name</span>
+                                    <span>
+                                        <%= e?.name %>
+                                    </span>
+                                </p>
+                                <p class="emp_date">
+                                    <span class="uppercase hide block phead">number</span>
+                                    <span>
+                                        <%= e?.number %>
+                                    </span>
+                                </p>
+                                <p class="totalf">
+                                    <span class="uppercase hide block phead">project amount</span>
+                                    <span>
+                                        <%= e?.location %>
+                                    </span>
+                                </p>
+                                <p class="totalf none"><span>
+
+                                    </span>
+                                <p class="totalf none"><span>
+
+                                    </span></p>
+                                <p class="flexy">
+                                    <!-- <span class="edit-btn" onclick="editOwner(this,<%= e?.id %>)">Edit</span> -->
+                                    <span class="butt" onclick="DeleteItem(this,<%= e?.id %>,'Owners')"><svg
+                                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="trash-alt"
+                                            class="icon">
+                                            <path fill=""
+                                                d="M10,18a1,1,0,0,0,1-1V11a1,1,0,0,0-2,0v6A1,1,0,0,0,10,18ZM20,6H16V5a3,3,0,0,0-3-3H11A3,3,0,0,0,8,5V6H4A1,1,0,0,0,4,8H5V19a3,3,0,0,0,3,3h8a3,3,0,0,0,3-3V8h1a1,1,0,0,0,0-2ZM10,5a1,1,0,0,1,1-1h2a1,1,0,0,1,1,1V6H10Zm7,14a1,1,0,0,1-1,1H8a1,1,0,0,1-1-1V8H17Zm-3-1a1,1,0,0,0,1-1V11a1,1,0,0,0-2,0v6A1,1,0,0,0,14,18Z">
+                                            </path>
+                                        </svg></span>
+                                </p>
+                            </div>
+                            <!-- ----------open data for accordion---------- -->
+                        </div>
+                        <% }) %>
+
+                            <!-- ------------------------------ -->
+
+                </div>
+                <!-- ----------PAGINATION--------- -->
+                <%- include('../partials/pagin.ejs') %>
+            </div>
+            <!-- -----DROPDOWN----- -->
+            <div class="main-dropdown hide">
+                <div class="edit-menu common_dropdown">
+                    <form action=" " id="mainForm" method="POST">
+                        <h4 class="uppercase">Client Details</h4>
+                        <div class="edit-grid">
+                            <div class="field">
+                                <label for="client-name">Client Name</label>
+                                <input type="text" name="name" id="client-name" placeholder="e.g.: Pragyan Tamuli"
+                                    required>
+                            </div>
+                            <div class="field">
+                                <label for="client-number">Phone Number</label>
+                                <input type="text" name="number" id="client-number" placeholder="e.g.: 9874561230"
+                                    pattern="[0-9]{10}" title="Please enter a valid 10-digit phone number" required>
+                            </div>
+                            <div class="field">
+                                <label for="client-location">Location</label>
+                                <input type="text" name="location" id="client-location"
+                                    placeholder="e.g.: Guwahati, Assam" required>
+                            </div>
+
+
+                        </div>
+                        <div class="drop-btn flex">
+                            <button type="submit" class="uppercase">Done</button>
+                            <button type="button" class="uppercase" onclick="CloseModel()">Cancel</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </main>
+        </section>
+
+
+        <!-- JAVASCRIPT -->
+        <script src="../../js/admin/header.js"></script>
+        <script src="../../js/admin/common.js"></script>
+        <script src="../../js/admin/client_owner.js"></script>
+
+        <script>
+            function editOwner(e, Id) {
+                let parentCtn = e.parentElement.parentElement
+                const clientFields = parentCtn.querySelectorAll("span");
+                document.getElementsByClassName("main")[0].classList.add("flow");
+                const maindropDown = document.querySelector(`.main-dropdown`);
+                const editMenu = document.querySelector(`.edit-menu`);
+                maindropDown.style.display = `block`;
+                editMenu.style.display = `block`;
+                const form = document.getElementById('mainForm');
+                form.action = `/admin/owners/update/${Id}`;
+
+                const clientName = clientFields[3].textContent.trim();
+                const clientNumber = clientFields[5].textContent.trim();
+                const clientLocation = clientFields[7].textContent.trim();
+
+                document.getElementById("client-name").value = clientName;
+                document.getElementById("client-number").value = clientNumber;
+                document.getElementById("client-location").value = clientLocation;
+
+
+            }
+        </script>
+
+</body>
+
+</html>
