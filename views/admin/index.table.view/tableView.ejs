@@ -5,6 +5,7 @@
         <p class="uppercase phead none">Location</p>
         <p class="uppercase phead none">BHK</p>
         <p class="uppercase phead none">Floor</p>
+        <p class="uppercase phead none">______</p>
         <p class="uppercase phead none">action</p>
         <!-- ------resposnive class------- -->
         <!-- <p class="responsive uppercase phead hide block">project details</p> -->
@@ -39,6 +40,10 @@
                     <p class="emp_date">
                         <span class="uppercase hide block phead">Floor</span>
                         <span>Floor- <%= e.floor %></span>
+                    </p>
+                    <p class="emp_date">
+                        <span class="uppercase hide block phead">Amount</span>
+                        <span> <%= e?.amount %></span>
                     </p>
                     <p class="flexy">
                         <span class="edit-btn pressEffect" onclick="EditPropertie(this, <%= e.id %>)">Edit</span>

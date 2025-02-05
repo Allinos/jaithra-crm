@@ -17,6 +17,10 @@
     <title>Admin | Zroperties</title>
 </head>
 <style>
+    .grid {
+        grid-template-columns: 3rem 1fr 1fr 6rem 6rem 6rem 8.5rem 3rem 2rem;
+    }
+
     #popupCtn {
 
         font-family: Arial, sans-serif;
@@ -343,6 +347,7 @@
         padding: 10px;
         border-radius: 13px;
     }
+
     .info_pagination .views {
         display: flex;
         align-items: center;
@@ -489,87 +494,94 @@
             </div>
 
             <!-- ----------- DATA Grid or Table----------- -->
-            <% if (viewMode === "grid") { %>
+            <% if (viewMode==="grid" ) { %>
                 <%- include('./index.table.view/gridView.ejs') %>
-            <% } else { %>
-                <%- include('./index.table.view/tableView') %>
-            <% } %>
-            <!-- ----------POPUPS----------------- -->
-            <div class="main-dropdown">
-                <div class="edit-menu common_dropdown">
-                    <form action="" id="updatesForm" method="POST">
-                        <h4 class="uppercase">Contact Details</h4>
-                        <div class="edit-grid">
-                            <div class="field block">
-                                <label for="name">Id</label>
-                                <input type="text" name="id" id="id" placeholder="">
-                            </div>
-                            <div class="field">
-                                <label for="name">Flat Name</label>
-                                <input type="text" name="name" id="ename" placeholder="e.g.: Mintu Sharma">
-                            </div>
-                            <!-- <div class="field">
+                    <% } else { %>
+                        <%- include('./index.table.view/tableView') %>
+                            <% } %>
+                                <!-- ----------POPUPS----------------- -->
+                                <div class="main-dropdown">
+                                    <div class="edit-menu common_dropdown">
+                                        <form action="" id="updatesForm" method="POST">
+                                            <h4 class="uppercase">Contact Details</h4>
+                                            <div class="edit-grid">
+                                                <div class="field block">
+                                                    <label for="name">Id</label>
+                                                    <input type="text" name="id" id="id" placeholder="">
+                                                </div>
+                                                <div class="field">
+                                                    <label for="name">Flat Name</label>
+                                                    <input type="text" name="name" id="ename"
+                                                        placeholder="e.g.: Mintu Sharma">
+                                                </div>
+                                                <!-- <div class="field">
                                 <label for="cnumber">Flat Number</label>
                                 <input type="text" name="contact" id="enumber" placeholder="e.g.: 9874561230">
                             </div> -->
-                            <div class="field">
-                                <label for="address">Location</label>
-                                <input type="text" name="location" id="location" placeholder="e.g.: Nagaon">
-                            </div>
-                            <div class="field">
-                                <label for="address">BHK</label>
-                                <input type="text" name="location" id="bhk" placeholder="e.g.: Nagaon">
-                            </div>
-                        </div>
+                                                <div class="field">
+                                                    <label for="address">Location</label>
+                                                    <input type="text" name="location" id="location"
+                                                        placeholder="e.g.: Nagaon">
+                                                </div>
+                                                <div class="field">
+                                                    <label for="address">BHK</label>
+                                                    <input type="text" name="location" id="bhk"
+                                                        placeholder="e.g.: Nagaon">
+                                                </div>
+                                            </div>
 
-                        <div class="edit-grid">
-                            <div class="field">
-                                <label for="floor">Floor</label>
-                                <input type="number" name="floor" id="floor" placeholder="e.g.: 4">
-                            </div>
-                            <div class="field">
-                                <label for="mapLink">Map Link</label>
-                                <input type="url" name="map_link" id="mapLink"
-                                    placeholder="e.g.: https://maps.google.com/...">
-                            </div>
-                            <div class="field">
-                                <label for="ownerName">Owner Name</label>
-                                <input type="text" name="owner_name" id="ownerName" placeholder="e.g.: Mintu Sharma">
-                            </div>
-                            <div class="field">
-                                <label for="ownerNumber">Owner Number</label>
-                                <input type="text" name="owner_number" id="ownerNumber" placeholder="e.g.: 9874561230">
-                            </div>
-                            <div class="field">
-                                <label for="category">Category</label>
-                                <select name="category" id="category">
-                                    <option value="Residential">Residential</option>
-                                    <optgroup label="Residential">
-                                        <option value="ResidentialRent"> Rent</option>
-                                        <option value="ResidentialSale"> Sale</option>
-                                    </optgroup>
-                                    <option value="Commercial">Commercial</option>
-                                    <optgroup label="Commercial">
-                                        <option value="CommercialRent"> Rent</option>
-                                        <option value="CommercialSale"> Sale</option>
-                                    </optgroup>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="drop-btn flex">
-                            <button type="submit" class="uppercase">Update</button>
-                            <button type="reset" onclick="CloseForm()" class="uppercase">Cancel</button>
-                        </div>
-                    </form>
+                                            <div class="edit-grid">
+                                                <div class="field">
+                                                    <label for="floor">Floor</label>
+                                                    <input type="number" name="floor" id="floor" placeholder="e.g.: 4">
+                                                </div>
+                                                <div class="field">
+                                                    <label for="mapLink">Map Link</label>
+                                                    <input type="url" name="map_link" id="mapLink"
+                                                        placeholder="e.g.: https://maps.google.com/...">
+                                                </div>
+                                                <div class="field">
+                                                    <label for="ownerName">Owner Name</label>
+                                                    <input type="text" name="owner_name" id="ownerName"
+                                                        placeholder="e.g.: Mintu Sharma">
+                                                </div>
+                                                <div class="field">
+                                                    <label for="ownerNumber">Owner Number</label>
+                                                    <input type="text" name="owner_number" id="ownerNumber"
+                                                        placeholder="e.g.: 9874561230">
+                                                </div>
+                                                <div class="field">
+                                                    <label for="category">Category</label>
+                                                    <select name="category" id="category">
+                                                        <option value="Residential">Residential</option>
+                                                        <optgroup label="Residential">
+                                                            <option value="ResidentialRent"> Rent</option>
+                                                            <option value="ResidentialSale"> Sale</option>
+                                                        </optgroup>
+                                                        <option value="Commercial">Commercial</option>
+                                                        <optgroup label="Commercial">
+                                                            <option value="CommercialRent"> Rent</option>
+                                                            <option value="CommercialSale"> Sale</option>
+                                                        </optgroup>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="drop-btn flex">
+                                                <button type="submit" class="uppercase">Update</button>
+                                                <button type="reset" onclick="CloseForm()"
+                                                    class="uppercase">Cancel</button>
+                                            </div>
+                                        </form>
 
-                </div>
-            </div>
+                                    </div>
+                                </div>
         </main>
         </section>
         <div id="popupCtn">
             <div class="popup" id="popup">
-                <div class="close-btn " id="closePopup"> <span class="close pressEffect"><svg xmlns="http://www.w3.org/2000/svg"
-                            x="0px" y="0px" width="50" height="50" fill="white" viewBox="0 0 50 50">
+                <div class="close-btn " id="closePopup"> <span class="close pressEffect"><svg
+                            xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="50" height="50" fill="white"
+                            viewBox="0 0 50 50">
                             <path
                                 d="M25,2C12.319,2,2,12.319,2,25s10.319,23,23,23s23-10.319,23-23S37.681,2,25,2z M33.71,32.29c0.39,0.39,0.39,1.03,0,1.42	C33.51,33.9,33.26,34,33,34s-0.51-0.1-0.71-0.29L25,26.42l-7.29,7.29C17.51,33.9,17.26,34,17,34s-0.51-0.1-0.71-0.29	c-0.39-0.39-0.39-1.03,0-1.42L23.58,25l-7.29-7.29c-0.39-0.39-0.39-1.03,0-1.42c0.39-0.39,1.03-0.39,1.42,0L25,23.58l7.29-7.29	c0.39-0.39,1.03-0.39,1.42,0c0.39,0.39,0.39,1.03,0,1.42L26.42,25L33.71,32.29z">
                             </path>

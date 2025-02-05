@@ -33,6 +33,11 @@
                         <p><strong>Contact:</strong>
                             <%= e.owner_number %>
                         </p>
+                        <% if (e.amount) { %>
+                        <p><strong>Amount:</strong>
+                            <%= e.amount %>
+                        </p>
+                        <% } %>
                         <a href="<%= e.map_link %>" target="_blank">
                             <span class="view-map pressEffect">View on Map
                                 <svg width="15" height="14" xmlns="http://www.w3.org/2000/svg" version="1.1"

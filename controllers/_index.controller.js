@@ -6,7 +6,7 @@ const upload = require("../utils/uploadsHandler");
 // ---- All Index routes here ----
 exports.indexDeshboard = async (req, res) => {
   if (req.session.isLoggedIn == true && req.session.role == "admin") {
-    const viewMode = req.query.viewMode || req.session.viewMode || "table";
+    const viewMode = req.query.viewMode || req.session.viewMode || "grid";
     if (req.query.viewMode) {
       req.session.viewMode = viewMode;
       res.redirect("/admin/dashboard?from=0&to=1");
@@ -145,7 +145,7 @@ exports.insertProp = async (req, res) => {
         }
   
         // Insert Property Data First
-        const query = `INSERT INTO properties (name, number, location, bhk, floor, map_link, owner_name, owner_number, category) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+        const query = `INSERT INTO properties (name, number, location, bhk, floor, map_link, owner_name, owner_number, category,amount) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?)`;
         const values = [
           formData.name,
           formData.number,
@@ -156,6 +156,7 @@ exports.insertProp = async (req, res) => {
           formData.owner_name,
           formData.owner_number,
           formData.category,
+          formData.amount,
         ];
   
         const [result] = await db.query(query, values);
@@ -164,22 +165,13 @@ exports.insertProp = async (req, res) => {
         if (!propertyId) {
           throw new Error("Property insertion failed. No propertyId returned.");
         }
-  
-        // Prepare Image Insert Queries
         const imageQuery = `INSERT INTO prop_images (prop_id, location, pref) VALUES ?`;
         const imageData = uploadedFiles.map((file) => [propertyId, file.filename, file.originalname]);
-  
         console.log("Start Time:", Date.now());
-  
-        // Insert All Images at Once Using Bulk Insert (Much Faster)
         await db.query(imageQuery, [imageData]);
-  
         console.log("End Time:", Date.now());
         console.log("All images inserted successfully");
-  
-        // Respond to the client immediately, don't block UI
         res.redirect("/admin/dashboard?from=0&to=1");
-  
       } catch (error) {
         console.error("Error inserting property:", error);
         res.status(500).json({ msg: "Failed to insert property." });
@@ -201,7 +193,7 @@ exports.PropertiesForm = async (req, res) => {
 
 exports.PropertiesDetailsPage = async (req, res) => {
   const query = `SELECT properties.id AS property_id,
-    properties.name,properties.number,properties.location,properties.bhk,properties.floor,properties.map_link,properties.owner_name,properties.owner_number,properties.category,prop_images.prop_id,
+    properties.name,properties.number,properties.location,properties.bhk,properties.floor,properties.map_link,properties.owner_name,properties.owner_number,properties.category,properties.amount,prop_images.prop_id,
     prop_images.location AS image_location,prop_images.pref AS image_pref FROM properties LEFT JOIN prop_images ON prop_images.prop_id = properties.id WHERE properties.id = ?;`;
   try {
     const [results] = await db.query(query, [req.params.id]);
@@ -219,6 +211,7 @@ exports.PropertiesDetailsPage = async (req, res) => {
       owner_name: results[0].owner_name,
       owner_number: results[0].owner_number,
       category: results[0].category,
+      amount: results[0].amount,
       prop_id: results[0].prop_id,
     };
     const images = results.map((row) => ({
