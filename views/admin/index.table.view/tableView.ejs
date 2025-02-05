@@ -41,9 +41,10 @@
                         <span class="uppercase hide block phead">Floor</span>
                         <span>Floor- <%= e.floor %></span>
                     </p>
+                
                     <p class="emp_date">
                         <span class="uppercase hide block phead">Amount</span>
-                        <span> <%= e?.amount %>/-</span>
+                        <span> <%= e.amount? e.amount+'/-':e.amount %></span>
                     </p>
                     <p class="flexy">
                         <span class="edit-btn pressEffect" onclick="EditPropertie(this, <%= e.id %>)">Edit</span>
