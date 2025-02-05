@@ -6,19 +6,26 @@ const upload = require("../utils/uploadsHandler");
 // ---- All Index routes here ----
 exports.indexDeshboard = async (req, res) => {
   if (req.session.isLoggedIn == true && req.session.role == "admin") {
-    const viewMode = req.query.viewMode||req.session.viewMode||"table";
+    const viewMode = req.query.viewMode || req.session.viewMode || "table";
     if (req.query.viewMode) {
       req.session.viewMode = viewMode;
-      res.redirect("/admin/dashboard?from=0&to=1")
+      res.redirect("/admin/dashboard?from=0&to=1");
       return;
     }
     const category = req.query.category;
     let query = `SELECT properties.*, MIN(prop_images.location) AS imgLink FROM properties LEFT JOIN prop_images ON properties.id = prop_images.prop_id`;
-    if (category) {query += ` WHERE  properties.category LIKE  ?`;}
+    if (category) {
+      query += ` WHERE  properties.category LIKE  ?`;
+    }
     query += ` GROUP BY properties.id`;
     try {
-      const [results] = await db.query(query, category ? [`%${category}%`] : []);
-      res.status(200).render("../views/admin/_index.ejs", { data: results,viewMode });
+      const [results] = await db.query(
+        query,
+        category ? [`%${category}%`] : []
+      );
+      res
+        .status(200)
+        .render("../views/admin/_index.ejs", { data: results, viewMode });
     } catch (error) {
       console.error("Error fetching properties:", error);
       res.status(500).send("Error fetching properties.");
@@ -66,22 +73,79 @@ exports.queriesPage = async (req, res) => {
 };
 
 exports.insertProp = async (req, res) => {
-  if (req.session.isLoggedIn == true && req.session.role == "admin") {
+  // if (req.session.isLoggedIn == true && req.session.role == "admin") {
+  //   upload.array("upload__inputfile", 20)(req, res, async (err) => {
+  //     if (err) {
+  //       console.error("File upload error:", err);
+  //       return res.status(500).send({ msg: "File upload failed." });
+  //     }
+
+  //     try {
+  //       const formData = req.body;
+  //       const uploadedFiles = req.files;
+  //       if (!uploadedFiles || uploadedFiles.length === 0) {
+  //         return res
+  //           .status(400)
+  //           .json({ message: "No files uploaded. Please upload files." });
+  //       }
+  //       const query = `INSERT INTO properties (name, number, location, bhk, floor, map_link, owner_name, owner_number, category) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);`;
+  //       const values = [
+  //         formData.name,
+  //         formData.number,
+  //         formData.location,
+  //         formData.bhk,
+  //         formData.floor,
+  //         formData.map_link,
+  //         formData.owner_name,
+  //         formData.owner_number,
+  //         formData.category,
+  //       ];
+  //       const [result] = await db.query(query, values);
+  //       const propertyId = result.insertId;
+  //       if (!propertyId) {
+  //         throw new Error("Property insertion failed. No propertyId returned.");
+  //       }
+  //       const imageQuery = `INSERT INTO prop_images (prop_id, location, pref) VALUES (?, ?, ?)`;
+  //       console.log("start Time"+ Date.now());
+  //       const imagePromises = uploadedFiles.map((file) => {
+  //         const imagePath = file.filename;
+  //         const imageName = file.originalname;
+  //         if (!imagePath || !imageName) {
+  //           console.error("Invalid image data:", file);
+  //           return Promise.reject("Invalid image data");
+  //         }
+  //         return db.query(imageQuery, [propertyId, imagePath, imageName]);
+  //       });
+  //       await Promise.all(imagePromises);
+  //       console.log("end Time"+ Date.now());
+  //       console.log("All images inserted successfully");
+  //       res.redirect("/admin/dashboard?from=0&to=1");
+  //     } catch (error) {
+  //       console.error("Error inserting property:", error);
+  //       res.status(500).send({ msg: "Failed to insert property." });
+  //     }
+  //   });
+  // } else {
+  //   res.redirect("/admin/login");
+  // }
+
+  if (req.session.isLoggedIn === true && req.session.role === "admin") {
     upload.array("upload__inputfile", 20)(req, res, async (err) => {
       if (err) {
         console.error("File upload error:", err);
-        return res.status(500).send({ msg: "File upload failed." });
+        return res.status(500).json({ msg: "File upload failed." });
       }
-
+  
       try {
         const formData = req.body;
         const uploadedFiles = req.files;
+  
         if (!uploadedFiles || uploadedFiles.length === 0) {
-          return res
-            .status(400)
-            .json({ message: "No files uploaded. Please upload files." });
+          return res.status(400).json({ msg: "No files uploaded. Please upload files." });
         }
-        const query = `INSERT INTO properties (name, number, location, bhk, floor, map_link, owner_name, owner_number, category) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);`;
+  
+        // Insert Property Data First
+        const query = `INSERT INTO properties (name, number, location, bhk, floor, map_link, owner_name, owner_number, category) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
         const values = [
           formData.name,
           formData.number,
@@ -93,32 +157,38 @@ exports.insertProp = async (req, res) => {
           formData.owner_number,
           formData.category,
         ];
+  
         const [result] = await db.query(query, values);
         const propertyId = result.insertId;
+  
         if (!propertyId) {
           throw new Error("Property insertion failed. No propertyId returned.");
         }
-        const imageQuery = `INSERT INTO prop_images (prop_id, location, pref) VALUES (?, ?, ?)`;
-        const imagePromises = uploadedFiles.map((file) => {
-          const imagePath = file.filename;
-          const imageName = file.originalname;
-          if (!imagePath || !imageName) {
-            console.error("Invalid image data:", file);
-            return Promise.reject("Invalid image data");
-          }
-          return db.query(imageQuery, [propertyId, imagePath, imageName]);
-        });
-        await Promise.all(imagePromises);
+  
+        // Prepare Image Insert Queries
+        const imageQuery = `INSERT INTO prop_images (prop_id, location, pref) VALUES ?`;
+        const imageData = uploadedFiles.map((file) => [propertyId, file.filename, file.originalname]);
+  
+        console.log("Start Time:", Date.now());
+  
+        // Insert All Images at Once Using Bulk Insert (Much Faster)
+        await db.query(imageQuery, [imageData]);
+  
+        console.log("End Time:", Date.now());
         console.log("All images inserted successfully");
+  
+        // Respond to the client immediately, don't block UI
         res.redirect("/admin/dashboard?from=0&to=1");
+  
       } catch (error) {
         console.error("Error inserting property:", error);
-        res.status(500).send({ msg: "Failed to insert property." });
+        res.status(500).json({ msg: "Failed to insert property." });
       }
     });
   } else {
     res.redirect("/admin/login");
   }
+  
 };
 
 exports.PropertiesForm = async (req, res) => {
@@ -156,7 +226,9 @@ exports.PropertiesDetailsPage = async (req, res) => {
       pref: row.image_pref,
     }));
     const responseData = { metadata, images };
-    res.status(200).render("../views/admin/propertieDetails.ejs", { data: responseData });
+    res
+      .status(200)
+      .render("../views/admin/propertieDetails.ejs", { data: responseData });
   } catch (error) {
     console.error("Error fetching properties:", error);
     res.status(500).send("Error fetching properties.");
