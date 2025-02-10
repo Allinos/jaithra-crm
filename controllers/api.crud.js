@@ -75,18 +75,6 @@ exports.PropertieUpdate = async (req, res) => {
     owner_number,
     category,
   } = req.body;
-  console.log(
-    id,
-    name,
-    location,
-    bhk,
-    floor,
-    map_link,
-    owner_name,
-    owner_number,
-    category
-  );
-
   const sql = `UPDATE properties SET location = ?, bhk = ?, floor = ?, map_link = ?, owner_name = ?, owner_number = ?, category = ?, name = ? WHERE id = ? `;
   try {
     const [result] = await databaseCon.query(sql, [

@@ -5,24 +5,54 @@ const upload = require("../utils/uploadsHandler");
 
 // ---- All Index routes here ----
 exports.indexDeshboard = async (req, res) => {
-  if (req.session.isLoggedIn == true && req.session.role == "admin") {
+  if (req.session.isLoggedIn === true && req.session.role === "admin") {
     const viewMode = req.query.viewMode || req.session.viewMode || "grid";
+
+    // Update session view mode and redirect
     if (req.query.viewMode) {
       req.session.viewMode = viewMode;
-      res.redirect("/admin/dashboard?from=0&to=1");
-      return;
+      return res.redirect("/admin/dashboard?from=0&to=1");
     }
-    const category = req.query.category;
-    let query = `SELECT properties.*, MIN(prop_images.location) AS imgLink FROM properties LEFT JOIN prop_images ON properties.id = prop_images.prop_id`;
-    if (category) {
-      query += ` WHERE  properties.category LIKE  ?`;
-    }
-    query += ` GROUP BY properties.id`;
+
     try {
-      const [results] = await db.query(
-        query,
-        category ? [`%${category}%`] : []
-      );
+      let query;
+      let params = [];
+
+      // Handling search functionality
+      if (req.query.search) {
+        const searchTerm = `%${req.query.search}%`;
+        query = `  SELECT *
+        FROM   properties
+        WHERE  location LIKE ?
+        OR bhk LIKE ?
+        OR floor LIKE ?
+        OR owner_name LIKE ?
+        OR owner_number LIKE ?
+        OR NAME LIKE ?
+        ORDER  BY id DESC;`;
+        params = [
+          searchTerm,
+          searchTerm,
+          searchTerm,
+          searchTerm,
+          searchTerm,
+          searchTerm,
+        ];
+      } else {
+        query = `
+          SELECT properties.*, MIN(prop_images.location) AS imgLink 
+          FROM properties 
+          LEFT JOIN prop_images ON properties.id = prop_images.prop_id
+        `;
+        if (req.query.category) {
+          query += ` WHERE properties.category LIKE ? `;
+          params.push(`%${req.query.category}%`);
+        }
+        query += ` GROUP BY properties.id ORDER BY properties.id DESC `;
+      }
+      // Execute the database query
+      const [results] = await db.query(query, params);
+      // Render the admin dashboard with fetched data
       res
         .status(200)
         .render("../views/admin/_index.ejs", { data: results, viewMode });
@@ -37,7 +67,7 @@ exports.indexDeshboard = async (req, res) => {
 
 exports.clientsPage = async (req, res) => {
   if (req.session.isLoggedIn == true && req.session.role == "admin") {
-    const query = `select * from clients;`;
+    const query = `select * from clients ORDER BY id DESC`;
     try {
       const [results] = await db.query(query);
       res.status(200).render("../views/admin/clients.ejs", { data: results });
@@ -49,7 +79,7 @@ exports.clientsPage = async (req, res) => {
 };
 exports.ownersPage = async (req, res) => {
   if (req.session.isLoggedIn == true && req.session.role == "admin") {
-    const query = `select * from owners;`;
+    const query = `select * from owners ORDER BY id DESC`;
     try {
       const [results] = await db.query(query);
       res.status(200).render("../views/admin/owners.ejs", { data: results });
@@ -73,77 +103,23 @@ exports.queriesPage = async (req, res) => {
 };
 
 exports.insertProp = async (req, res) => {
-  // if (req.session.isLoggedIn == true && req.session.role == "admin") {
-  //   upload.array("upload__inputfile", 20)(req, res, async (err) => {
-  //     if (err) {
-  //       console.error("File upload error:", err);
-  //       return res.status(500).send({ msg: "File upload failed." });
-  //     }
-
-  //     try {
-  //       const formData = req.body;
-  //       const uploadedFiles = req.files;
-  //       if (!uploadedFiles || uploadedFiles.length === 0) {
-  //         return res
-  //           .status(400)
-  //           .json({ message: "No files uploaded. Please upload files." });
-  //       }
-  //       const query = `INSERT INTO properties (name, number, location, bhk, floor, map_link, owner_name, owner_number, category) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);`;
-  //       const values = [
-  //         formData.name,
-  //         formData.number,
-  //         formData.location,
-  //         formData.bhk,
-  //         formData.floor,
-  //         formData.map_link,
-  //         formData.owner_name,
-  //         formData.owner_number,
-  //         formData.category,
-  //       ];
-  //       const [result] = await db.query(query, values);
-  //       const propertyId = result.insertId;
-  //       if (!propertyId) {
-  //         throw new Error("Property insertion failed. No propertyId returned.");
-  //       }
-  //       const imageQuery = `INSERT INTO prop_images (prop_id, location, pref) VALUES (?, ?, ?)`;
-  //       console.log("start Time"+ Date.now());
-  //       const imagePromises = uploadedFiles.map((file) => {
-  //         const imagePath = file.filename;
-  //         const imageName = file.originalname;
-  //         if (!imagePath || !imageName) {
-  //           console.error("Invalid image data:", file);
-  //           return Promise.reject("Invalid image data");
-  //         }
-  //         return db.query(imageQuery, [propertyId, imagePath, imageName]);
-  //       });
-  //       await Promise.all(imagePromises);
-  //       console.log("end Time"+ Date.now());
-  //       console.log("All images inserted successfully");
-  //       res.redirect("/admin/dashboard?from=0&to=1");
-  //     } catch (error) {
-  //       console.error("Error inserting property:", error);
-  //       res.status(500).send({ msg: "Failed to insert property." });
-  //     }
-  //   });
-  // } else {
-  //   res.redirect("/admin/login");
-  // }
-
   if (req.session.isLoggedIn === true && req.session.role === "admin") {
     upload.array("upload__inputfile", 20)(req, res, async (err) => {
       if (err) {
         console.error("File upload error:", err);
         return res.status(500).json({ msg: "File upload failed." });
       }
-  
+
       try {
         const formData = req.body;
         const uploadedFiles = req.files;
-  
+
         if (!uploadedFiles || uploadedFiles.length === 0) {
-          return res.status(400).json({ msg: "No files uploaded. Please upload files." });
+          return res
+            .status(400)
+            .json({ msg: "No files uploaded. Please upload files." });
         }
-  
+
         // Insert Property Data First
         const query = `INSERT INTO properties (name, number, location, bhk, floor, map_link, owner_name, owner_number, category,amount) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?)`;
         const values = [
@@ -158,15 +134,19 @@ exports.insertProp = async (req, res) => {
           formData.category,
           formData.amount,
         ];
-  
+
         const [result] = await db.query(query, values);
         const propertyId = result.insertId;
-  
+
         if (!propertyId) {
           throw new Error("Property insertion failed. No propertyId returned.");
         }
         const imageQuery = `INSERT INTO prop_images (prop_id, location, pref) VALUES ?`;
-        const imageData = uploadedFiles.map((file) => [propertyId, file.filename, file.originalname]);
+        const imageData = uploadedFiles.map((file) => [
+          propertyId,
+          file.filename,
+          file.originalname,
+        ]);
         console.log("Start Time:", Date.now());
         await db.query(imageQuery, [imageData]);
         console.log("End Time:", Date.now());
@@ -180,7 +160,6 @@ exports.insertProp = async (req, res) => {
   } else {
     res.redirect("/admin/login");
   }
-  
 };
 
 exports.PropertiesForm = async (req, res) => {
@@ -226,4 +205,36 @@ exports.PropertiesDetailsPage = async (req, res) => {
     console.error("Error fetching properties:", error);
     res.status(500).send("Error fetching properties.");
   }
+};
+
+exports.search = async (req, res) => {
+  const limit = 10;
+  const { search, from, to } = req.query;
+  const viewMode = req.session.viewMode || "grid";
+  const offset = from * limit;
+  let query = `SELECT * FROM properties WHERE location LIKE ? OR bhk LIKE ? OR floor LIKE ? OR owner_name LIKE ? OR owner_number LIKE ? OR
+        name LIKE ?  ORDER BY id DESC  LIMIT ? OFFSET ?`;
+  const searchTerm = `%${search}%`;
+  db.query(
+    query,
+    [
+      searchTerm,
+      searchTerm,
+      searchTerm,
+      searchTerm,
+      searchTerm,
+      searchTerm,
+      parseInt(limit),
+      parseInt(offset),
+    ],
+    (err, results) => {
+      if (err) {
+        console.error("Error executing query:", err);
+        return res.status(500).json({ error: "Database error" });
+      }
+      res
+        .status(200)
+        .render("../views/admin/_index.ejs", { data: results, viewMode });
+    }
+  );
 };

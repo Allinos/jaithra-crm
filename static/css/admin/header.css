@@ -310,6 +310,19 @@ header {
 }
 
 /* ----LIST notification---- */
+.search-btn {
+    width: 45px;
+    height: 45px;
+    fill: var(--primary-color);
+}
+.search-btn svg {
+    width: 35px;
+    height: 35px;
+    fill: var(--primary-color);
+}
+.search-btn:hover {
+    fill: white;
+}
 .notification-list {
     position: absolute;
     top: 5rem;

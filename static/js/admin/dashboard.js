@@ -46,19 +46,32 @@ function closeSubBox() {
   const mainDrop = document.querySelector(".main-dropdown");
   mainDrop.classList.remove("active");
 }
-
 function search() {
   var inpValue = document.getElementById("searchQuery").value.toLowerCase();
-  var elmCtn = document.querySelectorAll(".accordion-content");
-  elmCtn.forEach(function (e) {
-    var contentText = e.textContent.toLowerCase();
-    if (contentText.includes(inpValue)) {
-      e.style.display = "block";
-    } else {
-      e.style.display = "none";
-    }
-  });
+  var gridContainer = document.querySelector(".main-card");
+  if (gridContainer) {
+    var cards = gridContainer.querySelectorAll(".cards_item");
+    cards.forEach(function (card) {
+      var contentText = card.textContent.toLowerCase();
+      if (contentText.includes(inpValue)) {
+        card.style.display = "block"; 
+      } else {
+        card.style.display = "none"; 
+      }
+    });
+  } else {
+    var elmCtn = document.querySelectorAll(".accordion-content");
+    elmCtn.forEach(function (e) {
+      var contentText = e.textContent.toLowerCase();
+      if (contentText.includes(inpValue)) {
+        e.style.display = "block";
+      } else {
+        e.style.display = "none";
+      }
+    });
+  }
 }
+
 
 async function DeleteProp(e, o) {
   Swal.fire({
@@ -187,4 +200,14 @@ function CloseForm() {
 }
 function ViewChanger(e) {
   location.href=location.href+"&viewMode="+e;
+}
+function SearchParamInput(e) {
+  let searchValue =document.getElementById(e).value;
+  const url = new URL(window.location.href);
+  if (searchValue) {
+    url.searchParams.set("search", searchValue);
+  } else {
+    url.searchParams.delete("search"); 
+  }
+  window.location.href = url.toString();
 }

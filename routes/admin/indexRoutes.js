@@ -10,6 +10,7 @@ router.post("/form", mainController.insertProp);
 router.get("/clients", mainController.clientsPage);
 router.get("/owners", mainController.ownersPage);
 // router.get("/queries", mainController.ownersPage);
+router.get("/search", mainController.search);
 
 
 module.exports = router;
