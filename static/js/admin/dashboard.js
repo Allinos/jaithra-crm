@@ -201,13 +201,4 @@ function CloseForm() {
 function ViewChanger(e) {
   location.href=location.href+"&viewMode="+e;
 }
-function SearchParamInput(e) {
-  let searchValue =document.getElementById(e).value;
-  const url = new URL(window.location.href);
-  if (searchValue) {
-    url.searchParams.set("search", searchValue);
-  } else {
-    url.searchParams.delete("search"); 
-  }
-  window.location.href = url.toString();
-}
+

@@ -7,18 +7,13 @@ const upload = require("../utils/uploadsHandler");
 exports.indexDeshboard = async (req, res) => {
   if (req.session.isLoggedIn === true && req.session.role === "admin") {
     const viewMode = req.query.viewMode || req.session.viewMode || "grid";
-
-    // Update session view mode and redirect
     if (req.query.viewMode) {
       req.session.viewMode = viewMode;
       return res.redirect("/admin/dashboard?from=0&to=1");
     }
-
     try {
       let query;
       let params = [];
-
-      // Handling search functionality
       if (req.query.search) {
         const searchTerm = `%${req.query.search}%`;
         query = `  SELECT *
@@ -50,9 +45,7 @@ exports.indexDeshboard = async (req, res) => {
         }
         query += ` GROUP BY properties.id ORDER BY properties.id DESC `;
       }
-      // Execute the database query
       const [results] = await db.query(query, params);
-      // Render the admin dashboard with fetched data
       res
         .status(200)
         .render("../views/admin/_index.ejs", { data: results, viewMode });
@@ -67,28 +60,50 @@ exports.indexDeshboard = async (req, res) => {
 
 exports.clientsPage = async (req, res) => {
   if (req.session.isLoggedIn == true && req.session.role == "admin") {
-    const query = `select * from clients ORDER BY id DESC`;
     try {
-      const [results] = await db.query(query);
-      res.status(200).render("../views/admin/clients.ejs", { data: results });
+      let query = `SELECT * FROM clients ORDER BY id DESC`;
+      let params = [];
+
+      if (req.query.search) {
+        query = `SELECT * FROM clients WHERE name LIKE ? OR budget LIKE ? OR number LIKE ? OR location LIKE ? ORDER BY id DESC`;
+        const search = `%${req.query.search}%`;
+        params = [search, search, search];
+      }
+
+      const [results] = await db.query(query, params);
+      res.status(200).render("../views/admin/clients.ejs", { data: results, search: req.query.search || "" });
     } catch (error) {
-      console.error("E rror fetching properties:", error);
-      res.status(500).send("Error fetching properties.");
+      console.error("Error fetching clients:", error);
+      res.status(500).send("Error fetching clients.");
     }
+  } else {
+    res.redirect("/admin/login");
   }
 };
+
 exports.ownersPage = async (req, res) => {
   if (req.session.isLoggedIn == true && req.session.role == "admin") {
-    const query = `select * from owners ORDER BY id DESC`;
     try {
-      const [results] = await db.query(query);
-      res.status(200).render("../views/admin/owners.ejs", { data: results });
+      let query = `SELECT * FROM owners ORDER BY id DESC`;
+      let params = [];
+
+      if (req.query.search) {
+        query = `SELECT * FROM owners WHERE name LIKE ? OR email LIKE ? OR contact LIKE ? ORDER BY id DESC`;
+        const search = `%${req.query.search}%`;
+        params = [search, search, search];
+      }
+
+      const [results] = await db.query(query, params);
+      res.status(200).render("../views/admin/owners.ejs", { data: results, search: req.query.search || "" });
     } catch (error) {
-      console.error("E rror fetching properties:", error);
-      res.status(500).send("Error fetching properties.");
+      console.error("Error fetching owners:", error);
+      res.status(500).send("Error fetching owners.");
     }
+  } else {
+    res.redirect("/admin/login");
   }
 };
+
 exports.queriesPage = async (req, res) => {
   if (req.session.isLoggedIn == true && req.session.role == "admin") {
     const query = `select * from queries;`;
