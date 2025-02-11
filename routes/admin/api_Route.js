@@ -20,6 +20,6 @@ api.post('/user-manager/add', NormalAPI.addUser);
 api.get('/user-manager/get/:id', NormalAPI.getOneUser);
 api.put('/user-manager/update/:id', NormalAPI.updateUser);
 api.put('/user-manager/update/pwd/:id', NormalAPI.changePwdUser);
-api.delete('/user-manager//:id', NormalAPI.deleteUser);
+api.delete('/user-manager/delete/:id', NormalAPI.deleteUser);
 
 module.exports = api;
