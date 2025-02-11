@@ -99,7 +99,8 @@
                             <div class="user-details">
                                 <p class="username"><%= user.name %></p>
                                 <p class="username"><strong>Role:</strong> (<%= user.role  %>)</p>
-                                <p class="userdesignation"><strong>Designation: </strong><%= user.job_role  %></p>
+                                <p class="userdesignation"><strong>Designation: </strong></p>
+                                <p class="userdesignation"><%= user.job_role  %></p>
                             </div>
                         </div>
                         <!-- -------------------  -->
@@ -196,7 +197,7 @@
                                 </div>
                             </div>
                             <div class="profile-project-details">
-                                <div class="profile-main hide">
+                                <div class="profile-main hide" style="display: none!important;">
                                     <div class="normal">
                                         N<span>ormal Projects</span>
                                     </div>
@@ -213,7 +214,7 @@
                                         <p>Completed</p>
                                     </div>
                                 </div>
-                                <div class="profile-main hide">
+                                <div class="profile-main hide" style="display: none!important;">
                                     <div class="normal misc">
                                         M<span>iscellaneous Projects</span>
                                     </div>

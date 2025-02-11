@@ -1,4 +1,5 @@
 
+  
 let ReqURI = { addUser: BASE_URL + `/add`, updUser: BASE_URL + `/update/`, updUserPwd: BASE_URL + `/update/pwd/` }
 function Disable_BtnHandler(e, ep) {
     if (ep) {
@@ -182,4 +183,3 @@ function search() {
         } else { e.style.display = 'none'; }
     });
 }
-AlertNotifier('','', 'success')

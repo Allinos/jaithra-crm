@@ -268,7 +268,7 @@
                 <%- include('../partials/pagin.ejs') %>
             </div>
             <!-- -----DROPDOWN----- -->
-            <div class="main-dropdown hide">
+            <div class="main-dropdown ">
                 <div class="edit-menu common_dropdown">
                     <form action="" id="mainForm" method="POST">
                         <h4 class="uppercase">Client Details</h4>
@@ -318,7 +318,6 @@
 
 
         <script>
-            // Function to populate the form with existing client details
             function editClient(e, Id) {
                 let parentCtn = e.parentElement.parentElement
                 const clientData = document.getElementById("client-data");
@@ -330,7 +329,6 @@
                 editMenu.style.display = `block`;
                 const form = document.getElementById('mainForm');
                 form.action = `/admin/clients/update/${Id}`;
-
 
                 // Extract values
                 const clientName = clientFields[3].textContent.trim();
