@@ -16,4 +16,10 @@ api.post("/owners", NormalAPI.AddOwner);
 api.post("/owners/update/:id", NormalAPI.UpdateOwnersByID);
 api.delete("/owners/delete/:id", NormalAPI.DeleteOwnersByID);
 
+api.post('/user-manager/add', NormalAPI.addUser);
+api.get('/user-manager/get/:id', NormalAPI.getOneUser);
+api.put('/user-manager/update/:id', NormalAPI.updateUser);
+api.put('/user-manager/update/pwd/:id', NormalAPI.changePwdUser);
+api.delete('/user-manager//:id', NormalAPI.deleteUser);
+
 module.exports = api;

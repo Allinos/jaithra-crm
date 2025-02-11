@@ -1,5 +1,5 @@
 const databaseCon = require("../config/db.config.js");
-// const { EmailSender } = require("../utils/emailSender.js");
+const {createHmac}=require('crypto')
 const fs = require("fs");
 const path = require("path");
 
@@ -107,11 +107,6 @@ exports.PropertieUpdate = async (req, res) => {
 
 // Add Client
 exports.AddClient = async (req, res) => {
-  if (!req.session.isLoggedIn || req.session.role !== "admin") {
-    return res
-      .status(403)
-      .json({ message: "Unauthorized access. Admin role required." });
-  }
   const { name, number, location, bhk, budget } = req.body;
   try {
     const [result] = await databaseCon.query(
@@ -129,18 +124,10 @@ exports.AddClient = async (req, res) => {
 
 // Add Owner
 exports.AddOwner = async (req, res) => {
-  if (!req.session.isLoggedIn || req.session.role !== "admin") {
-    return res
-      .status(403)
-      .json({ message: "Unauthorized access. Admin role required." });
-  }
-
   const { name, number, location } = req.body;
-
   if (!name || !number || !location) {
     return res.status(400).json({ message: "All fields are required." });
   }
-
   try {
     const [result] = await databaseCon.query(
       "INSERT INTO owners (name, number, location) VALUES (?, ?, ?)",
@@ -157,12 +144,6 @@ exports.AddOwner = async (req, res) => {
 
 // Update Clients by ID
 exports.UpdateClientsByID = async (req, res) => {
-  if (!req.session.isLoggedIn || req.session.role !== "admin") {
-    return res
-      .status(403)
-      .json({ message: "Unauthorized access. Admin role required." });
-  }
-
   const { id } = req.params;
   const { name, number, location, bhk, budget } = req.body;
 
@@ -189,11 +170,6 @@ exports.UpdateClientsByID = async (req, res) => {
   }
 };
 exports.StatusOfClientsByID = async (req, res) => {
-  if (!req.session.isLoggedIn || req.session.role !== "admin") {
-    return res
-      .status(403)
-      .json({ message: "Unauthorized access. Admin role required." });
-  }
   const { id } = req.params;
   const { status } = req.body;
 
@@ -223,11 +199,6 @@ exports.StatusOfClientsByID = async (req, res) => {
   }
 };
 exports.DateofClientsByID = async (req, res) => {
-  if (!req.session.isLoggedIn || req.session.role !== "admin") {
-    return res
-      .status(403)
-      .json({ message: "Unauthorized access. Admin role required." });
-  }
   const { id } = req.params;
   const { date } = req.body;
   try {
@@ -253,11 +224,6 @@ exports.DateofClientsByID = async (req, res) => {
 };
 // Delete Clients by ID
 exports.DeleteClientsByID = async (req, res) => {
-  if (!req.session.isLoggedIn || req.session.role !== "admin") {
-    return res
-      .status(403)
-      .json({ message: "Unauthorized access. Admin role required." });
-  }
   const { id } = req.params;
   try {
     const [result] = await databaseCon.query(
@@ -284,12 +250,6 @@ exports.DeleteClientsByID = async (req, res) => {
 
 // Update Owners by ID
 exports.UpdateOwnersByID = async (req, res) => {
-  if (!req.session.isLoggedIn || req.session.role !== "admin") {
-    return res
-      .status(403)
-      .json({ message: "Unauthorized access. Admin role required." });
-  }
-
   const { id } = req.params;
   const { name, number, location } = req.body;
 
@@ -320,11 +280,6 @@ exports.UpdateOwnersByID = async (req, res) => {
 
 // Delete Owners by ID
 exports.DeleteOwnersByID = async (req, res) => {
-  if (!req.session.isLoggedIn || req.session.role !== "admin") {
-    return res
-      .status(403)
-      .json({ message: "Unauthorized access. Admin role required." });
-  }
   const { id } = req.params;
   try {
     const [result] = await databaseCon.query(
@@ -349,4 +304,75 @@ exports.DeleteOwnersByID = async (req, res) => {
       .status(500)
       .json({ error: "Internal server error.", details: error.message });
   }
+};
+
+exports.changePwdUser = (req, res) => {
+  let password = createHmac("sha256", "zxcvbnmsdasgdrf")
+    .update(req.body.Password)
+    .digest("hex");
+  const query = `UPDATE users SET password=? WHERE id=${req.params.id} `;
+  databaseCon.query(query, [password], (err, result, field) => {
+    if (!err) {
+      res
+        .status(200)
+        .send({ status: true, msg: "Successfully Password Updated " });
+    } else {
+      res.status(500).send({ status: false, msg: "Internal error occurs!" });
+    }
+  });
+};
+
+exports.addUser = async (req, res) => {
+  let role=req.body.role||'user'
+  let password = createHmac("sha256", "zxcvbnmsdasgdrf")
+    .update(req.body.Password)
+    .digest("hex");
+  const query = `INSERT INTO users (name,email,password,number,job_role,role) VALUES(?,?,?,?,?,?);`;
+  await databaseCon.query(
+    query,
+    [
+      req.body.Name,
+      req.body.Email,
+      password,
+      req.body.Number,
+      req.body.jobRole,
+      role
+    ],
+    (err, result, field) => {
+      if (err) throw new errorHandler("", err);
+      res.status(200).send({ status: true, msg: "Life success!" });
+    }
+  );
+};
+exports.getOneUser = (req, res) => {
+  const query = `SELECT name,email,number,status FROM users WHERE id = ?  `;
+  databaseCon.query(query, [req.params.id], (err, result, field) => {
+    if (err) throw new errorHandler("", err);
+    res.status(200).send({ status: true, msg: "Life success!", data: result });
+  });
+};
+exports.updateUser = (req, res) => {
+  let val = [];
+  let query = `UPDATE users SET `;
+  Object.keys(req.body).forEach((key, index, arr) => {
+    query += `${key}=?`;
+    val.push(req.body[key]);
+    if (index < arr.length - 1) {
+      query += ",";
+    }
+  });
+  query += "WHERE id =?";
+  val.push(req.params.id);
+  console.log(query, val);
+  databaseCon.query(query, val, (err, result, field) => {
+    if (err) throw new errorHandler(err.statusCode, err);
+    res.status(200).send({ status: true, msg: "Life success!" });
+  });
+};
+exports.deleteUser = (req, res) => {
+  const query = `UPDATE users SET status ='inactive' WHERE id=?; `;
+  databaseCon.query(query, [req.params.id], (err, result, field) => {
+    if (err) throw new errorHandler(err.status, err);
+    res.status(200).send({ status: true, msg: "Life success!" });
+  });
 };

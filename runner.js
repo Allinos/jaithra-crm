@@ -36,8 +36,8 @@ const main = async (e) => {
     }
 };
 const create = async (name, email, password, role) => {
-    const hash = createHmac('sha256', 'secret').update(password).digest('hex');
-    const query = `INSERT INTO adminauth(name, email, password, role) VALUES (?, ?, ?, ?)`;
+    const hash = createHmac('sha256', 'zxcvbnmsdasgdrf').update(password).digest('hex');
+    const query = `INSERT INTO users(name, email, password, role) VALUES (?, ?, ?, ?)`;
     await databaseCon.query(query, [name, email, hash, role], (err, rows, fields) => {
         if (err) { console.log('Something went wrong in this Mysql Admin Auth' + err, process.env.MySQL_db) }
         else { console.log('Data created !'); };
