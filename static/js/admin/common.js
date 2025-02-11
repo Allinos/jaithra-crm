@@ -140,6 +140,7 @@ let ReqHandler = {
       body: JSON.stringify(data),
     });
     return response.json();
+
   },
   DEL: async function (url) {
     const response = await fetch(url, {

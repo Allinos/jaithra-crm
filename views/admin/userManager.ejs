@@ -4,14 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EBAH ERP | Admin</title>
+    <title>Zroperties | Admin</title>
 
     <!-- CSS -->
     <link rel="stylesheet" href="/css/admin/main.css">
     <link rel="stylesheet" href="../../css/darkMode.css">
     <link rel="stylesheet" href="/css/admin/header.css">
     <link rel="stylesheet" href="/css/admin/responsive.css">
-    
+
     <link rel="stylesheet" href="/css/admin/user.css">
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -67,10 +67,10 @@
                             </div>
                             <!-- ------button---- -->
                         </form>
-                            <div class="user-btns">
-                                <button class="uppercase" onclick="addUser()" >submit</button>
-                                <button class="uppercase" onclick="Cls_UserCtn('.usform')">cancel</button>
-                            </div>
+                        <div class="user-btns">
+                            <button class="uppercase" onclick="addUser()">submit</button>
+                            <button class="uppercase" onclick="Cls_UserCtn('.usform')">cancel</button>
+                        </div>
                     </div>
                 </div>
 
@@ -91,60 +91,79 @@
                     <hr>
                     <!-- --------------User 1--------------------------  -->
                     <% data?.forEach(user=>{ %>
-                    <div class="user-list" data-id="<%= user.id  %>">
-                        <div class="user-profile flex">
-                            <div class="user-img flex">
-                                <img src="/img/employee.jpg" alt="profile" class="green">
+                        <div class="user-list" data-id="<%= user.id  %>">
+                            <div class="user-profile flex">
+                                <div class="user-img flex">
+                                    <img src="/img/employee.jpg" alt="profile" class="green">
+                                </div>
+                                <div class="user-details">
+                                    <p class="username">
+                                        <%= user.name %>
+                                    </p>
+                                    <p class="username"><strong>Role:</strong> (<%= user.role %>)</p>
+                                    <p class="userdesignation"><strong>Designation: </strong></p>
+                                    <p class="userdesignation">
+                                        <%= user.job_role %>
+                                    </p>
+                                </div>
                             </div>
-                            <div class="user-details">
-                                <p class="username"><%= user.name %></p>
-                                <p class="username"><strong>Role:</strong> (<%= user.role  %>)</p>
-                                <p class="userdesignation"><strong>Designation: </strong></p>
-                                <p class="userdesignation"><%= user.job_role  %></p>
+                            <!-- -------------------  -->
+                            <div class="user-contact-info">
+                                <div class="user-phone">
+                                    <p class="usphone">Phone</p>
+                                    <p class="uphone">
+                                        <%= user.number=='' ?'N/A':user.number %>
+                                    </p>
+                                </div>
+                                <div class="user-email">
+                                    <p class="usemail">Email</p>
+                                    <p class="uemail">
+                                        <%= user.email %>
+                                    </p>
+                                </div>
                             </div>
-                        </div>
-                        <!-- -------------------  -->
-                        <div class="user-contact-info">
-                            <div class="user-phone">
-                                <p class="usphone">Phone</p>
-                                <p class="uphone"><%= user.number==''?'N/A':user.number %></p>
-                            </div>
-                            <div class="user-email">
-                                <p class="usemail">Email</p>
-                                <p class="uemail"><%= user.email  %></p>
-                            </div>
-                        </div>
-                        <!-- ----------------------------------  -->
-                        <!-- <div class="user-attendance">
+                            <!-- ----------------------------------  -->
+                            <!-- <div class="user-attendance">
                             <p>Attendance</p>
                             <p>96%</p>
                         </div> -->
-                        <!-- ---------------------------------  -->
-                        <div class="data-status">
-                            <div>
-                                <p class="log">Last Login</p>
-                                <p class="data-log"><%= user.lastLoginAt  %></p>
+                            <!-- ---------------------------------  -->
+                            <div class="data-status">
+                                <div>
+                                    <p class="log">Last Login</p>
+                                    <p class="data-log">
+                                        <%= user.lastLoginAt %>
+                                    </p>
+                                </div>
+                                <div>
+                                    <p class="log">Last Logout</p>
+                                    <p class="data-log">
+                                        <%= user.lastLogoutAt %>
+                                    </p>
+                                </div>
                             </div>
-                            <div>
-                                <p class="log">Last Logout</p>
-                                <p class="data-log"><%= user.lastLogoutAt  %></p>
+                            <!-- ---------------------------------  -->
+                            <div class="user-status">
+                                <p class="urstatus">Status</p>
+                                <!-- <p class="ustatus red"><span>Online</span></p> -->
+                                <p class="ustatus green"><span>
+                                        <%= user.status %>
+                                    </span></p>
+                            </div>
+                            <div class="user-edit" onclick="Opn_UserCtn('.uprofile-settings',this)">
+                                <a class="uicon"><svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1"
+                                        viewBox="0 0 24 24" id="info">
+                                        <path fill="##000000"
+                                            d="M12,10a1,1,0,0,0-1,1v6a1,1,0,0,0,2,0V11A1,1,0,0,0,12,10Zm0-4a1.25,1.25,0,1,0,1.25,1.25A1.25,1.25,0,0,0,12,6Z">
+                                        </path>
+                                    </svg></a>
+                                <span class="edit">Info</span>
                             </div>
                         </div>
-                        <!-- ---------------------------------  -->
-                        <div class="user-status">
-                            <p class="urstatus">Status</p>
-                            <!-- <p class="ustatus red"><span>Online</span></p> -->
-                            <p class="ustatus green"><span><%= user.status %></span></p>
-                        </div>
-                        <div class="user-edit" onclick="Opn_UserCtn('.uprofile-settings',this)">
-                            <a class="uicon"><svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 24 24" id="info"><path fill="##000000" d="M12,10a1,1,0,0,0-1,1v6a1,1,0,0,0,2,0V11A1,1,0,0,0,12,10Zm0-4a1.25,1.25,0,1,0,1.25,1.25A1.25,1.25,0,0,0,12,6Z"></path></svg></a>
-                            <span class="edit">Info</span>
-                        </div>
-                    </div>
-                    <hr>
-           <%     }) %>
-                    <!-- ----------------------------------------------  -->
-                    <%- include('../partials/pagin.ejs') %>
+                        <hr>
+                        <% }) %>
+                            <!-- ----------------------------------------------  -->
+                            <%- include('../partials/pagin.ejs') %>
                 </div>
                 <!-- -----------user-profile----------------- -->
                 <div class="uprofile-settings hide">
@@ -159,8 +178,16 @@
                                 <div class="profile-img">
                                     <img src="/img/employee.jpg" alt="profile">
                                     <div>
-                                        <p class="cliche" onclick="setUserToMdl_pwd('.password-settings', this) ">Change Password</p>
-                                        <button onclick="Disable_BtnHandler('.profile-grid',true)" >Edit</button>
+                                        <p class="cliche" onclick="setUserToMdl_pwd('.password-settings', this) ">Change
+                                            Password</p>
+                                        <button onclick="Disable_BtnHandler('.profile-grid',true)">Edit</button>
+                                        <span class="butt" onclick="DeleteUser(this)">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="trash-alt"  
+                                                class="icon svg">
+                                                <path fill="red"
+                                                    d="M10,18a1,1,0,0,0,1-1V11a1,1,0,0,0-2,0v6A1,1,0,0,0,10,18ZM20,6H16V5a3,3,0,0,0-3-3H11A3,3,0,0,0,8,5V6H4A1,1,0,0,0,4,8H5V19a3,3,0,0,0,3,3h8a3,3,0,0,0,3-3V8h1a1,1,0,0,0,0-2ZM10,5a1,1,0,0,1,1-1h2a1,1,0,0,1,1,1V6H10Zm7,14a1,1,0,0,1-1,1H8a1,1,0,0,1-1-1V8H17Zm-3-1a1,1,0,0,0,1-1V11a1,1,0,0,0-2,0v6A1,1,0,0,0,14,18Z">
+                                                </path>
+                                            </svg></span>
                                     </div>
                                 </div>
                                 <div class="profile-grid">
@@ -339,14 +366,14 @@
                 </div>
             </div>
         </main>
-    </section>
+        </section>
 
 
-    <!-- JAVASCRIPT -->
-    <script src="/js/admin/header.js"></script>
-    <script src="/js/admin/common.js"></script>
-    <script src="/js/admin/user.js"></script>
- 
+        <!-- JAVASCRIPT -->
+        <script src="/js/admin/header.js"></script>
+        <script src="/js/admin/common.js"></script>
+        <script src="/js/admin/user.js"></script>
+
 </body>
 
 </html>

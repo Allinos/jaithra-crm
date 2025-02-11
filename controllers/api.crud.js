@@ -295,74 +295,85 @@ exports.DeleteOwnersByID = async (req, res) => {
   }
 };
 
-exports.changePwdUser = (req, res) => {
-  let password = createHmac("sha256", "zxcvbnmsdasgdrf")
-    .update(req.body.Password)
-    .digest("hex");
-  const query = `UPDATE users SET password=? WHERE id=${req.params.id} `;
-  databaseCon.query(query, [password], (err, result, field) => {
-    if (!err) {
-      res
-        .status(200)
-        .send({ status: true, msg: "Successfully Password Updated " });
-    } else {
-      res.status(500).send({ status: false, msg: "Internal error occurs!" });
-    }
-  });
+exports.changePwdUser = async (req, res) => {
+  try {
+    let password = createHmac("sha256", "zxcvbnmsdasgdrf")
+      .update(req.body.Password)
+      .digest("hex");
+
+    const query = `UPDATE users SET password=? WHERE id=?`;
+    const [result] = await databaseCon.execute(query, [password, req.params.id]);
+
+    res.status(200).send({ status: true, msg: "Successfully Password Updated" });
+  } catch (err) {
+    res.status(500).send({ status: false, msg: "Internal error occurred!", error: err.message });
+  }
 };
 
 exports.addUser = async (req, res) => {
-  let role = req.body.role || "user";
-  let password = createHmac("sha256", "zxcvbnmsdasgdrf")
-    .update(req.body.Password)
-    .digest("hex");
-  const query = `INSERT INTO users (name,email,password,number,job_role,role) VALUES(?,?,?,?,?,?);`;
-  await databaseCon.query(
-    query,
-    [
+  try {
+    let role = req.body.role || "user";
+    let password = createHmac("sha256", "zxcvbnmsdasgdrf")
+      .update(req.body.Password)
+      .digest("hex");
+
+    const query = `INSERT INTO users (name, email, password, number, job_role, role) VALUES (?, ?, ?, ?, ?, ?)`;
+    const [result] = await databaseCon.execute(query, [
       req.body.Name,
       req.body.Email,
       password,
       req.body.Number,
       req.body.jobRole,
       role,
-    ],
-    (err, result, field) => {
-      if (err) throw new errorHandler("", err);
-      res.status(200).send({ status: true, msg: "Life success!" });
-    }
-  );
-        
+    ]);
+
+    res.status(200).send({ status: true, msg: "User added successfully!" });
+  } catch (err) {
+    res.status(500).send({ status: false, msg: "Error adding user!", error: err.message });
+  }
 };
-exports.getOneUser = (req, res) => {
-  const query = `SELECT name,email,number,status FROM users WHERE id = ?  `;
-  databaseCon.query(query, [req.params.id], (err, result, field) => {
-    if (err) throw new errorHandler("", err);
-    res.status(200).send({ status: true, msg: "Life success!", data: result });
-  });
+
+exports.getOneUser = async (req, res) => {
+  try {
+    const query = `SELECT name, email, number, status FROM users WHERE id = ?`;
+    const [result] = await databaseCon.execute(query, [req.params.id]);
+
+    res.status(200).send({ status: true, msg: "User fetched successfully!", data: result });
+  } catch (err) {
+    res.status(500).send({ status: false, msg: "Error fetching user!", error: err.message });
+  }
 };
-exports.updateUser = (req, res) => {
-  let val = [];
-  let query = `UPDATE users SET `;
-  Object.keys(req.body).forEach((key, index, arr) => {
-    query += `${key}=?`;
-    val.push(req.body[key]);
-    if (index < arr.length - 1) {
-      query += ",";
-    }
-  });
-  query += "WHERE id =?";
-  val.push(req.params.id);
-  console.log(query, val);
-  databaseCon.query(query, val, (err, result, field) => {
-    if (err) throw new errorHandler(err.statusCode, err);
-    res.status(200).send({ status: true, msg: "Life success!" });
-  });
+
+exports.updateUser = async (req, res) => {
+  try {
+    let val = [];
+    let query = `UPDATE users SET `;
+
+    Object.keys(req.body).forEach((key, index, arr) => {
+      query += `${key}=?`;
+      val.push(req.body[key]);
+      if (index < arr.length - 1) {
+        query += ",";
+      }
+    });
+
+    query += " WHERE id =?";
+    val.push(req.params.id);
+
+    const [result] = await databaseCon.execute(query, val);
+
+    res.status(200).send({ status: true, msg: "User updated successfully!" });
+  } catch (err) {
+    res.status(500).send({ status: false, msg: "Error updating user!", error: err.message });
+  }
 };
-exports.deleteUser = (req, res) => {
-  const query = `UPDATE users SET status ='inactive' WHERE id=?; `;
-  databaseCon.query(query, [req.params.id], (err, result, field) => {
-    if (err) throw new errorHandler(err.status, err);
-    res.status(200).send({ status: true, msg: "Life success!" });
-  });
+
+exports.deleteUser = async (req, res) => {
+  try {
+    const query = `UPDATE users SET status = 'inactive' WHERE id=?`;
+    const [result] = await databaseCon.execute(query, [req.params.id]);
+    res.status(200).send({ status: true, msg: "User deleted successfully!" });
+  } catch (err) {
+    res.status(500).send({ status: false, msg: "Error deleting user!", error: err.message });
+  }
 };

@@ -1,6 +1,8 @@
 
   
-let ReqURI = { addUser: BASE_URL + `/add`, updUser: BASE_URL + `/update/`, updUserPwd: BASE_URL + `/update/pwd/` }
+let ReqURI = { addUser: BASE_URL + `/add`, updUser: BASE_URL + `/update/`, updUserPwd: BASE_URL + `/update/pwd/`
+             , delUser: BASE_URL + `/update/pwd/` 
+             }
 function Disable_BtnHandler(e, ep) {
     if (ep) {
         let elmCtn = document.querySelector(e)
@@ -72,7 +74,7 @@ function addUser() {
     ReqHandler.POST(ReqURI.addUser, dataObj)
         .then((res) => {
             console.log(res);
-            if (res.status) {
+            if (res.status==true) {
                 // AlertNotifier(res.status, res.msg, 'success');
                 Swal.fire({ title: res.status ? 'Sucess' : 'Error', text: res.msg, icon: 'success', confirmButtonText: 'Done' });
                 Cls_UserCtn('.uprofile-settings')
@@ -100,10 +102,8 @@ function updUser() {
     ReqHandler.PUT(ReqURI.updUser + u_id, dataObj)
         .then((res) => {
             console.log(res);
-            if (res.status) {
-                // AlertNotifier(res.status, res.msg, 'success');
-                Swal.fire({ title: res.status ? 'Sucess' : 'Error', text: res.msg, icon: 'success', confirmButtonText: 'Done' });
-
+            if (res.status==true) {
+                AlertNotifier(res.status, res.msg, 'success');
                 setTimeout(() => {
                     location.reload()
                 }, 2000);
@@ -122,9 +122,7 @@ function updUserPwd() {
     }
     ReqHandler.PUT(ReqURI.updUserPwd + u_id, dataObj)
         .then((res) => {
-            console.log(res);
-            
-            if (res.status) {
+            if (res.status==true) {
                 AlertNotifier(res.status, res.msg, 'success')
                 Cls_UserCtn('.password-settings')
             } else {
@@ -134,6 +132,30 @@ function updUserPwd() {
             console.log('Error(fn-UserUpdate):', err);
         })
 }
+function DeleteUser(e) {
+    let userId = e.parentElement.parentElement.parentElement.parentElement.dataset.id;
+    if (!userId) {
+        console.error("Error: User ID is missing!");
+        AlertNotifier(false, "User ID is required!", "error");
+        return;
+    }
+    ReqHandler.DEL(ReqURI.delUser + userId)
+        .then((res) => {
+            if (res.status === true) {
+                AlertNotifier(true, res.msg, "success");
+                setTimeout(() => {
+                    location.reload()
+                }, 2000);
+            } else {
+                AlertNotifier(false, res.msg, "error");
+            }
+        })
+        .catch((err) => {
+            console.error("Error(fn-UserDelete):", err);
+            AlertNotifier(false, "Failed to delete user!", "error");
+        });
+}
+
 // function GetUserDetailsReq(e) {
 //     let AttenCtn = document.querySelector('.attendance-column');
 //     let WrokStatusCtn = document.querySelectorAll('.profile-main');
