@@ -370,7 +370,7 @@ exports.updateUser = async (req, res) => {
 
 exports.deleteUser = async (req, res) => {
   try {
-    const query = `UPDATE users SET status = 'inactive' WHERE id=?`;
+    const query = `DELETE FROM users  WHERE id=?`;
     const [result] = await databaseCon.execute(query, [req.params.id]);
     res.status(200).send({ status: true, msg: "User deleted successfully!" });
   } catch (err) {

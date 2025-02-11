@@ -1,8 +1,4 @@
-
-  
-let ReqURI = { addUser: BASE_URL + `/add`, updUser: BASE_URL + `/update/`, updUserPwd: BASE_URL + `/update/pwd/`
-             , delUser: BASE_URL + `/update/pwd/` 
-             }
+let ReqURI = { addUser: BASE_URL + `/add`, updUser: BASE_URL + `/update/`, updUserPwd: BASE_URL + `/update/pwd/`, delUser: BASE_URL + `/delete/`}
 function Disable_BtnHandler(e, ep) {
     if (ep) {
         let elmCtn = document.querySelector(e)
@@ -22,14 +18,14 @@ function setUserToModel(e) {
     //     document.getElementsByClassName('main')[0].classList.add('glow');
     // } else { document.getElementsByClassName('main')[0].classList.add('flow'); }
     let usrCtn = e.parentElement;
-    let uProfileMdl = document.querySelector('.user-profile-settings').children[2]
+    let uProfileMdl = document.querySelector('.user-profile-settings').children[2];
     uProfileMdl.dataset.id = usrCtn.dataset.id
-    uProfileMdl.querySelector('#name').value = usrCtn.getElementsByClassName('username')[0].innerText
-    uProfileMdl.querySelector('#designation').value = usrCtn.getElementsByClassName('userdesignation')[0].innerText
-    uProfileMdl.querySelector('#cnumber').value = usrCtn.getElementsByClassName('uphone')[0].innerText
-    uProfileMdl.querySelector('#email').value = usrCtn.getElementsByClassName('uemail')[0].innerText
-    uProfileMdl.querySelector('.pro-logout-status').innerText = usrCtn.getElementsByClassName('data-log')[0].innerText
-    uProfileMdl.querySelector('.pro-login-status').innerText = usrCtn.getElementsByClassName('data-log')[1].innerText
+    uProfileMdl.querySelector('#name').value = usrCtn.getElementsByClassName('username')[0].innerText;
+    uProfileMdl.querySelector('#designation').value = usrCtn.getElementsByClassName('userdesignation')[1].innerText;
+    uProfileMdl.querySelector('#cnumber').value = usrCtn.getElementsByClassName('uphone')[0].innerText;
+    uProfileMdl.querySelector('#email').value = usrCtn.getElementsByClassName('uemail')[0].innerText;
+    uProfileMdl.querySelector('.pro-logout-status').innerText = usrCtn.getElementsByClassName('data-log')[0].innerText;
+    uProfileMdl.querySelector('.pro-login-status').innerText = usrCtn.getElementsByClassName('data-log')[1].innerText;
     uProfileMdl.querySelector('.ustatus').innerText = usrCtn.getElementsByClassName('ustatus')[0].innerText;
     // GetUserDetailsReq(usrCtn.dataset.id)
 }
@@ -75,8 +71,7 @@ function addUser() {
         .then((res) => {
             console.log(res);
             if (res.status==true) {
-                // AlertNotifier(res.status, res.msg, 'success');
-                Swal.fire({ title: res.status ? 'Sucess' : 'Error', text: res.msg, icon: 'success', confirmButtonText: 'Done' });
+                AlertNotifier(res.status, res.msg, 'success');
                 Cls_UserCtn('.uprofile-settings')
                 Disable_BtnHandler('.profile-grid', false)
                 Cls_UserCtn('.usform')
