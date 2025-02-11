@@ -1,3 +1,4 @@
+
 let ReqURI = { addUser: BASE_URL + `/add`, updUser: BASE_URL + `/update/`, updUserPwd: BASE_URL + `/update/pwd/` }
 function Disable_BtnHandler(e, ep) {
     if (ep) {
@@ -27,7 +28,7 @@ function setUserToModel(e) {
     uProfileMdl.querySelector('.pro-logout-status').innerText = usrCtn.getElementsByClassName('data-log')[0].innerText
     uProfileMdl.querySelector('.pro-login-status').innerText = usrCtn.getElementsByClassName('data-log')[1].innerText
     uProfileMdl.querySelector('.ustatus').innerText = usrCtn.getElementsByClassName('ustatus')[0].innerText;
-    GetUserDetailsReq(usrCtn.dataset.id)
+    // GetUserDetailsReq(usrCtn.dataset.id)
 }
 function setUserToMdl_pwd(e, elm) {
     if (document.documentElement.clientWidth < 480) {
@@ -71,7 +72,8 @@ function addUser() {
         .then((res) => {
             console.log(res);
             if (res.status) {
-                AlertNotifier(res.status, res.msg, 'success');
+                // AlertNotifier(res.status, res.msg, 'success');
+                Swal.fire({ title: res.status ? 'Sucess' : 'Error', text: res.msg, icon: 'success', confirmButtonText: 'Done' });
                 Cls_UserCtn('.uprofile-settings')
                 Disable_BtnHandler('.profile-grid', false)
                 Cls_UserCtn('.usform')
@@ -98,7 +100,9 @@ function updUser() {
         .then((res) => {
             console.log(res);
             if (res.status) {
-                AlertNotifier(res.status, res.msg, 'success');
+                // AlertNotifier(res.status, res.msg, 'success');
+                Swal.fire({ title: res.status ? 'Sucess' : 'Error', text: res.msg, icon: 'success', confirmButtonText: 'Done' });
+
                 setTimeout(() => {
                     location.reload()
                 }, 2000);
@@ -117,7 +121,9 @@ function updUserPwd() {
     }
     ReqHandler.PUT(ReqURI.updUserPwd + u_id, dataObj)
         .then((res) => {
-            if (res.status == true) {
+            console.log(res);
+            
+            if (res.status) {
                 AlertNotifier(res.status, res.msg, 'success')
                 Cls_UserCtn('.password-settings')
             } else {
@@ -127,45 +133,45 @@ function updUserPwd() {
             console.log('Error(fn-UserUpdate):', err);
         })
 }
-function GetUserDetailsReq(e) {
-    let AttenCtn = document.querySelector('.attendance-column');
-    let WrokStatusCtn = document.querySelectorAll('.profile-main');
-    let year = (new Date).getFullYear()
-    let month = (new Date).getUTCMonth()
-    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    ReqHandler.GET(ReqURI.getUserAtten + e)
-        .then((res) => {
-            if (res.status == true) {
-                document.querySelector('#month').innerHTML = `${res.data[0].totalAtten} in Day ${monthNames[month]}`
-            }
-        }).catch(err => {
-            console.log('Error(fn-getAtten):', err);
-        })
-    ReqHandler.GET(ReqURI.getUserAttenyMth + e)
-        .then((res) => {
-            if (res.status == true) {
-                AttenCtn.innerHTML = '';
-                for (let i = 0; i < res.data.length; i++) {
-                    AttenCtn.innerHTML += ` <p class="attendance-name"><span>${res.data[i].date} ${monthNames[month]} ${year}</span><span class="green">${res.data[i][monthNames[month]]}</span> </p>`
-                }
-            }
-        }).catch(err => {
-            console.log('Error(fn-GetAttenByM):', err);
-        })
-    ReqHandler.GET(ReqURI.getWorkInfo + e)
-        .then((res) => {
-            if (res.status) {
-                WrokStatusCtn[0].querySelector('.primary').innerText = res.data[1].length
-                WrokStatusCtn[0].querySelector('.blue').innerText = res.data[0][0].total_cats
-                WrokStatusCtn[0].querySelector('.red').innerText = res.data[0][0].total_cats - res.data[0][0].num_cats_completed
-                WrokStatusCtn[1].querySelector('.primary').innerText = res.data[3].length
-                WrokStatusCtn[1].querySelector('.blue').innerText = res.data[2][0].total_mtask
-                WrokStatusCtn[1].querySelector('.red').innerText = res.data[2][0].total_mtask - res.data[2][0].num_task_completed
-            }
-        }).catch(err => {
-            console.log('Error(fn-getAtten):', err);
-        })
-}
+// function GetUserDetailsReq(e) {
+//     let AttenCtn = document.querySelector('.attendance-column');
+//     let WrokStatusCtn = document.querySelectorAll('.profile-main');
+//     let year = (new Date).getFullYear()
+//     let month = (new Date).getUTCMonth()
+//     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+//     ReqHandler.GET(ReqURI.getUserAtten + e)
+//         .then((res) => {
+//             if (res.status == true) {
+//                 document.querySelector('#month').innerHTML = `${res.data[0].totalAtten} in Day ${monthNames[month]}`
+//             }
+//         }).catch(err => {
+//             console.log('Error(fn-getAtten):', err);
+//         })
+//     ReqHandler.GET(ReqURI.getUserAttenyMth + e)
+//         .then((res) => {
+//             if (res.status == true) {
+//                 AttenCtn.innerHTML = '';
+//                 for (let i = 0; i < res.data.length; i++) {
+//                     AttenCtn.innerHTML += ` <p class="attendance-name"><span>${res.data[i].date} ${monthNames[month]} ${year}</span><span class="green">${res.data[i][monthNames[month]]}</span> </p>`
+//                 }
+//             }
+//         }).catch(err => {
+//             console.log('Error(fn-GetAttenByM):', err);
+//         })
+//     ReqHandler.GET(ReqURI.getWorkInfo + e)
+//         .then((res) => {
+//             if (res.status) {
+//                 WrokStatusCtn[0].querySelector('.primary').innerText = res.data[1].length
+//                 WrokStatusCtn[0].querySelector('.blue').innerText = res.data[0][0].total_cats
+//                 WrokStatusCtn[0].querySelector('.red').innerText = res.data[0][0].total_cats - res.data[0][0].num_cats_completed
+//                 WrokStatusCtn[1].querySelector('.primary').innerText = res.data[3].length
+//                 WrokStatusCtn[1].querySelector('.blue').innerText = res.data[2][0].total_mtask
+//                 WrokStatusCtn[1].querySelector('.red').innerText = res.data[2][0].total_mtask - res.data[2][0].num_task_completed
+//             }
+//         }).catch(err => {
+//             console.log('Error(fn-getAtten):', err);
+//         })
+// }
 function search() {
     var inpValue = document.getElementById('searchQuery').value.toLowerCase();
     var elmCtn = document.querySelectorAll('.user-list');
@@ -176,3 +182,4 @@ function search() {
         } else { e.style.display = 'none'; }
     });
 }
+AlertNotifier('','', 'success')

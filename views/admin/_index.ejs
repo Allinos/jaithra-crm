@@ -4,16 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../../css/admin/main.css">
-    <link rel="stylesheet" href="../../css/darkMode.css">
-    <link rel="stylesheet" href="../../css/admin/header.css">
-    <link rel="stylesheet" href="../../css/admin/responsive.css">
-    <link rel="stylesheet" href="sweetalert2.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" type="text/css"   href="../../css/admin/main.css">
+    <link rel="stylesheet" type="text/css"  href="../../css/darkMode.css">
+    <link rel="stylesheet" type="text/css"  href="../../css/admin/header.css">
+    <link rel="stylesheet" type="text/css"  href="../../css/admin/responsive.css">
+    <!-- <link rel="stylesheet" type="text/html" href="sweetalert2.min.css"> -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" type="text/html"  ></script>
     <script src="../../js/admin/dashboard.module.js"></script>
-    <!-- <link href="
-    https://cdn.jsdelivr.net/npm/sweetalert2@11.10.1/dist/sweetalert2.min.css
-    " rel="stylesheet"> -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.1/dist/sweetalert2.min.css" rel="stylesheet">
     <title>Admin | Zroperties</title>
 </head>
 <style>
@@ -618,11 +616,15 @@
                 const popupContent = document.getElementById('popupContent');
                 popup.style.display = 'flex';
                 popupContent.innerHTML = '<p>Loading...</p>';
+                console.log(location.origin + '/admin/get-image/' + e);
+
                 try {
                     const response = await fetch(location.origin + '/admin/get-image/' + e);
                     const data = await response.json();
                     if (data.data && data.data.length > 0) {
                         images = data.data.map(img => `${location.origin}/uploads/${img.location}`);
+                        console.log(images);
+                        
                         popupContent.innerHTML = '<div class="gallery" id="gallery"></div>';
                         const gallery = document.getElementById('gallery');
                         images.forEach((src, index) => {

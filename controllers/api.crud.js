@@ -1,65 +1,54 @@
 const databaseCon = require("../config/db.config.js");
-const {createHmac}=require('crypto')
+const { createHmac } = require("crypto");
 const fs = require("fs");
 const path = require("path");
 
 exports.GetImagesByID = async (req, res) => {
-  if (req.session.isLoggedIn == true && req.session.role == "admin") {
-    const q = `SELECT * FROM prop_images where prop_id=${req.params.id}`;
-    try {
-      const [results] = await databaseCon.query(q);
-      res.status(200).send({ data: results });
-    } catch (error) {
-      console.error("Error fetching properties:", error);
-      res.status(500).send("Error fetching properties.");
-    }
-  } else {
-    res.redirect("/admin/dashboard");
+  const q = `SELECT * FROM prop_images where prop_id=${req.params.id}`;
+  try {
+    const [results] = await databaseCon.query(q);
+    res.status(200).send({ data: results });
+  } catch (error) {
+    console.error("Error fetching properties:", error);
+    res.status(500).send("Error fetching properties.");
   }
 };
+
 exports.PropertieDelete = async (req, res) => {
-  if (req.session.isLoggedIn == true && req.session.role == "admin") {
-    const propertyId = req.params.id;
-    try {
-      const fetchImagesQuery = `SELECT location FROM prop_images WHERE prop_id = ?`;
-      const [images] = await databaseCon.query(fetchImagesQuery, [propertyId]);
-      images.forEach((image) => {
-        const filePath = path.join(
-          __dirname,
-          "../static/uploads",
-          image.location
-        );
-        fs.unlink(filePath, (err) => {
-          console.log(filePath);
-          if (err) {
-            console.error(`Failed to delete file ${filePath}:`, err);
-          }
-        });
+  const propertyId = req.params.id;
+  try {
+    const fetchImagesQuery = `SELECT location FROM prop_images WHERE prop_id = ?`;
+    const [images] = await databaseCon.query(fetchImagesQuery, [propertyId]);
+    images.forEach((image) => {
+      const filePath = path.join(
+        __dirname,
+        "../static/uploads",
+        image.location
+      );
+      fs.unlink(filePath, (err) => {
+        console.log(filePath);
+        if (err) {
+          console.error(`Failed to delete file ${filePath}:`, err);
+        }
       });
-      const deleteImagesQuery = `DELETE FROM prop_images WHERE prop_id = ?`;
-      await databaseCon.query(deleteImagesQuery, [propertyId]);
-      const deletePropertyQuery = `DELETE FROM properties WHERE id = ?`;
-      const [result] = await databaseCon.query(deletePropertyQuery, [
-        propertyId,
-      ]);
-      if (result.affectedRows === 0) {
-        return res.status(404).send({
-          status: false,
-          msg: "Property not found or already deleted.",
-        });
-      }
-      res.status(200).send({
-        status: true,
-        msg: "Property and associated images deleted successfully! 😊",
+    });
+    const deleteImagesQuery = `DELETE FROM prop_images WHERE prop_id = ?`;
+    await databaseCon.query(deleteImagesQuery, [propertyId]);
+    const deletePropertyQuery = `DELETE FROM properties WHERE id = ?`;
+    const [result] = await databaseCon.query(deletePropertyQuery, [propertyId]);
+    if (result.affectedRows === 0) {
+      return res.status(404).send({
+        status: false,
+        msg: "Property not found or already deleted.",
       });
-    } catch (error) {
-      console.error("Error deleting property:", error);
-      res
-        .status(500)
-        .send({ status: false, msg: "Failed to delete property." });
     }
-  } else {
-    res.redirect("/admin/dashboard");
+    res.status(200).send({
+      status: true,
+      msg: "Property and associated images deleted successfully! 😊",
+    });
+  } catch (error) {
+    console.error("Error deleting property:", error);
+    res.status(500).send({ status: false, msg: "Failed to delete property." });
   }
 };
 
@@ -323,7 +312,7 @@ exports.changePwdUser = (req, res) => {
 };
 
 exports.addUser = async (req, res) => {
-  let role=req.body.role||'user'
+  let role = req.body.role || "user";
   let password = createHmac("sha256", "zxcvbnmsdasgdrf")
     .update(req.body.Password)
     .digest("hex");
@@ -336,13 +325,14 @@ exports.addUser = async (req, res) => {
       password,
       req.body.Number,
       req.body.jobRole,
-      role
+      role,
     ],
     (err, result, field) => {
       if (err) throw new errorHandler("", err);
       res.status(200).send({ status: true, msg: "Life success!" });
     }
   );
+        
 };
 exports.getOneUser = (req, res) => {
   const query = `SELECT name,email,number,status FROM users WHERE id = ?  `;
