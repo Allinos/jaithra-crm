@@ -43,7 +43,7 @@ route.post("/auth", async (req, res) => {
             if (err) throw new errorHandler(404, err);
           });
         } else {
-          return res.status(503).send("Unauthorized");
+          return res.status(503).render("../views/unauthorize.ejs");
         }
       } else {
         return res.redirect(`/admin/login`);

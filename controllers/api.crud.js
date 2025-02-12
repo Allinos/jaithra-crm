@@ -296,17 +296,17 @@ exports.DeleteOwnersByID = async (req, res) => {
 };
 
 exports.changePwdUser = async (req, res) => {
+  let password=req.body.Password.trim()
   try {
-    let password = createHmac("sha256", "zxcvbnmsdasgdrf")
+    let hashPassword = createHmac("sha256", "zxcvbnmsdasgdrf")
       .update(req.body.Password)
       .digest("hex");
-
     const query = `UPDATE users SET password=? WHERE id=?`;
-    const [result] = await databaseCon.execute(query, [password, req.params.id]);
-
+    const [result] = await databaseCon.execute(query, [hashPassword, password]);
     res.status(200).send({ status: true, msg: "Successfully Password Updated" });
   } catch (err) {
     res.status(500).send({ status: false, msg: "Internal error occurred!", error: err.message });
+    throw  err;
   }
 };
 
@@ -314,9 +314,8 @@ exports.addUser = async (req, res) => {
   try {
     let role = req.body.role || "user";
     let password = createHmac("sha256", "zxcvbnmsdasgdrf")
-      .update(req.body.Password)
+      .update((req.body.Password).trim())
       .digest("hex");
-
     const query = `INSERT INTO users (name, email, password, number, job_role, role) VALUES (?, ?, ?, ?, ?, ?)`;
     const [result] = await databaseCon.execute(query, [
       req.body.Name,
