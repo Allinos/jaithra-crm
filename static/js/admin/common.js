@@ -17,7 +17,7 @@ document.querySelectorAll(`.accordion-content`).forEach((item, index) => {
         }
       }
       description.classList.add(`open`);
-      darr.classList.add(`open`);
+      // darr.classList.add(`open`);
     } else {
       // description.style.height = "0px";
       description.classList.remove(`open`);

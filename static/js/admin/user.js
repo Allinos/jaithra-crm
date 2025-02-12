@@ -173,7 +173,7 @@ function DeleteUser(e) {
     confirmButtonColor: "#3085d6",
     cancelButtonColor: "#d33",
     confirmButtonText: "Yes, delete it!",
-  }).then(async(pers) => {
+  }).then(async (pers) => {
     if (pers.isConfirmed) {
       ReqHandler.DEL(ReqURI.delUser + userId)
         .then((res) => {
