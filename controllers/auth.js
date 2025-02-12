@@ -27,7 +27,7 @@ route.post("/auth", async (req, res) => {
       const hash = createHmac("sha256", "zxcvbnmsdasgdrf")
         .update(req.body.Password)
         .digest("hex");
-      const query = `SELECT email, password FROM users WHERE email = ?`;
+      const query = `SELECT email, password,role FROM users WHERE email = ?`;
       const [rows] = await databaseCon.query(query, [Email]);
       if (rows.length > 0) {
         if (Email === rows[0].email && hash === rows[0].password) {

@@ -316,9 +316,11 @@ exports.changePwdUser = async (req, res) => {
 
 exports.addUser = async (req, res) => {
   try {
+    console.log(req.body);
+    
     let role = req.body.role || "user";
     let password = createHmac("sha256", "zxcvbnmsdasgdrf")
-      .update((req.body.Password).trim())
+      .update(req.body.Password.trim())
       .digest("hex");
     const query = `INSERT INTO users (name, email, password, number, job_role, role) VALUES (?, ?, ?, ?, ?, ?)`;
     const [result] = await databaseCon.query(query, [

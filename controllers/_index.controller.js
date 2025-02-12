@@ -102,7 +102,9 @@ exports.userPage = async (req, res) => {
   try {
     let query = `SELECT * FROM users ;`;
     let params = [];
-
+    let role=req.session.role;
+    console.log(req.session);
+    
     if (req.query.search) {
       query = `SELECT * FROM owners WHERE name LIKE ? OR email LIKE ? OR contact LIKE ? ORDER BY id DESC`;
       const search = `%${req.query.search}%`;
@@ -113,6 +115,7 @@ exports.userPage = async (req, res) => {
     res.status(200).render("../views/admin/userManager.ejs", {
       data: results,
       search: req.query.search || "",
+      role
     });
   } catch (error) {
     console.error("Error fetching owners:", error);

@@ -28,6 +28,7 @@
             <div class="ucontainer">
                 <div class="userContainer uform">
                     <h4 class="uppercase">user</h4>
+                    <% if (role=='admin') { %>
                     <button class="uppercase" onclick="Opn_UserCtn('.usform')" id="userbtn">
                         <span>Add user</span>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="plus-circle">
@@ -36,6 +37,7 @@
                             </path>
                         </svg>
                     </button>
+                    <% } %>
                 </div>
 
                 <!-- -------------------User form--------------------------- -->
@@ -150,6 +152,9 @@
                                         <%= user.status %>
                                     </span></p>
                             </div>
+
+                            <% if (role=='admin') { %>
+                         
                             <div class="user-edit" onclick="Opn_UserCtn('.uprofile-settings',this)">
                                 <a class="uicon"><svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1"
                                         viewBox="0 0 24 24" id="info">
@@ -159,6 +164,7 @@
                                     </svg></a>
                                 <span class="edit">Info</span>
                             </div>
+                            <%  } %> 
                         </div>
                         <hr>
                         <% }) %>
