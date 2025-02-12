@@ -299,10 +299,14 @@ exports.changePwdUser = async (req, res) => {
   let password=req.body.Password.trim()
   try {
     let hashPassword = createHmac("sha256", "zxcvbnmsdasgdrf")
-      .update(req.body.Password)
+      .update(password)
       .digest("hex");
     const query = `UPDATE users SET password=? WHERE id=?`;
-    const [result] = await databaseCon.execute(query, [hashPassword, password]);
+
+    const [result] = await databaseCon.query(query, [hashPassword, req.params.id]);
+  console.log(password, req.body);
+  console.log(hashPassword,result);
+
     res.status(200).send({ status: true, msg: "Successfully Password Updated" });
   } catch (err) {
     res.status(500).send({ status: false, msg: "Internal error occurred!", error: err.message });
@@ -317,7 +321,7 @@ exports.addUser = async (req, res) => {
       .update((req.body.Password).trim())
       .digest("hex");
     const query = `INSERT INTO users (name, email, password, number, job_role, role) VALUES (?, ?, ?, ?, ?, ?)`;
-    const [result] = await databaseCon.execute(query, [
+    const [result] = await databaseCon.query(query, [
       req.body.Name,
       req.body.Email,
       password,
@@ -335,7 +339,7 @@ exports.addUser = async (req, res) => {
 exports.getOneUser = async (req, res) => {
   try {
     const query = `SELECT name, email, number, status FROM users WHERE id = ?`;
-    const [result] = await databaseCon.execute(query, [req.params.id]);
+    const [result] = await databaseCon.query(query, [req.params.id]);
 
     res.status(200).send({ status: true, msg: "User fetched successfully!", data: result });
   } catch (err) {
@@ -358,8 +362,9 @@ exports.updateUser = async (req, res) => {
 
     query += " WHERE id =?";
     val.push(req.params.id);
+console.log(val,query);
 
-    const [result] = await databaseCon.execute(query, val);
+    const [result] = await databaseCon.query(query, val);
 
     res.status(200).send({ status: true, msg: "User updated successfully!" });
   } catch (err) {
@@ -370,7 +375,7 @@ exports.updateUser = async (req, res) => {
 exports.deleteUser = async (req, res) => {
   try {
     const query = `DELETE FROM users  WHERE id=?`;
-    const [result] = await databaseCon.execute(query, [req.params.id]);
+    const [result] = await databaseCon.query(query, [req.params.id]);
     res.status(200).send({ status: true, msg: "User deleted successfully!" });
   } catch (err) {
     res.status(500).send({ status: false, msg: "Error deleting user!", error: err.message });
