@@ -328,7 +328,9 @@
 .adata {
   display: none;
 }
-
+.adata .oth-info {
+  grid-template-columns: 12rem 12rem !important;
+}
 .adata.open {
   padding-top: 1rem;
   padding-bottom: 1rem;

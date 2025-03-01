@@ -96,11 +96,11 @@ exports.PropertieUpdate = async (req, res) => {
 
 // Add Client
 exports.AddClient = async (req, res) => {
-  const { name, number, location, bhk, budget } = req.body;
+  const { name, number, location, bhk, budget, occupation } = req.body;
   try {
     const [result] = await databaseCon.query(
-      "INSERT INTO clients (name, number, location, bhk, budget) VALUES (?, ?, ?, ?, ?)",
-      [name, number, location, bhk, budget]
+      "INSERT INTO clients (name, number, location, bhk, budget,occupation) VALUES (?, ?, ?, ?, ?,?)",
+      [name, number, location, bhk, budget,occupation]
     );
     res.redirect("/admin/clients");
   } catch (error) {
@@ -134,7 +134,7 @@ exports.AddOwner = async (req, res) => {
 // Update Clients by ID
 exports.UpdateClientsByID = async (req, res) => {
   const { id } = req.params;
-  const { name, number, location, bhk, budget } = req.body;
+  const { name, number, location, bhk, budget, occupation } = req.body;
 
   if (!name || !number || !location || !bhk || !budget) {
     return res.status(400).json({ message: "All fields are required." });
@@ -142,8 +142,8 @@ exports.UpdateClientsByID = async (req, res) => {
 
   try {
     const [result] = await databaseCon.query(
-      "UPDATE clients SET name = ?, number = ?, location = ?, bhk = ?, budget = ? WHERE id = ?",
-      [name, number, location, bhk, budget, id]
+      "UPDATE clients SET name = ?, number = ?, location = ?, bhk = ?, budget = ?, occupation = ? WHERE id = ?",
+      [name, number, location, bhk, budget, occupation, id]
     );
     if (result.affectedRows === 0) {
       return res
@@ -296,28 +296,39 @@ exports.DeleteOwnersByID = async (req, res) => {
 };
 
 exports.changePwdUser = async (req, res) => {
-  let password=req.body.Password.trim()
+  let password = req.body.Password.trim();
   try {
     let hashPassword = createHmac("sha256", "zxcvbnmsdasgdrf")
       .update(password)
       .digest("hex");
     const query = `UPDATE users SET password=? WHERE id=?`;
 
-    const [result] = await databaseCon.query(query, [hashPassword, req.params.id]);
-  console.log(password, req.body);
-  console.log(hashPassword,result);
+    const [result] = await databaseCon.query(query, [
+      hashPassword,
+      req.params.id,
+    ]);
+    console.log(password, req.body);
+    console.log(hashPassword, result);
 
-    res.status(200).send({ status: true, msg: "Successfully Password Updated" });
+    res
+      .status(200)
+      .send({ status: true, msg: "Successfully Password Updated" });
   } catch (err) {
-    res.status(500).send({ status: false, msg: "Internal error occurred!", error: err.message });
-    throw  err;
+    res
+      .status(500)
+      .send({
+        status: false,
+        msg: "Internal error occurred!",
+        error: err.message,
+      });
+    throw err;
   }
 };
 
 exports.addUser = async (req, res) => {
   try {
     console.log(req.body);
-    
+
     let role = req.body.role || "user";
     let password = createHmac("sha256", "zxcvbnmsdasgdrf")
       .update(req.body.Password.trim())
@@ -334,7 +345,9 @@ exports.addUser = async (req, res) => {
 
     res.status(200).send({ status: true, msg: "User added successfully!" });
   } catch (err) {
-    res.status(500).send({ status: false, msg: "Error adding user!", error: err.message });
+    res
+      .status(500)
+      .send({ status: false, msg: "Error adding user!", error: err.message });
   }
 };
 
@@ -343,9 +356,13 @@ exports.getOneUser = async (req, res) => {
     const query = `SELECT name, email, number, status FROM users WHERE id = ?`;
     const [result] = await databaseCon.query(query, [req.params.id]);
 
-    res.status(200).send({ status: true, msg: "User fetched successfully!", data: result });
+    res
+      .status(200)
+      .send({ status: true, msg: "User fetched successfully!", data: result });
   } catch (err) {
-    res.status(500).send({ status: false, msg: "Error fetching user!", error: err.message });
+    res
+      .status(500)
+      .send({ status: false, msg: "Error fetching user!", error: err.message });
   }
 };
 
@@ -364,13 +381,15 @@ exports.updateUser = async (req, res) => {
 
     query += " WHERE id =?";
     val.push(req.params.id);
-console.log(val,query);
+    console.log(val, query);
 
     const [result] = await databaseCon.query(query, val);
 
     res.status(200).send({ status: true, msg: "User updated successfully!" });
   } catch (err) {
-    res.status(500).send({ status: false, msg: "Error updating user!", error: err.message });
+    res
+      .status(500)
+      .send({ status: false, msg: "Error updating user!", error: err.message });
   }
 };
 
@@ -380,6 +399,8 @@ exports.deleteUser = async (req, res) => {
     const [result] = await databaseCon.query(query, [req.params.id]);
     res.status(200).send({ status: true, msg: "User deleted successfully!" });
   } catch (err) {
-    res.status(500).send({ status: false, msg: "Error deleting user!", error: err.message });
+    res
+      .status(500)
+      .send({ status: false, msg: "Error deleting user!", error: err.message });
   }
 };

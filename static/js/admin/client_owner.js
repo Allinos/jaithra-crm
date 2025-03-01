@@ -116,7 +116,8 @@ async function updateClientData(clientId, field, value,e) {
   }
 }
 document.addEventListener("DOMContentLoaded", function () {
-  document.querySelectorAll("select").forEach(select => {
+    let parentElement = document.querySelector('.info-content')
+    parentElement.querySelectorAll("select").forEach(select => {
       select.addEventListener("change", function () {
           const clientId = this.closest(".accordion-content").querySelector(".ref span:last-child").textContent.trim();
           updateClientData(clientId, "status", this.value,this);

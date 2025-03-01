@@ -203,3 +203,5 @@ ADD lastLogoutAt VARCHAR(50),
 ADD status  VARCHAR(50);
 
 ALTER TABLE `clients` ADD `status` VARCHAR(20) NOT NULL AFTER `budget`, ADD `date` VARCHAR(11) NOT NULL AFTER `status`;
+ALTER TABLE `clients` ADD `occupation` VARCHAR(155) NOT NULL AFTER `bhk`;
+ALTER TABLE `clients` CHANGE `occupation` `occupation` VARCHAR(155) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL;
