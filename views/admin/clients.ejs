@@ -301,11 +301,7 @@
             </div>
             <div class="field">
                 <label for="client-budget">Occupation</label>
-                <select name="occupation" id="client-occupation">
-                    <option value="business men">Business Men</option>
-                    <option value="Gov. employee">Gov. Employee</option>
-                    <option value="asdf">asdfsf</option>
-                </select>
+              <input type="text" name="occupation" id="client-occupation" placeholder="e.g.: Doctor , Gov. Emp " required>
             </div>
           </div>
           <div class="drop-btn flex">
@@ -355,13 +351,6 @@
       document.getElementById("client-bhk").value = clientBHK;
       document.getElementById("client-budget").value = clientBudget;
       document.getElementById("client-occupation").value = clientOccupation;
-      console.log(
-
-        document.getElementById("client-occupation").value = clientOccupation,clientOccupation,document.getElementById("client-occupation")
-
-      );
-      
-
     }
   </script>
 </body>
