@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="../../css/admin/main.css">
+  <link rel="stylesheet" type="text/css" href="../../css/darkMode.css">
+  <link rel="stylesheet" type="text/css" href="../../css/admin/header.css">
+  <link rel="stylesheet" type="text/css" href="../../css/admin/responsive.css">
+  <!-- <link rel="stylesheet" type="text/html" href="sweetalert2.min.css"> -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="../../js/admin/dashboard.module.js"></script>
+  <!-- <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.1/dist/sweetalert2.min.css" rel="stylesheet"> -->
+
+  <title>Admin </title>
+</head>
+
+<style>
+  /* Reset and isolation for dashboard content */
+  .main {
+    overflow: scroll;
+  }
+
+  .jaithra-dashboard-container {
+    all: initial;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    /* background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); */
+    padding: 20px;
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 100vh;
+    display: block;
+  }
+
+  .jaithra-dashboard-container *,
+  .jaithra-dashboard-container *::before,
+  .jaithra-dashboard-container *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  .jaithra-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+
+  .jaithra-stat-card {
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    border: none;
+    outline: none;
+  }
+
+  .jaithra-stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  .jaithra-stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    z-index: 1;
+  }
+
+  .jaithra-stat-card.jaithra-purple::before {
+    background: #7c3aed;
+  }
+
+  .jaithra-stat-card.jaithra-blue::before {
+    background: #3b82f6;
+  }
+
+  .jaithra-stat-card.jaithra-green::before {
+    background: #10b981;
+  }
+
+  .jaithra-stat-card.jaithra-orange::before {
+    background: #f59e0b;
+  }
+
+  .jaithra-stat-card.jaithra-indigo::before {
+    background: #6366f1;
+  }
+
+  .jaithra-stat-card.jaithra-red::before {
+    background: #ef4444;
+  }
+
+  .jaithra-stat-value {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 5px;
+    line-height: 1.2;
+  }
+
+  .jaithra-stat-card.jaithra-purple .jaithra-stat-value {
+    color: #7c3aed;
+  }
+
+  .jaithra-stat-card.jaithra-blue .jaithra-stat-value {
+    color: #3b82f6;
+  }
+
+  .jaithra-stat-card.jaithra-green .jaithra-stat-value {
+    color: #10b981;
+  }
+
+  .jaithra-stat-card.jaithra-orange .jaithra-stat-value {
+    color: #f59e0b;
+  }
+
+  .jaithra-stat-card.jaithra-indigo .jaithra-stat-value {
+    color: #6366f1;
+  }
+
+  .jaithra-stat-card.jaithra-red .jaithra-stat-value {
+    color: #ef4444;
+  }
+
+  .jaithra-stat-label {
+    color: #666666;
+    font-size: 14px;
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+
+  .jaithra-stat-change {
+    font-size: 12px;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-weight: 500;
+    display: inline-block;
+  }
+
+  .jaithra-stat-change.jaithra-up {
+    background: #dcfce7;
+    color: #166534;
+  }
+
+  .jaithra-stat-change.jaithra-down {
+    background: #fef2f2;
+    color: #dc2626;
+  }
+
+  .jaithra-dashboard-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 30px;
+    margin-bottom: 30px;
+  }
+
+  .jaithra-dashboard-grid.second {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .jaithra-card {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    border: none;
+  }
+
+  .jaithra-card-header {
+    padding: 20px 25px;
+    border-bottom: 1px solid #eeeeee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .jaithra-card-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333333;
+    margin: 0;
+  }
+
+  .jaithra-card-content {
+    padding: 25px;
+  }
+
+  .jaithra-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+  }
+
+  .jaithra-table th,
+  .jaithra-table td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid #f3f4f6;
+    vertical-align: middle;
+  }
+
+  .jaithra-table th {
+    background: #f9fafb;
+    font-weight: 600;
+    color: #374151;
+    font-size: 14px;
+  }
+
+  .jaithra-table td {
+    color: #6b7280;
+    font-size: 14px;
+  }
+
+  .jaithra-table tr:hover {
+    background: #f9fafb;
+  }
+
+  .jaithra-status-badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    display: inline-block;
+  }
+
+  .jaithra-status-paid {
+    background: #dcfce7;
+    color: #166534;
+  }
+
+  .jaithra-status-pending {
+    background: #fef3c7;
+    color: #92400e;
+  }
+
+  .jaithra-status-overdue {
+    background: #fef2f2;
+    color: #dc2626;
+  }
+
+  .jaithra-action-btns {
+    display: flex;
+    gap: 8px;
+  }
+
+  .jaithra-btn {
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    line-height: 1;
+  }
+
+  .jaithra-btn-edit {
+    background: #dbeafe;
+    color: #1d4ed8;
+  }
+
+  .jaithra-btn-edit:hover {
+    background: #bfdbfe;
+  }
+
+  .jaithra-btn-delete {
+    background: #fef2f2;
+    color: #dc2626;
+  }
+
+  .jaithra-btn-delete:hover {
+    background: #fecaca;
+  }
+
+  .jaithra-btn-share {
+    background: #f3f4f6;
+    color: #6b7280;
+  }
+
+  .jaithra-btn-share:hover {
+    background: #e5e7eb;
+  }
+
+  .jaithra-chart-container {
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    font-size: 18px;
+    border-radius: 8px;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .jaithra-leads-list {
+    max-height: 400px;
+    overflow-y: auto;
+  }
+
+  .jaithra-lead-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid #f3f4f6;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+
+  .jaithra-lead-item:hover {
+    background: #f9fafb;
+    margin: 0 -25px;
+    padding: 15px 25px;
+  }
+
+  .jaithra-lead-info h4 {
+    color: #333333;
+    margin-bottom: 4px;
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .jaithra-lead-category {
+    font-size: 12px;
+    color: #666666;
+  }
+
+  .jaithra-lead-value {
+    font-weight: 600;
+    color: #7c3aed;
+    font-size: 18px;
+  }
+
+  .jaithra-clients-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-bottom: 30px;
+  }
+
+  .jaithra-client-card {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-left: 4px solid #7c3aed;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+
+  .jaithra-client-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  .jaithra-client-name {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333333;
+    margin-bottom: 15px;
+  }
+
+  .jaithra-client-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+  }
+
+  .jaithra-client-stat {
+    text-align: center;
+    padding: 10px;
+    background: #f8f9ff;
+    border-radius: 8px;
+  }
+
+  .jaithra-client-stat-value {
+    font-size: 20px;
+    font-weight: 700;
+    color: #7c3aed;
+    margin-bottom: 4px;
+  }
+
+  .jaithra-client-stat-label {
+    font-size: 12px;
+    color: #666666;
+    font-weight: 500;
+  }
+
+  .jaithra-tab-container {
+    margin-bottom: 20px;
+  }
+
+  .jaithra-tabs {
+    display: flex;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .jaithra-tab {
+    padding: 12px 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #6b7280;
+    font-weight: 500;
+    position: relative;
+    transition: all 0.3s ease;
+    font-size: 14px;
+  }
+
+  .jaithra-tab.jaithra-active {
+    color: #7c3aed;
+  }
+
+  .jaithra-tab.jaithra-active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #7c3aed;
+  }
+
+  @media (max-width: 768px) {
+    .jaithra-stats-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .jaithra-dashboard-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .jaithra-clients-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .jaithra-dashboard-container {
+      padding: 10px;
+    }
+
+    .jaithra-stat-value {
+      font-size: 28px;
+    }
+  }
+
+  @keyframes jaithra-fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .jaithra-stat-card {
+    animation: jaithra-fadeInUp 0.6s ease forwards;
+    opacity: 0;
+  }
+
+  .jaithra-stat-card:nth-child(1) {
+    animation-delay: 0.1s;
+  }
+
+  .jaithra-stat-card:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+
+  .jaithra-stat-card:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+
+  .jaithra-stat-card:nth-child(4) {
+    animation-delay: 0.4s;
+  }
+
+  .jaithra-stat-card:nth-child(5) {
+    animation-delay: 0.5s;
+  }
+
+  .jaithra-stat-card:nth-child(6) {
+    animation-delay: 0.6s;
+  }
+
+  /* Donut CSS Files will herer */
+  .container {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 800px;
+    width: 100%;
+    animation: fadeInUp 0.8s ease-out;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .subtitle {
+    font-size: 1rem;
+    color: #7f8c8d;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .chart-wrapper {
+    position: relative;
+    max-width: 500px;
+  }
+
+
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 20px;
+    margin-top: 30px;
+  }
+
+  .stat-card {
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 15px;
+    padding: 20px;
+    text-align: center;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+  }
+
+  .stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    border-color: rgba(102, 126, 234, 0.3);
+  }
+
+  .stat-value {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #2c3e50;
+    margin-bottom: 5px;
+  }
+
+  .stat-label {
+    font-size: 0.8rem;
+    color: #7f8c8d;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+
+  .center-value {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #2c3e50;
+    margin-bottom: 5px;
+  }
+
+  .center-label {
+    font-size: 0.8rem;
+    color: #7f8c8d;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  @media (max-width: 768px) {
+    .container {
+      padding: 20px;
+      margin: 10px;
+    }
+
+    .title {
+      font-size: 1.8rem;
+    }
+
+    .chart-wrapper {
+      padding: 15px;
+    }
+
+    .controls {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .btn {
+      width: 200px;
+    }
+
+    .stats-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+    }
+  }
+</style>
+
+<body>
+
+  <%- include('../partials/admin.header.ejs') %>
+
+    <main class="main" data-app-page="home">
+      <div class="jaithra-dashboard-container">
+        <!-- Stats Grid -->
+        <div class="jaithra-stats-grid">
+          <div class="jaithra-stat-card jaithra-purple">
+            <div class="jaithra-stat-value" data-target="85"><%= data[0][0].total_invoices %></div>
+            <div class="jaithra-stat-label">Total Invoices</div>
+            <div class="jaithra-stat-change jaithra-up">Amount: <%= data[0][0].total_invoice_amount %></div>
+          </div>
+          <div class="jaithra-stat-card jaithra-blue">
+            <div class="jaithra-stat-value" data-target="50"><%= data[0][0].paid_invoices %></div>
+            <div class="jaithra-stat-label">Paid Invoices</div>
+            <div class="jaithra-stat-change jaithra-up">Amount: <%= data[5][0].total_clientsPayment %></div>
+          </div>
+          <div class="jaithra-stat-card jaithra-orange">
+            <div class="jaithra-stat-value" data-target="35"><%= data[0][0].total_invoices - data[0][0].paid_invoices %></div>
+            <div class="jaithra-stat-label">Unpaid Invoices</div>
+            <div class="jaithra-stat-change jaithra-down">Amount: <%= data[0][0].total_invoice_amount - data[5][0].total_clientsPayment %></div>
+          </div>
+          <div class="jaithra-stat-card jaithra-green">
+            <div class="jaithra-stat-value" data-target="500"><%= data[3][0].total_clients %></div>
+            <div class="jaithra-stat-label">Total Clients</div>
+            <div class="jaithra-stat-change jaithra-up"><%= data[3][0].total_clients %></div>
+          </div>
+          <div class="jaithra-stat-card jaithra-indigo">
+            <div class="jaithra-stat-value" data-target="145"><%= data[2][0].total_leads %></div>
+            <div class="jaithra-stat-label">Total Leads</div>
+            <div class="jaithra-stat-change jaithra-up"><%= data[2][0].total_leads %></div>
+          </div>
+          <div class="jaithra-stat-card jaithra-red">
+            <div class="jaithra-stat-value" data-target="4"><%= data[4][0].total_users %></div>
+            <div class="jaithra-stat-label">Users/Employees</div>
+            <div class="jaithra-stat-change jaithra-up"><%= data[4][0].total_users %></div>
+          </div>
+        </div>
+
+        <!-- Dashboard Content -->
+        <div class="jaithra-dashboard-grid">
+          <!-- Recent Invoices -->
+          <div class="jaithra-card">
+            <div class="jaithra-card-header">
+              <h3 class="jaithra-card-title">Recent Invoices</h3>
+              <button class="jaithra-btn jaithra-btn-edit">View All</button>
+            </div>
+            <div class="jaithra-card-content">
+              <table class="jaithra-table">
+                <thead>
+                  <tr>
+                    <th>NO.</th>
+                    <th>INVOICE ID</th>
+                    <th>AMOUNT</th>
+                    <th>DATE-DUE DATE</th>
+                    <th>STATUS</th>
+                    <th>SALES BY</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    <% data[1]?.forEach((e)=>{ %>
+                  <tr>
+                    <td>  <%= e?.id %></td>
+                    <td><%= e?.invoice_id %></td>
+                    <td>₹<%= e?.amount %></td>
+                    <td><%= e?.invoice_date %>|<%= e?.due_date %></td>
+                    <td><span class="jaithra-status-badge jaithra-status-paid"><%= e?.status %></span></td>
+                    <td><%= e?.sales_by %></td>
+                  </tr>
+                   <% }) %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Leads by Category -->
+          <div class="jaithra-card">
+            <div class="container">
+              <!-- <p class="subtitle">Q4 2024 Performance Overview</p> -->
+              <div class="chart-wrapper">
+                <canvas id="donutChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Client Financial Overview -->
+        <div class="jaithra-clients-grid">
+          <div class="jaithra-client-card">
+            <div class="jaithra-client-name">Panchanan Dekarrree</div>
+            <div class="jaithra-client-stats">
+              <div class="jaithra-client-stat">
+                <div class="jaithra-client-stat-value">₹85,000</div>
+                <div class="jaithra-client-stat-label">Credit Limit</div>
+              </div>
+              <div class="jaithra-client-stat">
+                <div class="jaithra-client-stat-value">₹15,000</div>
+                <div class="jaithra-client-stat-label">Current Balance</div>
+              </div>
+              <div class="jaithra-client-stat">
+                <div class="jaithra-client-stat-value">₹2,50,000</div>
+                <div class="jaithra-client-stat-label">Total Purchases</div>
+              </div>
+              <div class="jaithra-client-stat">
+                <div class="jaithra-client-stat-value">12</div>
+                <div class="jaithra-client-stat-label">Active Projects</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="jaithra-client-card">
+            <div class="jaithra-client-name">Abhilash Bay</div>
+            <div class="jaithra-client-stats">
+              <div class="jaithra-client-stat">
+                <div class="jaithra-client-stat-value">₹1,20,000</div>
+                <div class="jaithra-client-stat-label">Credit Limit</div>
+              </div>
+              <div class="jaithra-client-stat">
+                <div class="jaithra-client-stat-value">₹25,000</div>
+                <div class="jaithra-client-stat-label">Current Balance</div>
+              </div>
+              <div class="jaithra-client-stat">
+                <div class="jaithra-client-stat-value">₹3,85,000</div>
+                <div class="jaithra-client-stat-label">Total Purchases</div>
+              </div>
+              <div class="jaithra-client-stat">
+                <div class="jaithra-client-stat-value">8</div>
+                <div class="jaithra-client-stat-label">Active Projects</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="jaithra-client-card">
+            <div class="jaithra-client-name">Rajesh Kumar</div>
+            <div class="jaithra-client-stats">
+              <div class="jaithra-client-stat">
+                <div class="jaithra-client-stat-value">₹75,000</div>
+                <div class="jaithra-client-stat-label">Credit Limit</div>
+              </div>
+              <div class="jaithra-client-stat">
+                <div class="jaithra-client-stat-value">₹8,500</div>
+                <div class="jaithra-client-stat-label">Current Balance</div>
+              </div>
+              <div class="jaithra-client-stat">
+                <div class="jaithra-client-stat-value">₹1,95,000</div>
+                <div class="jaithra-client-stat-label">Total Purchases</div>
+              </div>
+              <div class="jaithra-client-stat">
+                <div class="jaithra-client-stat-value">6</div>
+                <div class="jaithra-client-stat-label">Active Projects</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="jaithra-client-card">
+            <div class="jaithra-client-name">Priya Sharma</div>
+            <div class="jaithra-client-stats">
+              <div class="jaithra-client-stat">
+                <div class="jaithra-client-stat-value">₹95,000</div>
+                <div class="jaithra-client-stat-label">Credit Limit</div>
+              </div>
+              <div class="jaithra-client-stat">
+                <div class="jaithra-client-stat-value">₹12,000</div>
+                <div class="jaithra-client-stat-label">Current Balance</div>
+              </div>
+              <div class="jaithra-client-stat">
+                <div class="jaithra-client-stat-value">₹2,15,000</div>
+                <div class="jaithra-client-stat-label">Total Purchases</div>
+              </div>
+              <div class="jaithra-client-stat">
+                <div class="jaithra-client-stat-value">9</div>
+                <div class="jaithra-client-stat-label">Active Projects</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Revenue Chart -->
+        <div class="jaithra-dashboard-grid second">
+          <div class="jaithra-card">
+            <div class="jaithra-card-header">
+              <h3 class="jaithra-card-title">Leads by Category</h3>
+            </div>
+            <div class="jaithra-card-content">
+              <div class="jaithra-leads-list">
+                <div class="jaithra-lead-item">
+                  <div class="jaithra-lead-info">
+                    <h4>Real Estate</h4>
+                    <div class="jaithra-lead-category">Property Sales</div>
+                  </div>
+                  <div class="jaithra-lead-value">45</div>
+                </div>
+                <div class="jaithra-lead-item">
+                  <div class="jaithra-lead-info">
+                    <h4>Commercial</h4>
+                    <div class="jaithra-lead-category">Business Properties</div>
+                  </div>
+                  <div class="jaithra-lead-value">32</div>
+                </div>
+                <div class="jaithra-lead-item">
+                  <div class="jaithra-lead-info">
+                    <h4>Residential</h4>
+                    <div class="jaithra-lead-category">Home Sales</div>
+                  </div>
+                  <div class="jaithra-lead-value">28</div>
+                </div>
+                <div class="jaithra-lead-item">
+                  <div class="jaithra-lead-info">
+                    <h4>Rental</h4>
+                    <div class="jaithra-lead-category">Property Rentals</div>
+                  </div>
+                  <div class="jaithra-lead-value">25</div>
+                </div>
+                <div class="jaithra-lead-item">
+                  <div class="jaithra-lead-info">
+                    <h4>Investment</h4>
+                    <div class="jaithra-lead-category">Investment Properties</div>
+                  </div>
+                  <div class="jaithra-lead-value">15</div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="jaithra-card">
+            <div class="jaithra-card-header">
+              <h3 class="jaithra-card-title">Revenue Overview</h3>
+              <div class="jaithra-tab-container">
+                <div class="jaithra-tabs">
+                  <button class="jaithra-tab jaithra-active">Monthly</button>
+                  <button class="jaithra-tab">Quarterly</button>
+                  <button class="jaithra-tab">Yearly</button>
+                </div>
+              </div>
+            </div>
+            <div class="jaithra-card-content">
+              <div class="jaithra-chart-container">
+                <div>📈 Interactive Chart Will Load Here</div>
+                <small>Revenue: ₹12,45,000 (This Month)</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+    </section>
+    <script>
+      // Counter animation for stat cards
+      function animateCounter(element, target) {
+        let current = 0;
+        const increment = target / 50;
+        const timer = setInterval(() => {
+          current += increment;
+          if (current >= target) {
+            current = target;
+            clearInterval(timer);
+          }
+          element.textContent = Math.floor(current);
+        }, 20);
+      }
+
+      // Initialize counter animations
+      document.addEventListener('DOMContentLoaded', function () {
+        const statValues = document.querySelectorAll('.stat-value[data-target]');
+
+        // Delay the animation to start after page load
+        setTimeout(() => {
+          statValues.forEach(element => {
+            const target = parseInt(element.getAttribute('data-target'));
+            animateCounter(element, target);
+          });
+        }, 500);
+      });
+
+      // Tab functionality
+      document.querySelectorAll('.tab').forEach(tab => {
+        tab.addEventListener('click', function () {
+          this.parentElement.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+          this.classList.add('active');
+
+          // You can add chart update logic here based on selected tab
+          console.log('Tab switched to:', this.textContent);
+        });
+      });
+
+      // Action button handlers
+      document.addEventListener('click', function (e) {
+        if (e.target.classList.contains('btn-edit')) {
+          console.log('Edit clicked');
+          // Add your edit functionality
+        } else if (e.target.classList.contains('btn-delete')) {
+          if (confirm('Are you sure you want to delete this item?')) {
+            console.log('Item deleted');
+            // Add your delete functionality
+          }
+        } else if (e.target.classList.contains('btn-share')) {
+          console.log('Share clicked');
+          // Add your share functionality
+        }
+      });
+
+      // Add hover effects and interactions
+      document.querySelectorAll('.lead-item').forEach(item => {
+        item.addEventListener('click', function () {
+          console.log('Lead clicked:', this.querySelector('h4').textContent);
+          // Add navigation or modal functionality
+        });
+      });
+
+      document.querySelectorAll('.client-card').forEach(card => {
+        card.addEventListener('click', function () {
+          console.log('Client clicked:', this.querySelector('.client-name').textContent);
+          // Add navigation to client details
+        });
+      });
+    </script>
+    <!-- JAVASCRIPT -->
+
+    <script src="../../js/admin/header.js"></script>
+    <script src="../../js/admin/common.js"></script>
+    <script src="../../js/admin/dashboard.render.js"></script>
+    <script src="../../js/admin/dashboard.js"></script>
+    <script>
+      let currentImageIndex = 0;
+      let images = [];
+      async function loadGallery(e) {
+        const popup = document.getElementById('popup');
+        const popupContent = document.getElementById('popupContent');
+        popup.style.display = 'flex';
+        popupContent.innerHTML = '<p>Loading...</p>';
+        console.log(location.origin + '/admin/get-image/' + e);
+
+        try {
+          const response = await fetch(location.origin + '/admin/get-image/' + e);
+          const data = await response.json();
+          if (data.data && data.data.length > 0) {
+            images = data.data.map(img => `${location.origin}/uploads/${img.location}`);
+            console.log(images);
+
+            popupContent.innerHTML = '<div class="gallery" id="gallery"></div>';
+            const gallery = document.getElementById('gallery');
+            images.forEach((src, index) => {
+              const img = document.createElement('img');
+              img.src = src;
+              img.dataset.index = index;
+              gallery.appendChild(img);
+              img.addEventListener('click', () => {
+                showLargeImage(index);
+              });
+            });
+          } else {
+            popupContent.innerHTML = '<p>No images found.</p>';
+          }
+        } catch (error) {
+          console.error('Error fetching images:', error);
+          popupContent.innerHTML = '<p>Failed to load images.</p>';
+        }
+      }
+      document.getElementById('closePopup').addEventListener('click', function () {
+        document.getElementById('popup').style.display = 'none';
+      });
+      const largeImageContainer = document.getElementById('largeImageContainer');
+      const largeImage = document.getElementById('largeImage');
+
+      function showLargeImage(index) {
+        currentImageIndex = index;
+        largeImage.src = images[index];
+        largeImageContainer.style.display = 'flex';
+      }
+      largeImage.addEventListener('click', () => {
+        largeImageContainer.style.display = 'none';
+      });
+      document.getElementById('prevImage').addEventListener('click', () => {
+        currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+        largeImage.src = images[currentImageIndex];
+      });
+      document.getElementById('nextImage').addEventListener('click', () => {
+        currentImageIndex = (currentImageIndex + 1) % images.length;
+        largeImage.src = images[currentImageIndex];
+      });
+
+      function FillterOps(e) {
+        location.href = location.origin + location.pathname + `?category=${e}`
+      }
+
+      function copyLink(e) {
+        const alertBox = document.getElementById("copyAlert");
+        navigator.clipboard
+          .writeText(location.origin + `/property/` + e)
+          .then(() => {
+            alertBox.classList.add("show");
+            setTimeout(() => {
+              alertBox.classList.remove("show");
+            }, 3000);
+          })
+          .catch((err) => {
+            console.error("Failed to copy text:", err);
+          });
+      }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      const ctx = document.getElementById('donutChart').getContext('2d');
+
+      const data = {
+        labels: [
+          'Unpaid',
+          'Paid',
+          'other'
+        ],
+        datasets: [{
+          label: 'Invoice',
+          data: [<%= data[0][0].total_invoices-data[0][0].paid_invoices %>, <%= data[0][0].paid_invoices %>, 0],
+          backgroundColor: [
+            'rgb(255, 99, 132)',
+            'rgb(54, 162, 235)',
+            'rgb(255, 205, 86)'
+          ],
+          hoverOffset: 4
+        }]
+      };
+
+      const config = {
+        type: 'doughnut',
+        data: data,
+      };
+
+      new Chart(
+        ctx,
+        config
+      );
+    </script>
+    </script>
+
+
+</html>

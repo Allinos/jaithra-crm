@@ -20,7 +20,7 @@ app.use(session({
 
 
 // Administrator 
-const auth = require('./controllers/auth.js')
+const auth = require('./routes/admin/auth.js')
 const indexRoutes = require('./routes/admin/indexRoutes')
 const settings = require('./routes/admin/settingRoute.js')
 const mainController = require("./controllers/_index.controller");
@@ -30,8 +30,8 @@ const apiRoute = require('./routes/admin/api_Route.js')
 
 
 
-app.use(express.json({ limit: '50mb' }))
-app.use(express.urlencoded({ extended: true ,limit: '50mb' }))
+app.use(express.json({ limit: '1mb' }))
+app.use(express.urlencoded({ extended: true ,limit: '1mb' }))
 app.use(express.static(path.join(__dirname, 'static')))
 app.set('views', __dirname + '/views')
 app.set('view engine', ejs)
@@ -44,9 +44,6 @@ app.use('/uploads', express.static('uploads'));
 app.use('/admin', auth)
 app.use('/admin', indexRoutes)
 app.use('/admin/settings', settings)
-app.get("/property/:id", mainController.PropertiesDetailsPage);
-
-
 app.use('/admin', apiRoute)
 
 

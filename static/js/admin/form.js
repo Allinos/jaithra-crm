@@ -44,15 +44,6 @@ function checkDeadline_Valid(e){
 //   return arrR;
 // }
 
-// async function SubmitNormalFormData(e) {
-//   e.preventDefault();
-//   const actionCreator = checkFormValid('np-form-data')
-//   if (actionCreator.includes(false)) {
-//     alert('please fillup all the input')
-//   }else {
-//     await method.addNewItemToNp(undefined, e, 'np-form-data', null, 'admin/projects-create')
-//   }
-// }
 
 // async function SubmitMiscFormData(e) {
 //   e.preventDefault();
@@ -122,3 +113,5 @@ function ImgUpload() {
       }
   });
 }
+
+

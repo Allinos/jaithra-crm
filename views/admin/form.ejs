@@ -2,98 +2,148 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zroperties | Admin</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zroperties | Admin</title>
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="../../css/admin/header.css">
-    <link rel="stylesheet" href="../../css/darkMode.css">
-    <link rel="stylesheet" href="../../css/admin/responsive.css">
-    <link rel="stylesheet" href="../../css/admin/form.css">
-    <link rel="stylesheet" href="sweetalert2.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="../../js/admin/dashboard.module.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <!-- CSS -->
+  <link rel="stylesheet" href="../../css/admin/header.css">
+  <link rel="stylesheet" href="../../css/darkMode.css">
+  <link rel="stylesheet" href="../../css/admin/responsive.css">
+  <link rel="stylesheet" href="../../css/admin/form.css">
+  <link rel="stylesheet" href="sweetalert2.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="../../js/admin/dashboard.module.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@4/dist/flatpickr.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr@4/dist/flatpickr.min.js"></script>
+
 </head>
+<style>
+  .dropdown-list {
+    border: 1px solid #ccc;
+    max-height: 200px;
+    overflow-y: auto;
+    display: none;
+    position: absolute;
+    background-color: white;
+    width: 100%;
+    z-index: 1000;
+    margin-top: 73px;
+    border-radius: 7px;
+  }
+
+  .dropdown-list div {
+    padding: 8px;
+    cursor: pointer;
+  }
+
+  .dropdown-list div:hover {
+    background-color: #f0f0f0;
+  }
+
+  .field {
+    position: relative;
+  }
+</style>
 
 <body>
-    <%- include('../partials/admin.header.ejs') %>
-        <!-- MAIN SECTION STARTS HERE  -->
-        <main class="main" data-app-page="form">
-            <div class="fcontainer">
-                <!-- -----------NEW PROJECT------------ -->
-                <!-- <div class="form-header">
+  <%- include('../partials/admin.header.ejs') %>
+  <!-- MAIN SECTION STARTS HERE  -->
+  <main class="main" data-app-page="form">
+    <div class="fcontainer">
+      <!-- -----------NEW PROJECT------------ -->
+      <!-- <div class="form-header">
                     <h4 class="uppercase" id="p-name">Normal Project</h4>
                     <div class="head-btns flex">
                         <button class="uppercase" onclick="toggleForm('normalForm', this)" id="Normal Project">default</button>
                         <button class="uppercase" onclick="toggleForm('misForm', this)" id="Misc Project">miscellaneous</button>
                     </div>
                </div> -->
-                <div class="formContainer">
-                    <div class="normalForm" id="normalForm">
-                        <form id="np-form-data" action="" method="post" enctype="multipart/form-data">
-                            <h4 class="uppercase">contact details</h4>
-                            <div class="fgrid">
-                                <div class="field">
-                                    <label for="name">Flat Name</label>
-                                    <input type="text" name="name" id="name" placeholder="e.g.: Pragyan Tamuli">
-                                </div>
-                                <div class="field">
-                                    <label for="cnumber">Flat Number</label>
-                                    <input type="text" name="number" id="number" placeholder="e.g.: EG:152 or 153 etc.">
-                                </div>
-                                <div class="field">
-                                    <label for="email">Location</label>
-                                    <input type="text" name="location" id="location" placeholder="e.g.: ebah@gmail.com">
-                                </div>
-                                <div class="field">
-                                    <label for="amount">BHK</label>
-                                    <input type="text" name="bhk" id="bhk" placeholder="&#8377;">
-                                </div>
-                                <div class="field">
-                                    <label for="amount">Floor</label>
-                                    <input type="text" name="floor" id="amount" placeholder="&#8377;">
-                                </div>
-                            </div>
-                            <div class="field">
-                                <label for="address">Map Link</label>
-                                <textarea name="map_link" id="address"></textarea>
-                            </div>
-                            <!-- ----------------------------------------------------------- -->
-                            <h4 class="uppercase">Other details</h4>
-                            <div class="fgrid">
-                                <div class="field">
-                                    <label for="ref">Owner name</label>
-                                    <input type="text" name="owner_name" id="ref">
-                                </div>
-                                <div class="field">
-                                    <label for="workName">Owner Number</label>
-                                    <input type="text" name="owner_number" id="workName" pattern="[1-9]{1}[0-9]{9}">
-                                </div>
-                                <div class="field">
-                                    <label for="category">Category</label>
-                                    <select name="category" id="category">
-                                        <option value="Residential">Residential</option>
-                                        <optgroup label="Residential">
-                                            <option value="ResidentialRent"> Rent</option>
-                                            <option value="ResidentialSale"> Sale</option>
-                                        </optgroup>
-                                        <option value="Commercial">Commercial</option>
-                                        <optgroup label="Commercial">
-                                            <option value="CommercialRent"> Rent</option>
-                                            <option value="CommercialSale"> Sale</option>
-                                        </optgroup>
+      <div class="formContainer">
+        <div class="normalForm" id="normalForm">
+          <form id="np-form-data" action="" method="post" enctype="application/x-www-form-urlencoded">
+            <h4 class="uppercase">Invoice details</h4>
+            <div class="fgrid">
+              <!-- <div class="field">
+                                    <label for="client_id">Select Client</label>
+                                    <select name="client_id" id="client_id">
+                                        <option value="">Select Clients</option>
                                     </select>
-                                    <div class="field">
-                                        <label for="amount">Amount</label>
-                                        <input type="text" name="amount" id="amount" placeholder="15000/-">
-                                    </div>
-                                </div>
-                               
-                                
+                                </div> -->
+              <div class="field">
+                <label for="client_search">Select Client</label>
+                <input type="text" id="client_search" placeholder="Search Clients..." autocomplete="off" />
+                <input type="hidden" name="client_id" id="client_id" />
+                <div id="client_list" class="dropdown-list"></div>
+              </div>
 
-                                <!-- <div class="field">
+              <div class="field">
+                <label for="cnumber">Invoice Date</label>
+                <input type="text" name="invoice_date" id="invoice_date" autocomplete="off"  placeholder="e.g.: EG:152 or 153 etc.">
+              </div>
+              <div class="field">
+                <label for="amount">Amount</label>
+                <input type="text" name="amount" id="amount" placeholder="&#8377;">
+              </div>
+              <div class="field">
+                <label for="amount">Due Date</label>
+                <input type="text" name="due_date" id="due_date" autocomplete="off" placeholder="&#8377;">
+              </div>
+              <div class="field">
+                <label for="mode">Payment</label>
+                <select name="mode" id="mode">
+                  <option value="">Select Payment Mode</option>
+                  <optgroup label="Online Payments">
+                    <option value="UPI">UPI</option>
+                    <option value="NetBanking">Net Banking</option>
+                    <option value="CreditCard">Credit Card</option>
+                    <option value="DebitCard">Debit Card</option>
+                  </optgroup>
+                  <optgroup label="Offline Payments">
+                    <option value="Cash">Cash</option>
+                    <option value="Cheque">Cheque</option>
+                    <option value="BankTransfer">Bank Transfer</option>
+                  </optgroup>
+                </select>
+
+              </div>
+            </div>
+            <!-- ----------------------------------------------------------- -->
+            <br><br><br>
+            <h4 class="uppercase">Other details</h4>
+            <div class="fgrid">
+              <div class="field">
+                <label for="name">Invoice Number</label>
+                <input type="text" name="invoice_id" id="invoice_id" placeholder="e.g.: Pragyan Tamuli">
+              </div>
+
+              <div class="field">
+                <label for="sales_by">Sales Incharge</label>
+                <select name="sales_by" id="sales_by">
+                  <option value=" ">Select Sales Incharge</option>
+                  <option value="Residential">Rajib</option>
+                  <option value="CommercialRent">Utpal Nath</option>
+                  <option value="CommercialSale">Nikita</option>
+                  <option value="Munin Da">Munin Da</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="category">Category</label>
+                <select name="category" id="category">
+                  <option value="n/a">Select Category</option>
+                  <option value="Walk in customer">Walk in customer</option>
+                  <option value="Construction Company">Construction Company</option>
+                  <option value="Real Estate Developer">Real Estate Developer</option>
+                  <option value="Architect or Engineer">Architect or Engineer</option>
+                  <option value="Retailer">Retailer</option>
+                  <option value="Hardware">Hardware</option>
+                  <option value="Waterproofing Contractor">Waterproofing Contractor</option>
+                  <option value="DIY / Homeowner">DIY / Homeowner</option>
+                </select>
+                </select>
+              </div>
+              <!-- <div class="field">
                                     <label for="projectWork">Work Type</label>
                                     <div class="ldflex">
                                         <div class="type">
@@ -110,9 +160,8 @@
                                         </div>
                                     </div>
                                 </div> -->
-
-                            </div>
-                            <div class="upload__box">
+            </div>
+            <!-- <div class="upload__box">
                                 <div class="upload__btn-box">
                                     <label class="upload__btn">
                                         <p>Upload images</p>
@@ -121,84 +170,133 @@
                                     </label>
                                 </div>
                                 <div class="upload__img-wrap"></div>
-                            </div>
-                            <!-- ---------- grid ends--------- -->
-                            <div class="field">
-                                <button type="submit" onclick="SubmitNormalFormData(event)"
-                                    class="uppercase">submit</button>
-                                <!-- <input type="submit" name="submit" id="" value="submit"> -->
-                            </div>
-                        </form>
-                    </div>
-                    <!-- miscellaneous FORM  -->
-
-                    <div class="misForm hide" id="misForm">
-                        <form id="mp-form-data">
-                            <h4><span class="uppercase">contact details</span> (Misc)</h4>
-                            <div class="fgrid">
-                                <div class="field">
-                                    <label for="name">Name</label>
-                                    <input type="text" name="name" id="name" placeholder="e.g.: Pragyan Tamuli">
-                                </div>
-                                <div class="field">
-                                    <label for="cnumber">Phone Number</label>
-                                    <input type="text" name="number" id="cnumber" placeholder="e.g.: 9874561230">
-                                </div>
-                                <div class="field">
-                                    <label for="email">Email</label>
-                                    <input type="text" name="email" id="email" placeholder="e.g.: ebah@gmail.com">
-                                </div>
-                            </div>
-                            <div class="field">
-                                <label for="address">Address</label>
-                                <textarea name="city" id="location"></textarea>
-                            </div>
-                            <!-- ----------------------------------------------------------- -->
-                            <h4><span class="uppercase">project details</span> (Misc)</h4>
-                            <div class="fgrid">
-                                <div class="field">
-                                    <label for="ref">Reference No</label>
-                                    <input type="text" name="rfNo" id="ref">
-                                </div>
-                                <div class="field">
-                                    <label for="workName">Name of The Project</label>
-                                    <input type="text" name="workName" id="workName">
-                                </div>
-                                <div class="field">
-                                    <label for="amount">Total Amount</label>
-                                    <input type="text" name="TotalAm" id="amount" placeholder="&#8377;">
-                                </div>
-                                <div class="field">
-                                    <label for="amount">Advance Amount</label>
-                                    <input type="text" name="agreementAm" id="amount" placeholder="&#8377;">
-                                </div>
-                                <div class="field">
-                                    <label for="amount">Deadline</label>
-                                    <input type="text" oninput="checkDeadline_Valid(this)" name="mpdeadline" id="amount"
-                                        placeholder="dd/mm/yyyy Eg:01/06/2024">
-                                </div>
-                                <div class="field">
-                                    <label for="miswork">Types Of Work</label>
-
-                                </div>
-                            </div>
-                            <!-- ---------- grid ends--------- -->
-                            <div class="field">
-                                <button type="submit" onclick="SubmitMiscFormData(event)"
-                                    class="uppercase">submit</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+                            </div> -->
+            <!-- ---------- grid ends--------- -->
+            <div class="field">
+              <button type="submit" class="uppercase">submit</button>
+              <!-- <input type="submit" name="submit" id="" value="submit"> -->
             </div>
-        </main>
-        </section>
+          </form>
+        </div>
+        <!-- miscellaneous FORM  -->
+        <div class="misForm hide" style="display: none;" id="misForm">
+          <form id="mp-form-data">
+            <h4><span class="uppercase">invoice details</span> (Misc)</h4>
+            <div class="fgrid">
+              <div class="field">
+                <label for="name">Name</label>
+                <input type="text" name="name" id="name" placeholder="e.g.: Pragyan Tamuli">
+              </div>
+              <div class="field">
+                <label for="cnumber">Phone Number</label>
+                <input type="text" name="number" id="cnumber" placeholder="e.g.: 9874561230">
+              </div>
+              <div class="field">
+                <label for="email">Email</label>
+                <input type="text" name="email" id="email" placeholder="e.g.: ebah@gmail.com">
+              </div>
+            </div>
+            <div class="field">
+              <label for="address">Address</label>
+              <textarea name="city" id="location"></textarea>
+            </div>
+            <!-- ----------------------------------------------------------- -->
+            <h4><span class="uppercase">project details</span> (Misc)</h4>
+            <div class="fgrid">
+              <div class="field">
+                <label for="ref">Reference No</label>
+                <input type="text" name="rfNo" id="ref">
+              </div>
+              <div class="field">
+                <label for="workName">Name of The Project</label>
+                <input type="text" name="workName" id="workName">
+              </div>
+              <div class="field">
+                <label for="amount">Total Amount</label>
+                <input type="text" name="TotalAm" id="amount" placeholder="&#8377;">
+              </div>
+              <div class="field">
+                <label for="amount">Advance Amount</label>
+                <input type="text" name="agreementAm" id="amount" placeholder="&#8377;">
+              </div>
+              <div class="field">
+                <label for="amount">Deadline</label>
+                <input type="text" oninput="checkDeadline_Valid(this)" name="mpdeadline" id="amount" placeholder="dd/mm/yyyy Eg:01/06/2024">
+              </div>
+              <div class="field">
+                <label for="miswork">Types Of Work</label>
 
+              </div>
+            </div>
+            <!-- ---------- grid ends--------- -->
+            <div class="field">
+              <button type="submit" onclick="SubmitMiscFormData(event)" class="uppercase">submit</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </main>
+  </section>
+  <script>
+    flatpickr("#invoice_date", {
+      dateFormat: "d/m/Y",
+      allowInput: true
+    });
+    flatpickr("#due_date", {
+      dateFormat: "d/m/Y",
+      allowInput: true
+    });
+  </script>
+  <script>
+    const clients = [
+      <% data?.forEach((e) => { %> {
+        id: <%= e?.id %>,
+        name: '<%= e?.name %>'
+      },
+      <% }) %>
+    ]
+    const input = document.getElementById("client_search");
+    const hiddenInput = document.getElementById("client_id");
+    const dropdown = document.getElementById("client_list");
 
-        <!-- JAVASCRIPT -->
-        <!-- <script src="/static/js/main.js"></script> -->
-        <script src="/js/admin/form.js"></script>
-        <script src="/js/admin/header.js"></script>
+    input.addEventListener("input", () => {
+      const searchTerm = input.value.toLowerCase();
+      dropdown.innerHTML = "";
+      if (!searchTerm) {
+        dropdown.style.display = "none";
+        return;
+      }
+      const filtered = clients.filter(client =>
+        client.name.toLowerCase().includes(searchTerm)
+      );
+      if (filtered.length === 0) {
+        dropdown.style.display = "none";
+        return;
+      }
+      filtered.forEach(client => {
+        const div = document.createElement("div");
+        div.textContent = client.name;
+        div.addEventListener("click", () => {
+          input.value = client.name;
+          hiddenInput.value = client.id;
+          dropdown.style.display = "none";
+        });
+        dropdown.appendChild(div);
+      });
+      dropdown.style.display = "block";
+    });
+    document.addEventListener("click", function(e) {
+      if (!e.target.closest(".field")) {
+        dropdown.style.display = "none";
+      }
+    });
+  </script>
+
+  <!-- JAVASCRIPT -->
+  <!-- <script src="/static/js/main.js"></script> -->
+  <script src="/js/admin/form.js"></script>
+  <script src="/js/admin/header.js"></script>
 </body>
 
 </html>

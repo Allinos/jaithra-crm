@@ -217,6 +217,7 @@
 
 .main .data-info {
   background: var(--white);
+  height: 84vh;
 }
 
 .data-info .info-head {
@@ -234,7 +235,7 @@
   border-radius: var(--border-radius-1);
   position: relative;
   margin: 0.5rem auto;
-  height: 50vh;
+  height: 72vh;
   overflow-y: scroll;
 }
 
@@ -324,13 +325,19 @@
   width: 50px;
   border-radius: 10px;
 }
+.info_pagination .pages {
+  display: flex;
+  align-items: center;
+  justify-content:space-between;
+  background: white;
+  padding: 0px!important;
+  border-radius: 13px;
+}
 /* HIDDEN CONTENT  */
 .adata {
   display: none;
 }
-.adata .oth-info {
-  grid-template-columns: 12rem 12rem !important;
-}
+
 .adata.open {
   padding-top: 1rem;
   padding-bottom: 1rem;
@@ -507,7 +514,8 @@
   left: 50%;
   transform: translate(-50%, -50%);
   max-width: 100%;
-  width: 90%;
+  width: 65%;
+  /* width: 90%; */
   background: var(--white);
   box-shadow: var(--box-shadow-1);
   padding: 8px;
@@ -907,18 +915,19 @@ select {
 }
 /* Add Client Button */
 .add-client-btn {
-  background: linear-gradient(90deg, #f6edff, #aac2eb);
-  color: #fff;
-  padding: 10px 20px;
-  margin-bottom: 5px;
-  font-size: 14px;
-  font-weight: bold;
-  border: none;
-  color: var(--primary-color);
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  transition: all 0.3s ease-in-out;
+    background-color: #eee9f7;
+    color: #fff;
+    padding: 10px 20px;
+    margin-bottom: 5px;
+    font-size: 12px;
+    font-weight: bold;
+    border: none;
+    color: var(--primary-color);
+    border-radius: 8px;
+    box-shadow: 0 0px 3px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    border: 2px solid #b098dc;
 }
 
 .add-client-btn:hover {

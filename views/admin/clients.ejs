@@ -16,6 +16,15 @@
   <script src="../../js/admin/dashboard.module.js"></script>
 </head>
 <style>
+  .data-info .info-content {
+    height: 66vh;
+  }
+
+  .main .data-info {
+    background: var(--white);
+    height: 80vh;
+  }
+
   .grid {
     grid-template-columns: 3rem repeat(2, minmax(0, 1fr)) 12rem 5rem 1.5rem;
   }
@@ -55,10 +64,14 @@
 
   .data-info .finegrid {
 
-    grid-template-columns: 2rem 1fr 1fr 1fr 2rem 5rem 1fr 1fr 5rem 1.5rem;
+    grid-template-columns: 2rem 1fr 1fr 1fr 5rem 5rem 1fr 1fr 5rem 1.5rem;
     align-items: center;
     justify-items: flex-start;
     gap: 10px;
+  }
+
+  .adata .oth-info {
+    grid-template-columns: 1fr 1fr 1fr 1fr 8rem 7rem !important;
   }
 
   .main .red {
@@ -97,6 +110,8 @@
   .followstatus.option-3 {
     background-color: rgba(169, 253, 169, 0.582);
     color: rgb(3, 82, 0);
+    border: none;
+    outline: none;
   }
 
   /* Important */
@@ -105,254 +120,543 @@
     /* color: rgb(1, 255, 255); */
     color: #FFD700;
   }
+
+  .data-aside-ctn {
+    width: 34vw;
+    background: hsl(255deg 100% 98.53%);
+    height: 75vh;
+    position: absolute;
+    bottom: -10px;
+    right: -16px;
+    border-radius: 21px 21px 0px 0px;
+    box-shadow: 0px 1px 10px -3px;
+    padding: 10px 10px;
+  }
+
+  .data-aside-ctn .cancel-btn-ctn {
+    display: flex;
+    justify-content: flex-end;
+    position: relative;
+    margin-bottom: 30px;
+  }
+
+  .data-aside {
+    overflow-x: scroll;
+    max-height: 67vh;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 10px;
+    max-width: 600px;
+    margin: auto;
+    font-family: sans-serif;
+  }
+
+  .data-aside .card {
+    background: #fdfdfd;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+    position: relative;
+  }
+
+  .data-aside .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+    margin-bottom: 5px;
+  }
+
+  .data-aside .label {
+    font-weight: bold;
+    color: #333;
+    min-width: 80px;
+  }
+
+  .data-aside .value {
+    color: #555;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+  }
+
+  .data-aside button {
+    background-color: red;
+    border: none;
+    padding: 2px 0px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    position: absolute;
+    right: 11px;
+    bottom: 11px;
+
+  }
+
+  .data-aside button:hover {
+    background-color: darkred;
+  }
+
+  .icon {
+    fill: white;
+  }
+
+  .data-aside-ctn svg {
+    fill: #5e35b1;
+
+  }
+  .payment-add-menu select{
+    width: 200px;
+    height: -webkit-fill-available;
+    margin-top: 5px;
+  }
+</style>
+<style>
+  .dropdown-list {
+    border: 1px solid #ccc;
+    max-height: 200px;
+    overflow-y: auto;
+    display: none;
+    position: absolute;
+    background-color: white;
+    width: 100%;
+    z-index: 1000;
+    margin-top: 73px;
+    border-radius: 7px;
+  }
+
+  .dropdown-list div {
+    padding: 8px;
+    cursor: pointer;
+  }
+
+  .dropdown-list div:hover {
+    background-color: #f0f0f0;
+  }
+
+  .field {
+    position: relative;
+  }
 </style>
 
 <body>
   <%- include('../partials/admin.header.ejs') %>
-  <!-- MAIN SECTION STARTS HERE  -->
-  <main class="main" data-app-page="clients">
-    <!------------- FINANCE-OVERALL-------------  -->
-    <div style="display: none;" class="main-data flex">
-      <!-- -------TOTAL AMOUNT--------- -->
-      <div class="total-amount flex data ">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="money-bill-stack" class="svg">
-          <path fill="##000000" d="M20,1H4A3,3,0,0,0,1,4V20a3,3,0,0,0,3,3H20a3,3,0,0,0,3-3V4A3,3,0,0,0,20,1ZM8,21H4a1,1,0,0,1-1-1V18.82A3,3,0,0,0,4,19H8Zm0-4H4a1,1,0,0,1-1-1V14.82A3,3,0,0,0,4,15H8Zm0-4H4a1,1,0,0,1-1-1V4A1,1,0,0,1,4,3H8Zm6,8H10V15h4Zm0-8H10V3h4Zm7,7a1,1,0,0,1-1,1H16V19h4a3,3,0,0,0,1-.18Zm0-4a1,1,0,0,1-1,1H16V15h4a3,3,0,0,0,1-.18Zm0-4a1,1,0,0,1-1,1H16V3h4a1,1,0,0,1,1,1ZM18,7a1,1,0,1,0,1,1A1,1,0,0,0,18,7ZM6,9A1,1,0,1,0,5,8,1,1,0,0,0,6,9Z">
-          </path>
-        </svg>
-        <div class="total_user_data">
-          <p class="size">&#8377;<span></span>/-</p>
-          <p class="text">Total Amount</p>
+    <!-- MAIN SECTION STARTS HERE  -->
+    <main class="main" data-app-page="clients">
+      <!------------- FINANCE-OVERALL-------------  -->
+      <div style="display: none;" class="main-data flex">
+        <!-- -------TOTAL AMOUNT--------- -->
+        <div class="total-amount flex data ">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="money-bill-stack" class="svg">
+            <path fill="##000000"
+              d="M20,1H4A3,3,0,0,0,1,4V20a3,3,0,0,0,3,3H20a3,3,0,0,0,3-3V4A3,3,0,0,0,20,1ZM8,21H4a1,1,0,0,1-1-1V18.82A3,3,0,0,0,4,19H8Zm0-4H4a1,1,0,0,1-1-1V14.82A3,3,0,0,0,4,15H8Zm0-4H4a1,1,0,0,1-1-1V4A1,1,0,0,1,4,3H8Zm6,8H10V15h4Zm0-8H10V3h4Zm7,7a1,1,0,0,1-1,1H16V19h4a3,3,0,0,0,1-.18Zm0-4a1,1,0,0,1-1,1H16V15h4a3,3,0,0,0,1-.18Zm0-4a1,1,0,0,1-1,1H16V3h4a1,1,0,0,1,1,1ZM18,7a1,1,0,1,0,1,1A1,1,0,0,0,18,7ZM6,9A1,1,0,1,0,5,8,1,1,0,0,0,6,9Z">
+            </path>
+          </svg>
+          <div class="total_user_data">
+            <p class="size">&#8377;<span></span>/-</p>
+            <p class="text">Total Amount</p>
+          </div>
+        </div>
+        <!-- ---------------AMOUNT IN BANK ------------ -->
+        <div class="amount_in-bank flex data">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="money-bill-stack" class="svg">
+            <path fill="##000000"
+              d="M20,1H4A3,3,0,0,0,1,4V20a3,3,0,0,0,3,3H20a3,3,0,0,0,3-3V4A3,3,0,0,0,20,1ZM8,21H4a1,1,0,0,1-1-1V18.82A3,3,0,0,0,4,19H8Zm0-4H4a1,1,0,0,1-1-1V14.82A3,3,0,0,0,4,15H8Zm0-4H4a1,1,0,0,1-1-1V4A1,1,0,0,1,4,3H8Zm6,8H10V15h4Zm0-8H10V3h4Zm7,7a1,1,0,0,1-1,1H16V19h4a3,3,0,0,0,1-.18Zm0-4a1,1,0,0,1-1,1H16V15h4a3,3,0,0,0,1-.18Zm0-4a1,1,0,0,1-1,1H16V3h4a1,1,0,0,1,1,1ZM18,7a1,1,0,1,0,1,1A1,1,0,0,0,18,7ZM6,9A1,1,0,1,0,5,8,1,1,0,0,0,6,9Z">
+            </path>
+          </svg>
+          <div class="total_user_data">
+            <p class="size">&#8377;<span></span>/-</p>
+            <p class="text">Cash in Hand</p>
+          </div>
+        </div>
+        <!-- ---------CASH IN HAND----------- -->
+        <div class="cash_in-hand flex data">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="money-bill-stack" class="svg">
+            <path fill="##000000"
+              d="M20,1H4A3,3,0,0,0,1,4V20a3,3,0,0,0,3,3H20a3,3,0,0,0,3-3V4A3,3,0,0,0,20,1ZM8,21H4a1,1,0,0,1-1-1V18.82A3,3,0,0,0,4,19H8Zm0-4H4a1,1,0,0,1-1-1V14.82A3,3,0,0,0,4,15H8Zm0-4H4a1,1,0,0,1-1-1V4A1,1,0,0,1,4,3H8Zm6,8H10V15h4Zm0-8H10V3h4Zm7,7a1,1,0,0,1-1,1H16V19h4a3,3,0,0,0,1-.18Zm0-4a1,1,0,0,1-1,1H16V15h4a3,3,0,0,0,1-.18Zm0-4a1,1,0,0,1-1,1H16V3h4a1,1,0,0,1,1,1ZM18,7a1,1,0,1,0,1,1A1,1,0,0,0,18,7ZM6,9A1,1,0,1,0,5,8,1,1,0,0,0,6,9Z">
+            </path>
+          </svg>
+          <div class="total_user_data">
+            <p class="size">&#8377;<span></span>/-</p>
+            <p class="text">Amount in Bank</p>
+          </div>
         </div>
       </div>
-      <!-- ---------------AMOUNT IN BANK ------------ -->
-      <div class="amount_in-bank flex data">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="money-bill-stack" class="svg">
-          <path fill="##000000" d="M20,1H4A3,3,0,0,0,1,4V20a3,3,0,0,0,3,3H20a3,3,0,0,0,3-3V4A3,3,0,0,0,20,1ZM8,21H4a1,1,0,0,1-1-1V18.82A3,3,0,0,0,4,19H8Zm0-4H4a1,1,0,0,1-1-1V14.82A3,3,0,0,0,4,15H8Zm0-4H4a1,1,0,0,1-1-1V4A1,1,0,0,1,4,3H8Zm6,8H10V15h4Zm0-8H10V3h4Zm7,7a1,1,0,0,1-1,1H16V19h4a3,3,0,0,0,1-.18Zm0-4a1,1,0,0,1-1,1H16V15h4a3,3,0,0,0,1-.18Zm0-4a1,1,0,0,1-1,1H16V3h4a1,1,0,0,1,1,1ZM18,7a1,1,0,1,0,1,1A1,1,0,0,0,18,7ZM6,9A1,1,0,1,0,5,8,1,1,0,0,0,6,9Z">
-          </path>
-        </svg>
-        <div class="total_user_data">
-          <p class="size">&#8377;<span></span>/-</p>
-          <p class="text">Cash in Hand</p>
+      <div style="display: flex;gap: 10px;">
+        <div class="button-container" onclick="openDick('.edit-menu')">
+          <button class="add-client-btn">Add Client</button>
+        </div>
+        <div class="button-container" onclick="openDick('.payment-add-menu')">
+          <button class="add-client-btn">Add Payment</button>
         </div>
       </div>
-      <!-- ---------CASH IN HAND----------- -->
-      <div class="cash_in-hand flex data">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="money-bill-stack" class="svg">
-          <path fill="##000000" d="M20,1H4A3,3,0,0,0,1,4V20a3,3,0,0,0,3,3H20a3,3,0,0,0,3-3V4A3,3,0,0,0,20,1ZM8,21H4a1,1,0,0,1-1-1V18.82A3,3,0,0,0,4,19H8Zm0-4H4a1,1,0,0,1-1-1V14.82A3,3,0,0,0,4,15H8Zm0-4H4a1,1,0,0,1-1-1V4A1,1,0,0,1,4,3H8Zm6,8H10V15h4Zm0-8H10V3h4Zm7,7a1,1,0,0,1-1,1H16V19h4a3,3,0,0,0,1-.18Zm0-4a1,1,0,0,1-1,1H16V15h4a3,3,0,0,0,1-.18Zm0-4a1,1,0,0,1-1,1H16V3h4a1,1,0,0,1,1,1ZM18,7a1,1,0,1,0,1,1A1,1,0,0,0,18,7ZM6,9A1,1,0,1,0,5,8,1,1,0,0,0,6,9Z">
-          </path>
-        </svg>
-        <div class="total_user_data">
-          <p class="size">&#8377;<span></span>/-</p>
-          <p class="text">Amount in Bank</p>
+      <!-- ----------- FINANCE TABLE----------- -->
+      <div class="data-info box">
+        <!-- headings -->
+        <div class="info-head finegrid">
+          <p class="uppercase phead none">No.</p>
+          <p class="uppercase phead none">Client Name</p>
+          <p class="uppercase phead none">Number</p>
+          <p class="uppercase phead none">location</p>
+          <p class="uppercase phead none">Paid </p>
+          <p class="uppercase phead none">Total Balance</p>
+          <p class="uppercase phead none">Category</p>
+          <p class="uppercase phead none">Other</p>
+          <p class="uppercase phead none">Action</p>
+          <!-- ------resposnive class------- -->
+          <p class="responsive uppercase phead hide block">project finances</p>
         </div>
-      </div>
-    </div>
-    <div class="button-container" onclick="openDick()">
-      <button class="add-client-btn">Add Client</button>
-    </div>
-    <!-- ----------- FINANCE TABLE----------- -->
-    <div class="data-info box">
-      <!-- headings -->
-      <div class="info-head finegrid">
-        <p class="uppercase phead none">No.</p>
-        <p class="uppercase phead none">Client Name</p>
-        <p class="uppercase phead none">Number</p>
-        <p class="uppercase phead none">location</p>
-        <p class="uppercase phead none">BHK </p>
-        <p class="uppercase phead none">Budget</p>
-        <p class="uppercase phead none">Status</p>
-        <p class="uppercase phead none">Shedule</p>
-        <p class="uppercase phead none">Action</p>
-        <!-- ------resposnive class------- -->
-        <p class="responsive uppercase phead hide block">project finances</p>
-      </div>
-      <!-- ----------project information----------- -->
-      <div class="info-content">
-        <!-- --------1st project---------  -->
-        <% data?.forEach((e)=>{ %>
-        <div class="accordion-content">
-          <div class="ahead finegrid">
-            <p class="ref">
-              <span class="uppercase hide block phead">No.</span>
-              <span>
-                <%= e.id %>
-              </span>
-            </p>
-            <p class="pro">
-              <span class="uppercase hide block phead">name</span>
-              <span>
-                <%= e.name %>
-              </span>
-            </p>
-            <p class="emp_date">
-              <span class="uppercase hide block phead">number</span>
-              <span>
-                <%= e.number %>
-              </span>
-            </p>
-            <p class="totalf">
-              <span class="uppercase hide block phead">project amount</span>
-              <span>
-                <%= e.location %>
-              </span>
-            </p>
-            <p class="totalf none">
-              <span>
-                <%= e.bhk %>
-              </span>
-            </p>
-            <p class="totalf none">
-              <span>
-                <%= e.budget %>
-              </span>
-            </p>
-            <p class="totalf none">
-              <span>
-                <select class="followstatus">
-                  <option data-val="n/a" value="0">Not Set</option>
-                  <option data-val="Schedule" value="3" <%=e?.status=="3" ? "selected" : "" %>>Schedule</option>
-                  <option data-val="Call not Pickup" value="1" <%=e?.status=="1" ? "selected"
-                                                : "" %>>Call not Pickup</option>
-                  <option data-val="Followed Up" value="2" <%=e?.status=="2" ? "selected" : ""
-                                                %>>Followed Up</option>
-                  <option data-val="Important" value="4" <%=e?.status=="4" ? "selected" : ""
-                                                %>>Important</option>
-                </select>
-              </span>
-            </p>
-            <p class="totalf none">
-              <span>
-                <label style="display: none;">
-                  <%= (e.date)?.slice(-6) %>
-                </label>
-                <input type="date" value="<%= e.date %>">
-              </span>
-            </p>
-            <p class="flexy">
-              <span class="edit-btn" onclick="editClient(this,<%= e.id %>)">Edit</span>
-              <span class="butt" onclick="DeleteItem(this,<%= e.id %>,'Clients')"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="trash-alt" class="icon">
-                  <path fill="" d="M10,18a1,1,0,0,0,1-1V11a1,1,0,0,0-2,0v6A1,1,0,0,0,10,18ZM20,6H16V5a3,3,0,0,0-3-3H11A3,3,0,0,0,8,5V6H4A1,1,0,0,0,4,8H5V19a3,3,0,0,0,3,3h8a3,3,0,0,0,3-3V8h1a1,1,0,0,0,0-2ZM10,5a1,1,0,0,1,1-1h2a1,1,0,0,1,1,1V6H10Zm7,14a1,1,0,0,1-1,1H8a1,1,0,0,1-1-1V8H17Zm-3-1a1,1,0,0,0,1-1V11a1,1,0,0,0-2,0v6A1,1,0,0,0,14,18Z">
-                  </path>
-                </svg></span>
-              <!-- <span class="edit-btn butt"> <svg xmlns="http://www.w3.org/2000/svg" class="icon" x="0px" y="0px" viewBox="0 0 30 30">
+        <!-- ----------project information----------- -->
+        <div class="info-content">
+          <!-- --------1st project---------  -->
+          <% data?.forEach((e)=>{ %>
+            <div class="accordion-content">
+              <div class="ahead finegrid">
+                <p class="ref">
+                  <span class="uppercase hide block phead">No.</span>
+                  <span>
+                    <%= e.id %>
+                  </span>
+                </p>
+                <p class="pro">
+                  <span class="uppercase hide block phead">name</span>
+                  <span>
+                    <%= e.name %>
+                  </span>
+                </p>
+                <p class="emp_date">
+                  <span class="uppercase hide block phead">number</span>
+                  <span>
+                    <%= e.number %>
+                  </span>
+                </p>
+                <p class="totalf">
+                  <span class="uppercase hide block phead">location</span>
+                  <span>
+                    <%= e.location %>
+                  </span>
+                </p>
+                <p class="totalf none">
+                  <span class="uppercase hide block phead">paid</span>
+                  <span>
+                    <%= e.paid?e.paid:'0/-' %>
+                  </span>
+                </p>
+                <p class="totalf none">
+                  <span class="uppercase hide block phead">total</span>
+                  <span>
+                    <%= e.total_amount?e.total_amount-e.paid:'0' %>/-
+                  </span>
+                </p>
+                <p class="totalf none">
+                  <span class="uppercase hide block phead">category</span>
+                  <span>
+                    <%= e.category %>
+                  </span>
+                </p>
+                <p class="totalf none">
+                  <span class="uppercase hide block phead">other</span>
+                  <span>
+                    <%= e.other %>
+                  </span>
+                </p>
+                <p class="flexy">
+                  <span class="edit-btn" onclick="editClient(this,<%= e.id %>)">Edit</span>
+                  <span class="butt" onclick="DeleteItem(this,<%= e.id %>,'Clients')"><svg
+                      xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="trash-alt" class="icon">
+                      <path fill=""
+                        d="M10,18a1,1,0,0,0,1-1V11a1,1,0,0,0-2,0v6A1,1,0,0,0,10,18ZM20,6H16V5a3,3,0,0,0-3-3H11A3,3,0,0,0,8,5V6H4A1,1,0,0,0,4,8H5V19a3,3,0,0,0,3,3h8a3,3,0,0,0,3-3V8h1a1,1,0,0,0,0-2ZM10,5a1,1,0,0,1,1-1h2a1,1,0,0,1,1,1V6H10Zm7,14a1,1,0,0,1-1,1H8a1,1,0,0,1-1-1V8H17Zm-3-1a1,1,0,0,0,1-1V11a1,1,0,0,0-2,0v6A1,1,0,0,0,14,18Z">
+                      </path>
+                    </svg></span>
+                  <!-- <span class="edit-btn butt"> <svg xmlns="http://www.w3.org/2000/svg" class="icon" x="0px" y="0px" viewBox="0 0 30 30">
                                             <path d="M 23 3 A 4 4 0 0 0 19 7 A 4 4 0 0 0 19.09375 7.8359375 L 10.011719 12.376953 A 4 4 0 0 0 7 11 A 4 4 0 0 0 3 15 A 4 4 0 0 0 7 19 A 4 4 0 0 0 10.013672 17.625 L 19.089844 22.164062 A 4 4 0 0 0 19 23 A 4 4 0 0 0 23 27 A 4 4 0 0 0 27 23 A 4 4 0 0 0 23 19 A 4 4 0 0 0 19.986328 20.375 L 10.910156 15.835938 A 4 4 0 0 0 11 15 A 4 4 0 0 0 10.90625 14.166016 L 19.988281 9.625 A 4 4 0 0 0 23 11 A 4 4 0 0 0 27 7 A 4 4 0 0 0 23 3 z"></path>
                                             </svg></span>  -->
-            </p>
+                </p>
+                <p class="arrow-down">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="angle-double-down" class="svg">
+                    <path fill="##000000"
+                      d="M11.29,11.46a1,1,0,0,0,1.42,0l3-3A1,1,0,1,0,14.29,7L12,9.34,9.71,7A1,1,0,1,0,8.29,8.46Zm3,1.08L12,14.84l-2.29-2.3A1,1,0,0,0,8.29,14l3,3a1,1,0,0,0,1.42,0l3-3a1,1,0,0,0-1.42-1.42Z">
+                    </path>
+                  </svg>
+                </p>
+              </div>
+              <!-- ----------open data for accordion---------- -->
+              <div class="adata">
+                <div class="oth-info grid none">
+                  <p class="occupation">
+                    <span class="uppercase phead pressEffect">Address:</span>
+                    <span class="occupation">
+                      <%= e?.address %>
+                    </span>
+                  </p>
+                  <p class="gst">
+                    <span class="uppercase phead pressEffect">GST No:</span>
+                    <span class="gst">
+                      <%= e?.gst %>
+                    </span>
+                  </p>
+                   <p class="gst">
+                    <span class="uppercase phead pressEffect">Total Invoice Balance</span>
+                    <span class="gst">
+                     <%= e.total_amount?e.total_amount:'0' %>/-
+                    </span>
+                  </p>
+                   
 
-            <p class="arrow-down">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="angle-double-down" class="svg">
-                <path fill="##000000" d="M11.29,11.46a1,1,0,0,0,1.42,0l3-3A1,1,0,1,0,14.29,7L12,9.34,9.71,7A1,1,0,1,0,8.29,8.46Zm3,1.08L12,14.84l-2.29-2.3A1,1,0,0,0,8.29,14l3,3a1,1,0,0,0,1.42,0l3-3a1,1,0,0,0-1.42-1.42Z">
-                </path>
-              </svg>
-            </p>
-
-          </div>
-          <!-- ----------open data for accordion---------- -->
-          <div class="adata">
-            <div class="oth-info grid none">
-              <p class="occupation">
-                <span class="uppercase phead pressEffect">Occupation</span>
-                <span class="occupation"><%= e?.occupation %></span>
-              </p>
-              <!-- <p class="temp">
-                <span class="uppercase phead">Owner Name</span>
-                <span class="g-mail"></span>
-              </p>
-              <p class="temp ">
-                <span class="uppercase phead">Owner Number</span>
-                <span class="amount"></span>
-              </p> -->
+                  <p class="totalf none">
+                    <span>
+                      <select style="color: rgb(4, 133, 219); border: 1px solid rgb(3, 130, 204); background: white;">
+                        <option value="">Not Set</option>
+                        <option value="Schedule" <%=e?.status=="Schedule" ? "selected" : "" %>>Schedule</option>
+                        <option value="Call not Pickup" <%=e?.status=="Call not Pickup" ? "selected" : "" %>>Call not
+                          Pickup</option>
+                        <option value="Followed Up" <%=e?.status=="Followed Up" ? "selected" : "" %>>Followed Up
+                        </option>
+                        <option value="Important" <%=e?.status=="Important" ? "selected" : "" %>>Important</option>
+                      </select>
+                    </span>
+                  </p>
+                  <p class="totalf none">
+                    <span>
+                      <label style="display: none;">
+                        <%= (e.date)?.slice(-6) %>
+                      </label>
+                      <input type="date" value="<%= e.date %>">
+                    </span>
+                  </p>
+                  <p class="totalf none">
+                    <!-- <span class="uppercase phead pressEffect">GST No:</span> -->
+                    <button type="button" class="btn" onclick="openClientPaymentInfo('<%= e.id %>')"
+                      style="width: 100px;font-weight: 700; ">Payments</button>
+                  </p>
+                </div>
+              </div>
             </div>
-          </div>
+            <% }) %>
+
+              <!-- ------------------------------ -->
+
         </div>
-        <% }) %>
+        <!-- ----------PAGINATION--------- -->
+        <%- include('../partials/pagin.ejs') %>
+      </div>
+      <!-- -----DROPDOWN----- -->
+      <div class="main-dropdown ">
+        <div class="edit-menu common_dropdown">
+          <form action="" id="mainForm" method="POST">
+            <h4 class="uppercase">Client Details</h4>
+            <div class="edit-grid">
+              <div class="field">
+                <label for="client-name">Client Name</label>
+                <input type="text" name="name" id="client-name" placeholder="e.g.: Pragyan Tamuli" required>
+              </div>
+              <div class="field">
+                <label for="client-number">Phone Number</label>
+                <input type="text" name="number" id="client-number" placeholder="e.g.: 9874561230" pattern="[0-9]{10}"
+                  title="Please enter a valid 10-digit phone number" required>
+              </div>
+              <div class="field">
+                <label for="client-location">Location</label>
+                <input type="text" name="location" id="client-location" placeholder="e.g.: Guwahati, Assam" required>
+              </div>
+              <div class="field">
+                <label for="category">Category</label>
+                <select name="category" id="category" style="width: auto; height: auto; margin: auto;">
+                    <option value="n/a">Select Category</option>
+                    <option value="Walk in customer">Walk in customer</option>
+                    <option value="Construction Company">Construction Company</option>
+                    <option value="Real Estate Developer">Real Estate Developer</option>
+                    <option value="Architect or Engineer">Architect or Engineer</option>
+                    <option value="Retailer">Retailer</option>
+                    <option value="Hardware">Hardware</option>
+                    <option value="Waterproofing Contractor">Waterproofing Contractor</option>
+                    <option value="DIY / Homeowner">DIY / Homeowner</option>
+                </select>
 
-        <!-- ------------------------------ -->
+              </div>
+              <div class="field">
+                <label for="client-budget">Other Info</label>
+                <input type="text" name="other" id="client-other" placeholder="e.g.: Other Information" required>
+              </div>
+              <div class="field">
+                <label for="client-budget">Address</label>
+                <input type="text" name="address" id="client-address" placeholder="   Address " required>
+              </div>
+              <div class="field">
+                <label for="client-budget">GST No:</label>
+                <input type="text" name="gst" id="client-gst" placeholder="   Optional " required>
+              </div>
+            </div>
+            <div class="drop-btn flex">
+              <button type="submit" class="uppercase">Done</button>
+              <button type="button" class="uppercase" onclick="CloseModel('edit-menu')">Cancel</button>
+            </div>
+          </form>
+
+        </div>
+      </div>
+      <div class="main-dropdown">
+        <div class="payment-add-menu edit-menu common_dropdown">
+          <form action="/admin/client/payments" id="mainForm" method="POST">
+            <h4 class="uppercase">Payment Details</h4>
+            <div class="edit-grid">
+              <div class="field">
+                <label for="client-name">Select Client</label>
+                <input type="text" id="client_search" placeholder="Search Clients..." autocomplete="off" />
+                <input type="hidden" name="client_id" id="client_id" />
+                <div id="client_list" class="dropdown-list"></div>
+              </div>
+              <div class="field">
+                <label for="client-number">Amount</label>
+                <input type="text" name="amount" id="client-number" placeholder="e.g.: 45000"
+                  title="Please enter a valid 10-digit phone number" required>
+              </div>
+              <div class="field">
+                <label for="client-location">Date</label>
+                <input type="text" name="date" id="date" placeholder="e.g.: DD/MM/YYYY" required>
+              </div>
+              <div class="field">
+                <label for="mode">Payment</label>
+                <select name="mode" id="mode">
+                  <option value="">Select Payment Mode</option>
+                  <optgroup label="Online Payments">
+                    <option value="UPI">UPI</option>
+                    <option value="NetBanking">Net Banking</option>
+                    <option value="CreditCard">Credit Card</option>
+                    <option value="DebitCard">Debit Card</option>
+                  </optgroup>
+                  <optgroup label="Offline Payments">
+                    <option value="Cash">Cash</option>
+                    <option value="Cheque">Cheque</option>
+                    <option value="BankTransfer">Bank Transfer</option>
+                  </optgroup>
+                </select>
+              </div>
+              <div class="field">
+                <label for="client-budget">Recieved By</label>
+                <select name="recievedby" id="mode" required>
+                  <option value="">Select Payment Mode</option>
+                  <option value="Utpal nath">Utpal Nath</option>
+                  <option value="Rajib">Rajib</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="client-budget">Remark</label>
+                <input type="text" name="remark" id="client-address" placeholder="   Address " required>
+              </div>
+            </div>
+            <div class="drop-btn flex">
+              <button type="submit" class="uppercase">Done</button>
+              <button type="button" class="uppercase" onclick="CloseModel('payment-add-menu')">Cancel</button>
+            </div>
+          </form>
+        </div>
 
       </div>
-      <!-- ----------PAGINATION--------- -->
-      <%- include('../partials/pagin.ejs') %>
-    </div>
-    <!-- -----DROPDOWN----- -->
-    <div class="main-dropdown ">
-      <div class="edit-menu common_dropdown">
-        <form action="" id="mainForm" method="POST">
-          <h4 class="uppercase">Client Details</h4>
-          <div class="edit-grid">
-            <div class="field">
-              <label for="client-name">Client Name</label>
-              <input type="text" name="name" id="client-name" placeholder="e.g.: Pragyan Tamuli" required>
-            </div>
-            <div class="field">
-              <label for="client-number">Phone Number</label>
-              <input type="text" name="number" id="client-number" placeholder="e.g.: 9874561230" pattern="[0-9]{10}" title="Please enter a valid 10-digit phone number" required>
-            </div>
-            <div class="field">
-              <label for="client-location">Location</label>
-              <input type="text" name="location" id="client-location" placeholder="e.g.: Guwahati, Assam" required>
-            </div>
-            <div class="field">
-              <label for="client-bhk">BHK</label>
-              <input type="number" name="bhk" id="client-bhk" placeholder="e.g.: 3" min="1" required>
-            </div>
-            <div class="field">
-              <label for="client-budget">Budget</label>
-              <input type="text" name="budget" id="client-budget" placeholder="e.g.: &#8377; 50,00,000" required>
-            </div>
-            <div class="field">
-                <label for="client-budget">Occupation</label>
-              <input type="text" name="occupation" id="client-occupation" placeholder="e.g.: Doctor , Gov. Emp " required>
-            </div>
-          </div>
-          <div class="drop-btn flex">
-            <button type="submit" class="uppercase">Done</button>
-            <button type="button" class="uppercase" onclick="CloseModel()">Cancel</button>
-          </div>
-        </form>
-
+      <div class="data-aside-ctn hide">
+        <div class="cancel-btn-ctn" onclick="openClientPaymentInfoP_close()">
+          <svg fill="#000000" height="30px" width="30px" version="1.1" xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 512 512" xmlns:xlink="http://www.w3.org/1999/xlink" enable-background="new 0 0 512 512">
+            <path
+              d="M256,0C114.844,0,0,114.844,0,256s114.844,256,256,256s256-114.844,256-256S397.156,0,256,0z M358.625,313.375  c12.5,12.492,12.5,32.758,0,45.25C352.383,364.875,344.188,368,336,368s-16.383-3.125-22.625-9.375L256,301.25l-57.375,57.375  C192.383,364.875,184.188,368,176,368s-16.383-3.125-22.625-9.375c-12.5-12.492-12.5-32.758,0-45.25L210.75,256l-57.375-57.375  c-12.5-12.492-12.5-32.758,0-45.25c12.484-12.5,32.766-12.5,45.25,0L256,210.75l57.375-57.375c12.484-12.5,32.766-12.5,45.25,0  c12.5,12.492,12.5,32.758,0,45.25L301.25,256L358.625,313.375z" />
+          </svg>
+        </div>
+        <div class="data-aside">
+        </div>
       </div>
-    </div>
-  </main>
-  </section>
+      </div>
+    </main>
+    </section>
 
 
-  <!-- JAVASCRIPT -->
-  <script src="../../js/admin/header.js"></script>
-  <script src="../../js/admin/common.js"></script>
-  <script src="../../js/admin/client_owner.js"></script>
+    <!-- JAVASCRIPT -->
+    <script src="../../js/admin/header.js"></script>
+    <script src="../../js/admin/common.js"></script>
+    <script src="../../js/admin/client_owner.js"></script>
 
 
 
-  <script>
-    function editClient(e, Id) {
-      let parentCtn = e.parentElement.parentElement.parentElement
-      const clientData = document.getElementById("client-data");
-      const clientFields = parentCtn.querySelectorAll("span");
-      document.getElementsByClassName("main")[0].classList.add("flow");
-      const maindropDown = document.querySelector(`.main-dropdown`);
-      const editMenu = document.querySelector(`.edit-menu`);
-      maindropDown.style.display = `block`;
-      editMenu.style.display = `block`;
-      const form = document.getElementById('mainForm');
-      form.action = `/admin/clients/update/${Id}`;
+    <script>
+      function editClient(e, Id) {
+        let parentCtn = e.parentElement.parentElement.parentElement
+        const clientData = document.getElementById("client-data");
+        const clientFields = parentCtn.querySelectorAll("span");
+        document.getElementsByClassName("main")[0].classList.add("flow");
+        const maindropDown = document.querySelector(`.main-dropdown`);
+        const editMenu = document.querySelector(`.edit-menu`);
+        maindropDown.style.display = `block`;
+        editMenu.style.display = `block`;
+        const form = document.getElementById('mainForm');
+        form.action = `/admin/clients/update/${Id}`;
 
-      // Extract values
-      const clientName = clientFields[3].textContent.trim();
-      const clientNumber = clientFields[5].textContent.trim();
-      const clientLocation = clientFields[7].textContent.trim();
-      const clientBHK = clientFields[8].textContent.trim();
-      const clientBudget = clientFields[9].textContent.trim();
-      const clientOccupation = clientFields[15].textContent.trim();
+        // Extract values
+        const clientName = clientFields[3].textContent.trim();
+        const clientNumber = clientFields[5].textContent.trim();
+        const clientLocation = clientFields[7].textContent.trim();
+        const clientCategory = clientFields[13].textContent.trim();
+        const clientOth = clientFields[15].textContent.trim();
+        const clientAddress = clientFields[19].textContent.trim();
+        const clientGST = clientFields[21].textContent.trim();
 
-      // Populate the form
-      document.getElementById("client-name").value = clientName;
-      document.getElementById("client-number").value = clientNumber;
-      document.getElementById("client-location").value = clientLocation;
-      document.getElementById("client-bhk").value = clientBHK;
-      document.getElementById("client-budget").value = clientBudget;
-      document.getElementById("client-occupation").value = clientOccupation;
-    }
-  </script>
+        // Populate the form
+        document.getElementById("client-name").value = clientName;
+        document.getElementById("client-number").value = clientNumber;
+        document.getElementById("client-location").value = clientLocation;
+        document.getElementById("category").value = clientCategory;
+        document.getElementById("client-other").value = clientOth;
+        document.getElementById("client-address").value = clientAddress;
+        document.getElementById("client-gst").value = clientGST;
+      }
+    </script>
+    <script>
+      const clients = [
+       <% data?.forEach((e)=>{ %>
+            {
+            id:  <%= e?.id %>,
+            name:  '<%= e?.name %>'
+            },
+       <% }) %>
+
+      ]
+      const input = document.getElementById("client_search");
+      const hiddenInput = document.getElementById("client_id");
+      const dropdown = document.getElementById("client_list");
+
+      input.addEventListener("input", () => {
+        const searchTerm = input.value.toLowerCase();
+        dropdown.innerHTML = "";
+        if (!searchTerm) {
+          dropdown.style.display = "none";
+          return;
+        }
+        const filtered = clients.filter(client =>
+          client.name.toLowerCase().includes(searchTerm)
+        );
+        if (filtered.length === 0) {
+          dropdown.style.display = "none";
+          return;
+        }
+        filtered.forEach(client => {
+          const div = document.createElement("div");
+          div.textContent = client.name;
+          div.addEventListener("click", () => {
+            input.value = client.name;
+            hiddenInput.value = client.id;
+            dropdown.style.display = "none";
+          });
+          dropdown.appendChild(div);
+        });
+        dropdown.style.display = "block";
+      });
+      document.addEventListener("click", function (e) {
+        if (!e.target.closest(".field")) {
+          dropdown.style.display = "none";
+        }
+      });
+    </script>
 </body>
 
 </html>
