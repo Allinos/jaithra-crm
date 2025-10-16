@@ -3,167 +3,158 @@ const { createHmac } = require("crypto");
 const fs = require("fs");
 const path = require("path");
 
-exports.GetImagesByID = async (req, res) => {
-  const q = `SELECT * FROM prop_images where prop_id=${req.params.id}`;
+// Client Invoice
+exports.InvoiceDelete = async (req, res) => {
+  const invoiceId = req.params.id;
   try {
-    const [results] = await databaseCon.query(q);
-    res.status(200).send({ data: results });
-  } catch (error) {
-    console.error("Error fetching properties:", error);
-    res.status(500).send("Error fetching properties.");
-  }
-};
+    const deleteInvoiceQuery = `DELETE FROM invoices WHERE id = ?`;
+    const [result] = await databaseCon.query(deleteInvoiceQuery, [invoiceId]);
 
-exports.PropertieDelete = async (req, res) => {
-  const propertyId = req.params.id;
-  try {
-    const fetchImagesQuery = `SELECT location FROM prop_images WHERE prop_id = ?`;
-    const [images] = await databaseCon.query(fetchImagesQuery, [propertyId]);
-    images.forEach((image) => {
-      const filePath = path.join(
-        __dirname,
-        "../static/uploads",
-        image.location
-      );
-      fs.unlink(filePath, (err) => {
-        console.log(filePath);
-        if (err) {
-          console.error(`Failed to delete file ${filePath}:`, err);
-        }
-      });
-    });
-    const deleteImagesQuery = `DELETE FROM prop_images WHERE prop_id = ?`;
-    await databaseCon.query(deleteImagesQuery, [propertyId]);
-    const deletePropertyQuery = `DELETE FROM properties WHERE id = ?`;
-    const [result] = await databaseCon.query(deletePropertyQuery, [propertyId]);
     if (result.affectedRows === 0) {
       return res.status(404).send({
         status: false,
-        msg: "Property not found or already deleted.",
+        msg: "Invoice not found or already deleted.",
       });
     }
+
     res.status(200).send({
       status: true,
-      msg: "Property and associated images deleted successfully! 😊",
+      msg: "Invoice deleted successfully! 🧾",
     });
   } catch (error) {
-    console.error("Error deleting property:", error);
-    res.status(500).send({ status: false, msg: "Failed to delete property." });
+    console.error("Error deleting invoice:", error);
+    res.status(500).send({
+      status: false,
+      msg: "Failed to delete invoice.",
+      error: error.message,
+    });
   }
 };
-
-exports.PropertieUpdate = async (req, res) => {
+exports.InvoiceUpdate = async (req, res) => {
   const {
     id,
-    name,
-    location,
-    bhk,
-    floor,
-    map_link,
-    owner_name,
-    owner_number,
+    invoice_id,
+    amount,
+    invoice_date,
+    due_date,
+    status,
+    sales_by,
     category,
   } = req.body;
-  const sql = `UPDATE properties SET location = ?, bhk = ?, floor = ?, map_link = ?, owner_name = ?, owner_number = ?, category = ?, name = ? WHERE id = ? `;
+
+  const updateQuery = `
+    UPDATE invoices
+    SET invoice_id = ?, amount = ?, invoice_date = ?, due_date = ?, status = ?, sales_by = ?, category = ?
+    WHERE id = ?
+  `;
+
   try {
-    const [result] = await databaseCon.query(sql, [
-      location,
-      bhk,
-      floor,
-      map_link,
-      owner_name,
-      owner_number,
+    const [result] = await databaseCon.query(updateQuery, [
+      invoice_id,
+      amount,
+      invoice_date,
+      due_date,
+      status,
+      sales_by,
       category,
-      name,
       id,
     ]);
+
     if (result.affectedRows === 0) {
-      return res
-        .status(404)
-        .json({ message: "Property not found. No update performed." });
-    } else {
-      res.status(200).json({ status: true, error: "Updates Successfully" });
+      return res.status(404).json({
+        status: false,
+        message: "Invoice not found. No update performed.",
+      });
     }
+
+    res.status(200).json({
+      status: true,
+      message: "Invoice updated successfully!",
+    });
   } catch (error) {
-    console.error("Error updating Property:", error.message);
+    console.error("Error updating invoice:", error.message);
     res.status(500).json({
       status: false,
-      error: "Internal server error.",
-      details: error.message,
+      message: "Internal server error.",
+      error: error.message,
     });
   }
 };
 
-// Add Client
+exports.UpdatePaymentInvoiceStatus = async (req, res) => {
+  const {status} = req.body;
+
+  const updateQuery = `UPDATE invoices SET status = ? WHERE id = ?  `;
+  try {
+    const [result] = await databaseCon.query(updateQuery, [status,req.params.id]);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({
+        status: false,
+        message: "Invoice not found. No update performed.",
+      });
+    }
+    res.status(200).json({
+      status: true,
+      message: "Invoice updated successfully!",
+    });
+  } catch (error) {
+    console.error("Error updating invoice:", error.message);
+    res.status(500).json({
+      status: false,
+      message: "Internal server error.",
+      error: error.message,
+    });
+  }
+};
+
+// Clients CRUD
 exports.AddClient = async (req, res) => {
-  const { name, number, location, bhk, budget, occupation } = req.body;
+  const { name, number, location, category, other, address, gst, status, date } = req.body;
+
   try {
     const [result] = await databaseCon.query(
-      "INSERT INTO clients (name, number, location, bhk, budget,occupation) VALUES (?, ?, ?, ?, ?,?)",
-      [name, number, location, bhk, budget,occupation]
+      "INSERT INTO clients (name, number, location, category, other, address, gst, status, date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      [name, number, location, category, other, address, gst, status, date]
     );
     res.redirect("/admin/clients");
   } catch (error) {
     console.error("Error adding client:", error.message);
-    res
-      .status(500)
-      .json({ error: "Internal server error.", details: error.message });
+    res.status(500).json({ error: "Internal server error.", details: error.message });
   }
 };
-
-// Add Owner
-exports.AddOwner = async (req, res) => {
-  const { name, number, location } = req.body;
-  if (!name || !number || !location) {
-    return res.status(400).json({ message: "All fields are required." });
-  }
-  try {
-    const [result] = await databaseCon.query(
-      "INSERT INTO owners (name, number, location) VALUES (?, ?, ?)",
-      [name, number, location]
-    );
-    res.redirect("/admin/owners");
-  } catch (error) {
-    console.error("Error adding owner:", error.message);
-    res
-      .status(500)
-      .json({ error: "Internal server error.", details: error.message });
-  }
-};
-
-// Update Clients by ID
+// Update an existing client by ID
 exports.UpdateClientsByID = async (req, res) => {
   const { id } = req.params;
-  const { name, number, location, bhk, budget, occupation } = req.body;
+  const { name, number, location, category, other, address, gst, status, date } = req.body;
 
-  if (!name || !number || !location || !bhk || !budget) {
-    return res.status(400).json({ message: "All fields are required." });
+  if (!name || !number || !location || !category || !address) {
+    return res.status(400).json({ message: "Required fields are missing." });
   }
 
   try {
     const [result] = await databaseCon.query(
-      "UPDATE clients SET name = ?, number = ?, location = ?, bhk = ?, budget = ?, occupation = ? WHERE id = ?",
-      [name, number, location, bhk, budget, occupation, id]
+      "UPDATE clients SET name = ?, number = ?, location = ?, category = ?, other = ?, address = ?, gst = ?, status = ?, date = ? WHERE id = ?",
+      [name, number, location, category, other, address, gst, status, date, id]
     );
+
     if (result.affectedRows === 0) {
-      return res
-        .status(404)
-        .json({ message: "Client not found. No update performed." });
+      return res.status(404).json({ message: "Client not found. No update performed." });
     }
+
     res.redirect("/admin/clients");
   } catch (error) {
     console.error("Error updating client:", error.message);
-    res
-      .status(500)
-      .json({ error: "Internal server error.", details: error.message });
+    res.status(500).json({ error: "Internal server error.", details: error.message });
   }
 };
+// Update only the status of a client
 exports.StatusOfClientsByID = async (req, res) => {
   const { id } = req.params;
   const { status } = req.body;
 
   if (!status) {
-    return res.status(400).json({ message: "fields are required." });
+    return res.status(400).json({ message: "Status is required." });
   }
 
   try {
@@ -171,59 +162,56 @@ exports.StatusOfClientsByID = async (req, res) => {
       "UPDATE clients SET status = ? WHERE id = ?",
       [status, id]
     );
+
     if (result.affectedRows === 0) {
-      return res
-        .status(404)
-        .json({ message: "Client not found. No update performed." });
+      return res.status(404).json({ message: "Client not found. No update performed." });
     }
-    res.status(200).send({
-      status: true,
-      msg: "Client Updated successfully! 😊",
-    });
+
+    res.status(200).send({ status: true, msg: "Client status updated successfully! 😊" });
   } catch (error) {
-    console.error("Error updating client:", error.message);
-    res
-      .status(500)
-      .json({ error: "Internal server error.", details: error.message });
+    console.error("Error updating client status:", error.message);
+    res.status(500).json({ error: "Internal server error.", details: error.message });
   }
 };
+// Update only the date of a client
 exports.DateofClientsByID = async (req, res) => {
   const { id } = req.params;
   const { date } = req.body;
+
+  if (!date) {
+    return res.status(400).json({ message: "Date is required." });
+  }
+
   try {
     const [result] = await databaseCon.query(
       "UPDATE clients SET date = ? WHERE id = ?",
       [date, id]
     );
+
     if (result.affectedRows === 0) {
-      return res
-        .status(404)
-        .json({ message: "Client not found. No update performed." });
+      return res.status(404).json({ message: "Client not found. No update performed." });
     }
-    res.status(200).send({
-      status: true,
-      msg: "Client Updated successfully! 😊",
-    });
+
+    res.status(200).send({ status: true, msg: "Client date updated successfully! 😊" });
   } catch (error) {
-    console.error("Error updating client:", error.message);
-    res
-      .status(500)
-      .json({ error: "Internal server error.", details: error.message });
+    console.error("Error updating client date:", error.message);
+    res.status(500).json({ error: "Internal server error.", details: error.message });
   }
 };
-// Delete Clients by ID
+// Delete client by ID
 exports.DeleteClientsByID = async (req, res) => {
   const { id } = req.params;
+
   try {
     const [result] = await databaseCon.query(
       "DELETE FROM clients WHERE id = ?",
       [id]
     );
+
     if (result.affectedRows === 0) {
-      return res
-        .status(404)
-        .json({ message: "Client not found. No deletion performed." });
+      return res.status(404).json({ message: "Client not found. No deletion performed." });
     }
+
     res.status(200).json({
       status: true,
       message: "Client deleted successfully.",
@@ -231,70 +219,207 @@ exports.DeleteClientsByID = async (req, res) => {
     });
   } catch (error) {
     console.error("Error deleting client:", error.message);
-    res
-      .status(500)
-      .json({ error: "Internal server error.", details: error.message });
+    res.status(500).json({ error: "Internal server error.", details: error.message });
   }
 };
 
-// Update Owners by ID
-exports.UpdateOwnersByID = async (req, res) => {
-  const { id } = req.params;
-  const { name, number, location } = req.body;
+//CLIENT PAYMENTS
+exports.AddClientPayment = async (req, res) => {
+  const { client_id, amount, mode, date, remark, recievedby } = req.body;
 
-  if (!name || !number || !location) {
+  try {
+    const [result] = await databaseCon.query(
+      "INSERT INTO client_payments (client_id, amount, mode, date, remark, recievedby) VALUES (?, ?, ?, ?, ?, ?)",
+      [client_id, amount, mode, date, remark, recievedby]
+    );
+
+    res.status(201).json({ message: "Payment added successfully", paymentId: result.insertId });
+  } catch (error) {
+    console.error("Error adding client payment:", error.message);
+    res.status(500).json({ error: "Internal server error", details: error.message });
+  }
+};
+exports.GetAllClientPayments = async (req, res) => {
+  try {
+    const [payments] = await databaseCon.query("SELECT * FROM client_payments ORDER BY date DESC");
+    res.status(200).json(payments);
+  } catch (error) {
+    console.error("Error fetching payments:", error.message);
+    res.status(500).json({ error: "Internal server error", details: error.message });
+  }
+};
+exports.GetClientPaymentById = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const [rows] = await databaseCon.query("SELECT * FROM client_payments WHERE client_id = ?", [id]);
+
+    if (rows.length === 0) {
+      return res.status(404).json({ error: "Payment not found" });
+    }
+
+    res.status(200).json({status:true,msg:'retrived successfully',data:rows});
+  } catch (error) {
+    console.error("Error fetching payment:", error.message);
+    res.status(500).json({ error: "Internal server error", details: error.message });
+  }
+};
+exports.UpdateClientPayment = async (req, res) => {
+  const { id } = req.params;
+  const { client_id, amount, mode, date, remark, recievedby } = req.body;
+
+  try {
+    const [result] = await databaseCon.query(
+      "UPDATE client_payments SET client_id = ?, amount = ?, mode = ?, date = ?, remark = ?, recievedby = ? WHERE id = ?",
+      [client_id, amount, mode, date, remark, recievedby, id]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: "Payment not found" });
+    }
+
+    res.status(200).json({ message: "Payment updated successfully" });
+  } catch (error) {
+    console.error("Error updating payment:", error.message);
+    res.status(500).json({ error: "Internal server error", details: error.message });
+  }
+};
+exports.DeleteClientPayment = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const [result] = await databaseCon.query("DELETE FROM client_payments WHERE id = ?", [id]);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: "Payment not found" });
+    }
+
+    res.status(200).json({ status: true,message: "Payment deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting payment:", error.message);
+    res.status(500).json({ error: "Internal server error", details: error.message });
+  }
+};
+
+
+
+
+
+//Leads CRUD
+exports.AddLead = async (req, res) => {
+  const { name, number, location, inquery, oth, status, date } = req.body;
+
+  try {
+    const [result] = await databaseCon.query(
+      "INSERT INTO leads (name, number, location, inquery, oth, status, date) VALUES (?, ?, ?, ?, ?, ?, ?)",
+      [name, number, location, inquery, oth, status, date]
+    );
+    res.redirect("/admin/leads");
+  } catch (error) {
+    console.error("Error adding lead:", error.message);
+    res.status(500).json({ error: "Internal server error.", details: error.message });
+  }
+};
+// Update lead by ID
+exports.UpdateLeadsByID = async (req, res) => {
+  const { id } = req.params;
+  const { name, number, location, inquery, oth, status, date } = req.body;
+
+  if (!name || !number || !location || !inquery || !oth) {
     return res.status(400).json({ message: "All fields are required." });
   }
 
   try {
     const [result] = await databaseCon.query(
-      "UPDATE owners SET name = ?, number = ?, location = ? WHERE id = ?",
-      [name, number, location, id]
+      "UPDATE leads SET name = ?, number = ?, location = ?, inquery = ?, oth = ?, status = ?, date = ? WHERE id = ?",
+      [name, number, location, inquery, oth, status, date, id]
     );
 
     if (result.affectedRows === 0) {
-      return res
-        .status(404)
-        .json({ message: "Owner not found. No update performed." });
+      return res.status(404).json({ message: "Lead not found. No update performed." });
     }
 
-    res.redirect("/admin/owners");
+    res.redirect("/admin/leads");
   } catch (error) {
-    console.error("Error updating owner:", error.message);
-    res
-      .status(500)
-      .json({ error: "Internal server error.", details: error.message });
+    console.error("Error updating lead:", error.message);
+    res.status(500).json({ error: "Internal server error.", details: error.message });
   }
 };
-
-// Delete Owners by ID
-exports.DeleteOwnersByID = async (req, res) => {
+// Update lead status
+exports.StatusOfLeadsByID = async (req, res) => {
   const { id } = req.params;
+  const { status } = req.body;
+
+  if (!status) {
+    return res.status(400).json({ message: "Status field is required." });
+  }
+
   try {
     const [result] = await databaseCon.query(
-      "DELETE FROM owners WHERE id = ?",
+      "UPDATE leads SET status = ? WHERE id = ?",
+      [status, id]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "Lead not found. No update performed." });
+    }
+
+    res.status(200).json({ status: true, msg: "Lead status updated successfully! 😊" });
+  } catch (error) {
+    console.error("Error updating lead status:", error.message);
+    res.status(500).json({ error: "Internal server error.", details: error.message });
+  }
+};
+// Update lead date
+exports.DateofLeadsByID = async (req, res) => {
+  const { id } = req.params;
+  const { date } = req.body;
+
+  try {
+    const [result] = await databaseCon.query(
+      "UPDATE leads SET date = ? WHERE id = ?",
+      [date, id]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "Lead not found. No update performed." });
+    }
+
+    res.status(200).json({ status: true, msg: "Lead date updated successfully! 😊" });
+  } catch (error) {
+    console.error("Error updating lead date:", error.message);
+    res.status(500).json({ error: "Internal server error.", details: error.message });
+  }
+};
+// Delete lead
+exports.DeleteLeadsByID = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const [result] = await databaseCon.query(
+      "DELETE FROM leads WHERE id = ?",
       [id]
     );
 
     if (result.affectedRows === 0) {
-      return res
-        .status(404)
-        .json({ message: "Owner not found. No deletion performed." });
+      return res.status(404).json({ message: "Lead not found. No deletion performed." });
     }
 
     res.status(200).json({
       status: true,
-      message: "Owner deleted successfully.",
-      deletedOwnerID: id,
+      message: "Lead deleted successfully.",
+      deletedLeadID: id,
     });
   } catch (error) {
-    console.error("Error deleting owner:", error.message);
-    res
-      .status(500)
-      .json({ error: "Internal server error.", details: error.message });
+    console.error("Error deleting lead:", error.message);
+    res.status(500).json({ error: "Internal server error.", details: error.message });
   }
 };
 
+
+
+
+// Users CRUD
 exports.changePwdUser = async (req, res) => {
   let password = req.body.Password.trim();
   try {
@@ -402,5 +527,24 @@ exports.deleteUser = async (req, res) => {
     res
       .status(500)
       .send({ status: false, msg: "Error deleting user!", error: err.message });
+  }
+};
+
+
+
+
+
+
+
+
+//////////////////not used Data////////////////
+exports.GetImagesByID = async (req, res) => {
+  const q = `SELECT * FROM prop_images where prop_id=${req.params.id}`;
+  try {
+    const [results] = await databaseCon.query(q);
+    res.status(200).send({ data: results });
+  } catch (error) {
+    console.error("Error fetching properties:", error);
+    res.status(500).send("Error fetching properties.");
   }
 };

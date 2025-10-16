@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="../../css/admin/main.css">
+  <link rel="stylesheet" type="text/css" href="../../css/darkMode.css">
+  <link rel="stylesheet" type="text/css" href="../../css/admin/header.css">
+  <link rel="stylesheet" type="text/css" href="../../css/admin/responsive.css">
+  <!-- <link rel="stylesheet" type="text/html" href="sweetalert2.min.css"> -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="../../js/admin/dashboard.module.js"></script>
+  <!-- <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.1/dist/sweetalert2.min.css" rel="stylesheet"> -->
+
+  <title>Admin </title>
+</head>
+<style>
+  .grid {
+    /* grid-template-columns: 3rem 1fr 1fr .5fr 1fr .5fr 1fr .5fr 2rem; */
+    grid-template-columns: 3rem 1fr .5fr .5fr .5fr .5fr 1fr 8rem 1.5rem
+  }
+
+  .adata .grid {
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  }
+
+  .data-info .info-head {
+    padding: 0 1.5rem;
+    padding-right: 45px;
+  }
+
+  #popupCtn {
+
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f5f5f5;
+    z-index: 1000;
+    position: absolute;
+  }
+
+  .image-icon {
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+  }
+
+  .popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: none;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .popup-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 80%;
+    height: 80vh;
+    max-width: 600px;
+    overflow-y: auto;
+  }
+
+  .gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .gallery img {
+    width: calc(33.33% - 10px);
+    cursor: pointer;
+    border-radius: 4px;
+  }
+
+  .large-image-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    display: none;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .large-image {
+    width: 50vw;
+    height: fit-content;
+    max-width: 90%;
+    max-height: 90%;
+    cursor: pointer;
+    border-radius: 9px;
+  }
+
+  .arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 2rem;
+    color: white;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .arrow.left {
+    left: 20px;
+  }
+
+  .arrow.right {
+    right: 20px;
+  }
+
+  .close-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+  }
+
+  .alert {
+    position: fixed;
+    bottom: 20px;
+    right: 0%;
+    transform: translateX(-50%) translateY(50px);
+    background: linear-gradient(90deg, #f6edff, #aac2eb);
+    color: var(--primary-color);
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 1000;
+  }
+
+  .alert.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+    pointer-events: auto;
+  }
+
+  .payment_status {
+    height: 25px;
+    outline: none;
+    border-radius: 5px;
+    border: 2px solid rgb(245, 245, 245);
+    font-size: 12px;
+    margin-top: 0px;
+  }
+</style>
+<style>
+  .status-default {
+    background-color: #e0e0e0;
+    color: #000;
+  }
+
+  .status-paid {
+    background-color: #d4edda;
+    color: #155724;
+  }
+
+  .status-unpaid {
+    background-color: #f8d7da;
+    color: #721c24;
+  }
+
+  .status-soon {
+    background-color: #fff3cd;
+    color: #856404;
+  }
+
+  .status-credit {
+    background-color: #d1ecf1;
+    color: #0c5460;
+  }
+</style>
+
+<!-- <style>
+  .main-card {
+    max-width: 1300px;
+    margin: 0 auto;
+    margin-top: 25px;
+    padding: 1%;
+    background: white;
+    border-radius: 20px;
+    margin-bottom: 3px;
+  }
+
+  .cards {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .cards_item {
+    display: flex;
+    padding: .5rem;
+  }
+
+  .card_image {
+    position: relative;
+    max-height: 250px;
+  }
+
+  .card_image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    aspect-ratio: 16/9;
+    border-radius: 0%;
+  }
+
+  .card_price {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0.25rem;
+    background-color: var(--primary-color);
+    font-size: 18px;
+    font-weight: 700;
+    color: white;
+    padding: 4px;
+    align-items: baseline;
+  }
+
+  .card_price span {
+    font-size: 12px;
+    margin-top: -2px;
+
+  }
+
+  .note {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    padding: 4px 8px;
+    border-radius: 0.25rem;
+    background-color: var(--primary-color);
+    color: white;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer
+  }
+
+  .note-left {
+    right: 8px;
+    left: unset;
+    background-color: var(--secondary-color);
+  }
+
+  .map {
+    bottom: 8px;
+    right: 8px;
+    top: unset;
+    left: unset;
+    color: var(--secondary-color);
+    background-color: rgba(0, 183, 255, 0.082);
+  }
+
+  .share {
+    bottom: 8px;
+    right: 8px;
+    top: unset;
+    left: unset;
+    color: var(--secondary-color);
+    background-color: rgba(0, 183, 255, 0.082);
+  }
+
+  .share .svg {
+    fill: var(--primary-color);
+    width: 17px;
+    height: 17px;
+  }
+
+  .moreImg {
+    bottom: 8px;
+    top: unset;
+    color: var(--secondary-color);
+    background-color: rgb(255, 255, 255);
+  }
+
+  .moreImg .svg {
+    fill: var(--primary-color);
+    width: 17px;
+    height: 17px;
+  }
+
+  @media (min-width: 40rem) {
+    .cards_item {
+      width: 50%;
+    }
+  }
+
+  @media (min-width: 56rem) {
+    .cards_item {
+      width: 33.3333%;
+    }
+  }
+
+  .card {
+    background-color: white;
+    border-radius: 0.70rem;
+    box-shadow: 0px 0px 6px 2px rgba(0, 0, 0, 0.25);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .card_content {
+    position: relative;
+    padding: 7px 10px 8px 24px;
+    max-height: 290px;
+    overflow-y: hide;
+  }
+
+  .card_content::-webkit-scrollbar {
+    width: 3px;
+  }
+
+  .card_content::-webkit-scrollbar-track {
+    box-shadow: 0;
+    border-radius: 0;
+  }
+
+  .card_content::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 15px;
+  }
+
+  .card_title {
+    position: relative;
+    /* margin: 0 0 24px; */
+    padding-bottom: 10px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 700;
+  }
+
+  .card_title::after {
+    position: absolute;
+    display: block;
+    width: 50px;
+    height: 2px;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #c89b3f;
+    content: "";
+  }
+
+  hr {
+    margin: 24px auto;
+    width: 50px;
+    border-top: 2px solid #c89b3f;
+  }
+
+  .card_text p {
+    /* margin: 0 0 24px; */
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .card_text p:last-child {
+    margin: 0;
+  }
+
+  .info_pagination .pages {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    background: white;
+    padding: 10px;
+    border-radius: 13px;
+  }
+
+  .info_pagination .views {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    background: white;
+    padding: 10px;
+    border-radius: 13px;
+    position: absolute;
+    left: 3%;
+  }
+
+  .view-map {
+    font-size: small;
+  }
+
+  @media (min-width: 1300px) {
+    .cards_item {
+      width: 25%;
+    }
+
+    .main-card {
+      max-width: unset;
+    }
+  }
+
+  @media (min-width: 1300px) and (max-width:1500px) {
+    .cards_item {
+      width: 25%;
+    }
+
+  }
+
+  @media (min-width: 1500px) and (max-width:2500px) {
+    .cards_item {
+      width: 20%;
+    }
+
+  }
+</style> -->
+
+<body>
+  <%- include('../partials/admin.header.ejs') %>
+    <main class="main" data-app-page="invoice">
+      <!-------------      -------------  -->
+      <div class="main-data  flex" style="display: none;">
+        <!-- -------TOTAL PROJECTS--------- -->
+        <div class="total-data flex data" onclick="FillterOps('Residential')">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="users-alt" class="svg">
+            <path fill="##000000"
+              d="M12.3,12.22A4.92,4.92,0,0,0,14,8.5a5,5,0,0,0-10,0,4.92,4.92,0,0,0,1.7,3.72A8,8,0,0,0,1,19.5a1,1,0,0,0,2,0,6,6,0,0,1,12,0,1,1,0,0,0,2,0A8,8,0,0,0,12.3,12.22ZM9,11.5a3,3,0,1,1,3-3A3,3,0,0,1,9,11.5Zm9.74.32A5,5,0,0,0,15,3.5a1,1,0,0,0,0,2,3,3,0,0,1,3,3,3,3,0,0,1-1.5,2.59,1,1,0,0,0-.5.84,1,1,0,0,0,.45.86l.39.26.13.07a7,7,0,0,1,4,6.38,1,1,0,0,0,2,0A9,9,0,0,0,18.74,11.82Z">
+            </path>
+          </svg>
+          <div class="total_user_data">
+            <p class="size">Total Invoices</p>
+            <p class="text">_</p>
+          </div>
+        </div>
+        <div class="total-data flex data" onclick="FillterOps('ResidentialRent')">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="users-alt" class="svg">
+            <path fill="##000000"
+              d="M12.3,12.22A4.92,4.92,0,0,0,14,8.5a5,5,0,0,0-10,0,4.92,4.92,0,0,0,1.7,3.72A8,8,0,0,0,1,19.5a1,1,0,0,0,2,0,6,6,0,0,1,12,0,1,1,0,0,0,2,0A8,8,0,0,0,12.3,12.22ZM9,11.5a3,3,0,1,1,3-3A3,3,0,0,1,9,11.5Zm9.74.32A5,5,0,0,0,15,3.5a1,1,0,0,0,0,2,3,3,0,0,1,3,3,3,3,0,0,1-1.5,2.59,1,1,0,0,0-.5.84,1,1,0,0,0,.45.86l.39.26.13.07a7,7,0,0,1,4,6.38,1,1,0,0,0,2,0A9,9,0,0,0,18.74,11.82Z">
+            </path>
+          </svg>
+          <div class="total_user_data">
+            <p class="size">50</p>
+            <p class="text">Paid Invoices</p>
+          </div>
+        </div>
+        <div class="total-data flex data" onclick="FillterOps('ResidentialSale')">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="users-alt" class="svg">
+            <path fill="##000000"
+              d="M12.3,12.22A4.92,4.92,0,0,0,14,8.5a5,5,0,0,0-10,0,4.92,4.92,0,0,0,1.7,3.72A8,8,0,0,0,1,19.5a1,1,0,0,0,2,0,6,6,0,0,1,12,0,1,1,0,0,0,2,0A8,8,0,0,0,12.3,12.22ZM9,11.5a3,3,0,1,1,3-3A3,3,0,0,1,9,11.5Zm9.74.32A5,5,0,0,0,15,3.5a1,1,0,0,0,0,2,3,3,0,0,1,3,3,3,3,0,0,1-1.5,2.59,1,1,0,0,0-.5.84,1,1,0,0,0,.45.86l.39.26.13.07a7,7,0,0,1,4,6.38,1,1,0,0,0,2,0A9,9,0,0,0,18.74,11.82Z">
+            </path>
+          </svg>
+          <div class="total_user_data">
+            <p class="size">35</p>
+            <p class="text">Unpaid Invoices</p>
+          </div>
+        </div>
+        <!-- ---------------cOMPLETED PROJECTS ------------ -->
+        <div class="in_progress-data flex data" onclick="FillterOps('Commercial')">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="users-alt" class="svg">
+            <path fill="##000000"
+              d="M12.3,12.22A4.92,4.92,0,0,0,14,8.5a5,5,0,0,0-10,0,4.92,4.92,0,0,0,1.7,3.72A8,8,0,0,0,1,19.5a1,1,0,0,0,2,0,6,6,0,0,1,12,0,1,1,0,0,0,2,0A8,8,0,0,0,12.3,12.22ZM9,11.5a3,3,0,1,1,3-3A3,3,0,0,1,9,11.5Zm9.74.32A5,5,0,0,0,15,3.5a1,1,0,0,0,0,2,3,3,0,0,1,3,3,3,3,0,0,1-1.5,2.59,1,1,0,0,0-.5.84,1,1,0,0,0,.45.86l.39.26.13.07a7,7,0,0,1,4,6.38,1,1,0,0,0,2,0A9,9,0,0,0,18.74,11.82Z">
+            </path>
+          </svg>
+          <div class="total_user_data">
+            <p class="size">500</p>
+            <p class="text">Total Clients</p>
+          </div>
+        </div>
+        <div class="in_progress-data flex data" onclick="FillterOps('CommercialRent')">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="users-alt" class="svg">
+            <path fill="##000000"
+              d="M12.3,12.22A4.92,4.92,0,0,0,14,8.5a5,5,0,0,0-10,0,4.92,4.92,0,0,0,1.7,3.72A8,8,0,0,0,1,19.5a1,1,0,0,0,2,0,6,6,0,0,1,12,0,1,1,0,0,0,2,0A8,8,0,0,0,12.3,12.22ZM9,11.5a3,3,0,1,1,3-3A3,3,0,0,1,9,11.5Zm9.74.32A5,5,0,0,0,15,3.5a1,1,0,0,0,0,2,3,3,0,0,1,3,3,3,3,0,0,1-1.5,2.59,1,1,0,0,0-.5.84,1,1,0,0,0,.45.86l.39.26.13.07a7,7,0,0,1,4,6.38,1,1,0,0,0,2,0A9,9,0,0,0,18.74,11.82Z">
+            </path>
+          </svg>
+          <div class="total_user_data">
+            <p class="size">145</p>
+            <p class="text">Total Leads</p>
+          </div>
+        </div>
+        <div class="in_progress-data flex data" onclick="FillterOps('CommercialSale')">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="users-alt" class="svg">
+            <path fill="##000000"
+              d="M12.3,12.22A4.92,4.92,0,0,0,14,8.5a5,5,0,0,0-10,0,4.92,4.92,0,0,0,1.7,3.72A8,8,0,0,0,1,19.5a1,1,0,0,0,2,0,6,6,0,0,1,12,0,1,1,0,0,0,2,0A8,8,0,0,0,12.3,12.22ZM9,11.5a3,3,0,1,1,3-3A3,3,0,0,1,9,11.5Zm9.74.32A5,5,0,0,0,15,3.5a1,1,0,0,0,0,2,3,3,0,0,1,3,3,3,3,0,0,1-1.5,2.59,1,1,0,0,0-.5.84,1,1,0,0,0,.45.86l.39.26.13.07a7,7,0,0,1,4,6.38,1,1,0,0,0,2,0A9,9,0,0,0,18.74,11.82Z">
+            </path>
+          </svg>
+          <div class="total_user_data">
+            <p class="size">4</p>
+            <p class="text">Users/Employees</p>
+          </div>
+        </div>
+      </div>
+      <!-- ---------IN PROGRESS----------- -->
+
+      <!-- ---------ALERT BOX----------- -->
+      <div class="status hide">
+        <div class="alert flex green">
+          <span class="hide">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="exclamation-triangle" class="alove">
+              <path fill="##000000"
+                d="M12,16a1,1,0,1,0,1,1A1,1,0,0,0,12,16Zm10.67,1.47-8.05-14a3,3,0,0,0-5.24,0l-8,14A3,3,0,0,0,3.94,22H20.06a3,3,0,0,0,2.61-4.53Zm-1.73,2a1,1,0,0,1-.88.51H3.94a1,1,0,0,1-.88-.51,1,1,0,0,1,0-1l8-14a1,1,0,0,1,1.78,0l8.05,14A1,1,0,0,1,20.94,19.49ZM12,8a1,1,0,0,0-1,1v4a1,1,0,0,0,2,0V9A1,1,0,0,0,12,8Z">
+              </path>
+            </svg>
+          </span>
+          <span>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="check-circle" class="alove">
+              <path fill="##000000"
+                d="M14.72,8.79l-4.29,4.3L8.78,11.44a1,1,0,1,0-1.41,1.41l2.35,2.36a1,1,0,0,0,.71.29,1,1,0,0,0,.7-.29l5-5a1,1,0,0,0,0-1.42A1,1,0,0,0,14.72,8.79ZM12,2A10,10,0,1,0,22,12,10,10,0,0,0,12,2Zm0,18a8,8,0,1,1,8-8A8,8,0,0,1,12,20Z">
+              </path>
+            </svg>
+          </span>
+          <p>Project work is due on <span>19/05/23</span> </p>
+          <span class="caution" onclick="closeAlert()">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="times" class="svg">
+              <path fill="##000000"
+                d="M13.41,12l4.3-4.29a1,1,0,1,0-1.42-1.42L12,10.59,7.71,6.29A1,1,0,0,0,6.29,7.71L10.59,12l-4.3,4.29a1,1,0,0,0,0,1.42,1,1,0,0,0,1.42,0L12,13.41l4.29,4.3a1,1,0,0,0,1.42,0,1,1,0,0,0,0-1.42Z">
+              </path>
+            </svg>
+          </span>
+        </div>
+      </div>
+
+      <!-- ----------- DATA Grid or Table----------- -->
+      <div class="data-info box">
+        <div class="info-head grid">
+          <p class="uppercase phead none">No.</p>
+          <p class="uppercase phead none">Invoice_No:</p>
+          <p class="uppercase phead none">Date</p>
+          <p class="uppercase phead none">Due Date</p>
+          <p class="uppercase phead none">Amount</p>
+          <p class="uppercase phead none">Mode</p>
+          <p class="uppercase phead none">Status</p>
+          <p class="uppercase phead none">action</p>
+          <!-- ------resposnive class------- -->
+        </div>
+        <!-- ----------project information----------- -->
+        <div class="info-content">
+          <!-- --------1st project----------->
+          <% data?.forEach((e)=>{ %>
+            <div class="accordion-content">
+              <div class="ahead grid">
+                <p class="ref">
+                  <span class="uppercase hide block phead">Ref. No.</span>
+                  <span id="refid" data-id="<%= e.id %>">
+                    <%= e.id %>
+                  </span>
+                </p>
+                <p class="invoice_number none">
+                  <span class="uppercase hide block phead">Invoice NO</span>
+                  <span>
+                    <%= e.invoice_id %>
+                  </span>
+                </p>
+                <p class="pro">
+                  <span class="uppercase hide block phead">Date</span>
+                  <span>
+                    <%= e.invoice_date %>
+                  </span>
+                </p>
+                <p class="emp_bhk">
+                  <span class="uppercase hide block phead">Due Date</span>
+                  <span>
+                    <%= e.due_date %>
+                  </span>
+                </p>
+                <p class="emp_bhk">
+                  <span class="uppercase hide block phead">Amount</span>
+                  <span>
+                    <%= e.amount %>
+                  </span>
+                </p>
+                <p class="emp_date">
+                  <span class="uppercase hide block phead">Mode</span>
+                  <span>
+                    <%= e.mode %>
+                  </span>
+                </p>
+                <p class="emp_date">
+                  <span class="uppercase hide block phead">Status</span>
+                  <span>
+                    <% let statusClass="" ; switch (e?.status) { case "Paid" : statusClass="status-paid" ; break; case "Unpaid"
+                      : statusClass="status-unpaid" ; break; case "Pay soon" : statusClass="status-soon" ; break; case "Credit" :
+                      statusClass="status-credit" ; break; default: statusClass="status-default" ; } %>
+
+                      <select class="payment_status <%= statusClass %>" id="paymentStatus"
+                        onchange="changeStatus(this, <%= e.id %>)">
+                        <option value="Not Set" <%=e?.status=="Not Set" ? "selected" : "" %>>Not Set</option>
+                        <option value="Paid" <%=e?.status=="Paid" ? "selected" : "" %>>Paid</option>
+                        <option value="Unpaid" <%=e?.status=="Unpaid" ? "selected" : "" %>>Unpaid</option>
+                        <option value="Pay soon" <%=e?.status=="Pay soon" ? "selected" : "" %>>Pay soon</option>
+                        <option value="Credit" <%=e?.status=="Credit" ? "selected" : "" %>>Credit</option>
+                      </select>
+                  </span>
+                </p>
+                <p class="flexy">
+                  <span class="edit-btn pressEffect" onclick="EditPropertie(this, <%= e.id %>)">Edit</span>
+                  <span class="butt pressEffect" onclick="DeleteProp(this,<%= e.id %>)">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="trash-alt" class="icon">
+                      <path fill=""
+                        d="M10,18a1,1,0,0,0,1-1V11a1,1,0,0,0-2,0v6A1,1,0,0,0,10,18ZM20,6H16V5a3,3,0,0,0-3-3H11A3,3,0,0,0,8,5V6H4A1,1,0,0,0,4,8H5V19a3,3,0,0,0,3,3h8a3,3,0,0,0,3-3V8h1a1,1,0,0,0,0-2ZM10,5a1,1,0,0,1,1-1h2a1,1,0,0,1,1,1V6H10Zm7,14a1,1,0,0,1-1,1H8a1,1,0,0,1-1-1V8H17Zm-3-1a1,1,0,0,0,1-1V11a1,1,0,0,0-2,0v6A1,1,0,0,0,14,18Z">
+                      </path>
+                    </svg></span>
+                  <span class="edit-btn butt pressEffect" onclick="copyLink('<%= e.id %>')"> <svg
+                      xmlns="http://www.w3.org/2000/svg" class="icon" x="0px" y="0px" viewBox="0 0 30 30">
+                      <path
+                        d="M 23 3 A 4 4 0 0 0 19 7 A 4 4 0 0 0 19.09375 7.8359375 L 10.011719 12.376953 A 4 4 0 0 0 7 11 A 4 4 0 0 0 3 15 A 4 4 0 0 0 7 19 A 4 4 0 0 0 10.013672 17.625 L 19.089844 22.164062 A 4 4 0 0 0 19 23 A 4 4 0 0 0 23 27 A 4 4 0 0 0 27 23 A 4 4 0 0 0 23 19 A 4 4 0 0 0 19.986328 20.375 L 10.910156 15.835938 A 4 4 0 0 0 11 15 A 4 4 0 0 0 10.90625 14.166016 L 19.988281 9.625 A 4 4 0 0 0 23 11 A 4 4 0 0 0 27 7 A 4 4 0 0 0 23 3 z">
+                      </path>
+                    </svg></span>
+                </p>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="angle-double-down" class="svg">
+                  <path fill="##000000"
+                    d="M11.29,11.46a1,1,0,0,0,1.42,0l3-3A1,1,0,1,0,14.29,7L12,9.34,9.71,7A1,1,0,1,0,8.29,8.46Zm3,1.08L12,14.84l-2.29-2.3A1,1,0,0,0,8.29,14l3,3a1,1,0,0,0,1.42,0l3-3a1,1,0,0,0-1.42-1.42Z">
+                  </path>
+                </svg>
+              </div>
+              <!-- ----------open data for accordion---------- -->
+              <div class="adata">
+                <div class="oth-info grid none">
+                  <p class="contact">
+                    <span class="uppercase phead pressEffect">Sales Incharge</span>
+                    <span class="contact_no">
+                      <%= e.sales_by %>
+                    </span>
+                  </p>
+                  <p class="e-mail">
+                    <span class="uppercase phead">Party Name</span>
+                    <span class="g-mail">
+                      <%= e.name %>
+                    </span>
+                  </p>
+                  <p class="category">
+                    <span class="uppercase phead">Category</span>
+                    <span class="amount">
+                      <%= e.category %>
+                    </span>
+                  </p>
+                  <p class="sales-return">
+                    <span class="uppercase phead">Sales Return</span>
+                    <span class="amount">
+                      <%= e.sales_return?e.sales_return:"No Return yet" %>
+                    </span>
+                  </p>
+                </div>
+                <div class="project_expand grid">
+                  <p class="none"></p>
+                </div>
+              </div>
+            </div>
+            <% }) %>
+        </div>
+        <!-- -------------------------------->
+        <!-- ----------PAGINATION--------- -->
+        <%- include('../partials/pagin.ejs') %>
+
+      </div>
+
+
+
+      <!-- ----------POPUPS----------------- -->
+      <div class="main-dropdown">
+        <div class="edit-menu common_dropdown">
+          <form action="" id="updatesForm" method="POST">
+            <h4 class="uppercase">Invoice Details</h4>
+            <div class="edit-grid">
+              <div class="field block">
+                <label for="name">Id</label>
+                <input type="text" name="id" id="id" placeholder="">
+              </div>
+              <div class="field">
+                <label for="cnumber">Invoice Number</label>
+                <input type="text" name="invoice_id" id="invoice_id" placeholder="e.g.: JIG000156">
+              </div>
+              <div class="field">
+                <label for="address">Invoice Date</label>
+                <input type="text" name="invoice_date" id="invoice_date" placeholder="e.g.: Nagaon">
+              </div>
+              <div class="field">
+                <label for="address">Due Date</label>
+                <input type="text" name="due_date" id="invoice_due_date" placeholder="e.g.: Nagaon">
+              </div>
+            </div>
+            <div class="edit-grid">
+              <div class="field">
+                <label for="floor">Amount</label>
+                <input type="number" name="amount" id="amount" placeholder="e.g.: 4">
+              </div>
+              <div class="field">
+                <label for="mapLink">Mode</label>
+                <select name="mode" id="mode">
+                  <option value="">Select Payment Mode</option>
+                  <optgroup label="Online Payments">
+                    <option value="UPI">UPI</option>
+                    <option value="NetBanking">Net Banking</option>
+                    <option value="CreditCard">Credit Card</option>
+                    <option value="DebitCard">Debit Card</option>
+                  </optgroup>
+                  <optgroup label="Offline Payments">
+                    <option value="Cash">Cash</option>
+                    <option value="Cheque">Cheque</option>
+                    <option value="BankTransfer">Bank Transfer</option>
+                  </optgroup>
+                </select>
+              </div>
+              <div class="field">
+                <label for="ownerName">Sales incharge</label>
+                <select name="sales_by" id="salesIncharge">
+                  <option value="Residential">Rajib</option>
+                  <option value="CommercialRent">Utpal Nath</option>
+                  <option value="CommercialSale">Nikita</option>
+                  <option value="Munin Da">Munin Da</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="ownerNumber">Sales Return</label>
+                <input type="text" name="salesReturn" id="salesReturn" placeholder="e.g.: 5000">
+              </div>
+              <div class="field">
+                <label for="category">Category</label>
+                <select name="category" id="category">
+                  <option value="n/a">Select Category</option>
+                  <option value="Walk in customer">Walk in customer</option>
+                  <option value="Construction Company">Construction Company</option>
+                  <option value="Real Estate Developer">Real Estate Developer</option>
+                  <option value="Architect or Engineer">Architect or Engineer</option>
+                  <option value="Retailer">Retailer</option>
+                  <option value="Hardware">Hardware</option>
+                  <option value="Waterproofing Contractor">Waterproofing Contractor</option>
+                  <option value="DIY / Homeowner">DIY / Homeowner</option>
+                </select>
+              </div>
+            </div>
+            <div class="drop-btn flex">
+              <button type="submit" class="uppercase">Update</button>
+              <button type="reset" onclick="CloseForm()" class="uppercase">Cancel</button>
+            </div>
+          </form>
+
+        </div>
+      </div>
+    </main>
+    </section>
+    <script src="../../js/admin/header.js"></script>
+    <script src="../../js/admin/common.js"></script>
+    <script src="../../js/admin/invoice.js"></script>
+    <!-- <script>
+      let currentImageIndex = 0;
+      let images = [];
+      async function loadGallery(e) {
+        const popup = document.getElementById('popup');
+        const popupContent = document.getElementById('popupContent');
+        popup.style.display = 'flex';
+        popupContent.innerHTML = '<p>Loading...</p>';
+        console.log(location.origin + '/admin/get-image/' + e);
+
+        try {
+          const response = await fetch(location.origin + '/admin/get-image/' + e);
+          const data = await response.json();
+          if (data.data && data.data.length > 0) {
+            images = data.data.map(img => `${location.origin}/uploads/${img.location}`);
+            console.log(images);
+
+            popupContent.innerHTML = '<div class="gallery" id="gallery"></div>';
+            const gallery = document.getElementById('gallery');
+            images.forEach((src, index) => {
+              const img = document.createElement('img');
+              img.src = src;
+              img.dataset.index = index;
+              gallery.appendChild(img);
+              img.addEventListener('click', () => {
+                showLargeImage(index);
+              });
+            });
+          } else {
+            popupContent.innerHTML = '<p>No images found.</p>';
+          }
+        } catch (error) {
+          console.error('Error fetching images:', error);
+          popupContent.innerHTML = '<p>Failed to load images.</p>';
+        }
+      }
+      document.getElementById('closePopup').addEventListener('click', function () {
+        document.getElementById('popup').style.display = 'none';
+      });
+      const largeImageContainer = document.getElementById('largeImageContainer');
+      const largeImage = document.getElementById('largeImage');
+
+      function showLargeImage(index) {
+        currentImageIndex = index;
+        largeImage.src = images[index];
+        largeImageContainer.style.display = 'flex';
+      }
+      largeImage.addEventListener('click', () => {
+        largeImageContainer.style.display = 'none';
+      });
+      document.getElementById('prevImage').addEventListener('click', () => {
+        currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+        largeImage.src = images[currentImageIndex];
+      });
+      document.getElementById('nextImage').addEventListener('click', () => {
+        currentImageIndex = (currentImageIndex + 1) % images.length;
+        largeImage.src = images[currentImageIndex];
+      });
+
+      function FillterOps(e) {
+        location.href = location.origin + location.pathname + `?category=${e}`
+      }
+
+      function copyLink(e) {
+        const alertBox = document.getElementById("copyAlert");
+        navigator.clipboard
+          .writeText(location.origin + `/property/` + e)
+          .then(() => {
+            alertBox.classList.add("show");
+            setTimeout(() => {
+              alertBox.classList.remove("show");
+            }, 3000);
+          })
+          .catch((err) => {
+            console.error("Failed to copy text:", err);
+          });
+      }
+    </script> -->
+    <script>
+      function updatePaymentStatusColor(select) {
+        select.classList.remove(
+          'status-default',
+          'status-paid',
+          'status-unpaid',
+          'status-soon',
+          'status-credit'
+        );
+        switch (select.value) {
+          case "Paid":
+            select.classList.add('status-paid');
+            break;
+          case "Unpaid":
+            select.classList.add('status-unpaid');
+            break;
+          case "Pay soon":
+            select.classList.add('status-soon');
+            break;
+          case "Credit":
+            select.classList.add('status-credit');
+            break;
+          default:
+            select.classList.add('status-default');
+        }
+      }
+      let payments_statusCtn= document.querySelectorAll('.payment_status');
+      payments_statusCtn.forEach(e => {
+        e.addEventListener('change', function () {
+          updatePaymentStatusColor(this);
+        });
+      });
+    </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const dueDateElements = document.querySelectorAll(".emp_bhk span:nth-child(2)");
+        const today = new Date();
+        const alertThresholdDays = 3; 
+        dueDateElements.forEach(function (span) {
+          const dueDateText = span.textContent.trim();
+          if (!dueDateText) return;
+
+          const dueDate = new Date(dueDateText);
+          const timeDiff = dueDate.getTime() - today.getTime();
+          const dayDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+          if (dayDiff <= alertThresholdDays && dayDiff >= 0) {
+            span.style.color = "red";
+            span.style.fontWeight = "bold";
+            if ("Notification" in window && Notification.permission === "granted") {
+              new Notification("Payment Due Soon!", {
+                body: `Due in ${dayDiff} day(s): ${dueDateText}`,
+              });
+            } else if ("Notification" in window && Notification.permission !== "denied") {
+              Notification.requestPermission().then(function (permission) {
+                if (permission === "granted") {
+                  new Notification("Payment Due Soon!", {
+                    body: `Due in ${dayDiff} day(s): ${dueDateText}`,
+                  });
+                }
+              });
+            }
+            const audio = new Audio("https://www.soundjay.com/buttons/sounds/beep-07.mp3");
+            audio.play();
+          }
+        });
+      });
+    </script>
+
+
+</body>
+
+</html>

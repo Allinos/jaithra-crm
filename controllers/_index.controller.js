@@ -5,7 +5,48 @@ const upload = require("../utils/uploadsHandler");
 
 // ---- All Index routes here ----
 exports.indexDeshboard = async (req, res) => {
-  const viewMode = req.query.viewMode || req.session.viewMode || "grid";
+  const viewMode = req.query.viewMode || req.session.viewMode || "table";
+  if (req.query.viewMode) {
+    req.session.viewMode = viewMode;
+    return res.redirect("/admin/dashboard?from=0&to=1");
+  }
+  try {
+    let query = `SELECT 
+  COUNT(*) AS total_invoices,
+  SUM(CASE WHEN status = 'Paid' THEN 1 ELSE 0 END) AS paid_invoices,
+  SUM(CASE WHEN status = 'Unpaid' THEN 1 ELSE 0 END) AS unpaid_invoices,
+  SUM(CASE WHEN status = 'Pay soon' THEN 1 ELSE 0 END) AS paysoon_invoices,
+  SUM(CASE WHEN status = 'Credit' THEN 1 ELSE 0 END) AS credit_invoices,
+  SUM(CASE WHEN status = 'Pending' THEN 1 ELSE 0 END) AS pending_invoices,
+
+  SUM(amount) AS total_invoice_amount,
+  SUM(CASE WHEN status = 'Paid' THEN amount ELSE 0 END) AS paid_invoice_amount,
+  SUM(CASE WHEN status = 'Unpaid' THEN amount ELSE 0 END) AS unpaid_invoice_amount,
+  SUM(CASE WHEN status = 'Pay soon' THEN amount ELSE 0 END) AS paysoon_invoice_amount,
+  SUM(CASE WHEN status = 'Credit' THEN amount ELSE 0 END) AS credit_invoice_amount,
+  SUM(CASE WHEN status = 'Pending' THEN amount ELSE 0 END) AS pending_invoice_amount
+  FROM invoices;
+
+  SELECT * FROM invoices ORDER BY invoice_date DESC LIMIT 6;
+  SELECT COUNT(*) AS total_leads FROM leads;
+  SELECT COUNT(*) AS total_clients FROM clients;
+  SELECT COUNT(*) AS total_users FROM users;
+  SELECT SUM(amount) AS total_clientsPayment FROM client_payments;
+  `;
+
+
+
+
+    const [results] = await db.query(query);
+    console.log(results);
+    res.status(200).render("../views/admin/_dashboard.ejs", { data: results, viewMode });
+  } catch (error) {
+    console.error("Error fetching invoices:", error);
+    res.status(500).send("Error fetching invoices.");
+  }
+};
+exports.invoice = async (req, res) => {
+  const viewMode = req.query.viewMode || req.session.viewMode || "table";
   if (req.query.viewMode) {
     req.session.viewMode = viewMode;
     return res.redirect("/admin/dashboard?from=0&to=1");
@@ -16,7 +57,7 @@ exports.indexDeshboard = async (req, res) => {
     if (req.query.search) {
       const searchTerm = `%${req.query.search}%`;
       query = `  SELECT *
-        FROM   properties
+        FROM   invoices
         WHERE  location LIKE ?
         OR bhk LIKE ?
         OR floor LIKE ?
@@ -34,29 +75,50 @@ exports.indexDeshboard = async (req, res) => {
       ];
     } else {
       query = `
-          SELECT properties.*, MIN(prop_images.location) AS imgLink 
-          FROM properties 
-          LEFT JOIN prop_images ON properties.id = prop_images.prop_id
+         SELECT i.*,c.name FROM invoices i LEFT JOIN clients c on c.id=i.client_id
         `;
       if (req.query.category) {
-        query += ` WHERE properties.category LIKE ? `;
+        query += ` WHERE i.category LIKE ? `;
         params.push(`%${req.query.category}%`);
       }
-      query += ` GROUP BY properties.id ORDER BY properties.id DESC `;
+      query += `ORDER BY i.id DESC `;
     }
     const [results] = await db.query(query, params);
     res
       .status(200)
-      .render("../views/admin/_index.ejs", { data: results, viewMode });
+      .render("../views/admin/invoices.ejs", { data: results, viewMode });
   } catch (error) {
-    console.error("Error fetching properties:", error);
-    res.status(500).send("Error fetching properties.");
+    console.error("Error fetching invoices:", error);
+    res.status(500).send("Error fetching invoices.");
   }
 };
-
 exports.clientsPage = async (req, res) => {
   try {
-    let query = `SELECT * FROM clients ORDER BY id DESC`;
+    let query = `SELECT 
+    c.id, 
+    c.name, 
+    c.number, 
+    c.location, 
+    c.category, 
+    c.other, 
+    c.address, 
+    c.gst, 
+    c.status, 
+    c.date,
+    i.total_amount, 
+    p.paid
+FROM clients c
+LEFT JOIN (
+    SELECT client_id, SUM(amount) AS total_amount
+    FROM invoices
+    GROUP BY client_id
+) i ON c.id = i.client_id
+LEFT JOIN (
+    SELECT client_id, SUM(amount) AS paid
+    FROM client_payments
+    GROUP BY client_id
+) p ON c.id = p.client_id;
+`;
     let params = [];
 
     if (req.query.search) {
@@ -75,26 +137,25 @@ exports.clientsPage = async (req, res) => {
     res.status(500).send("Error fetching clients.");
   }
 };
-
-exports.ownersPage = async (req, res) => {
+exports.leadsPage = async (req, res) => {
   try {
-    let query = `SELECT * FROM owners ORDER BY id DESC`;
+    let query = `SELECT * FROM leads ORDER BY id DESC`;
     let params = [];
 
     if (req.query.search) {
-      query = `SELECT * FROM owners WHERE name LIKE ? OR email LIKE ? OR contact LIKE ? ORDER BY id DESC`;
+      query = `SELECT * FROM leads WHERE name LIKE ? OR budget LIKE ? OR number LIKE ? OR location LIKE ? ORDER BY id DESC`;
       const search = `%${req.query.search}%`;
       params = [search, search, search];
     }
 
     const [results] = await db.query(query, params);
-    res.status(200).render("../views/admin/owners.ejs", {
+    res.status(200).render("../views/admin/leads.ejs", {
       data: results,
       search: req.query.search || "",
     });
   } catch (error) {
-    console.error("Error fetching owners:", error);
-    res.status(500).send("Error fetching owners.");
+    console.error("Error fetching leads:", error);
+    res.status(500).send("Error fetching leads.");
   }
 };
 
@@ -102,9 +163,9 @@ exports.userPage = async (req, res) => {
   try {
     let query = `SELECT * FROM users ;`;
     let params = [];
-    let role=req.session.role;
+    let role = req.session.role;
     console.log(req.session);
-    
+
     if (req.query.search) {
       query = `SELECT * FROM owners WHERE name LIKE ? OR email LIKE ? OR contact LIKE ? ORDER BY id DESC`;
       const search = `%${req.query.search}%`;
@@ -115,7 +176,7 @@ exports.userPage = async (req, res) => {
     res.status(200).render("../views/admin/userManager.ejs", {
       data: results,
       search: req.query.search || "",
-      role
+      role,
     });
   } catch (error) {
     console.error("Error fetching owners:", error);
@@ -123,108 +184,84 @@ exports.userPage = async (req, res) => {
   }
 };
 
-exports.queriesPage = async (req, res) => {
-  const query = `select * from queries;`;
+exports.insertInvoice = async (req, res) => {
   try {
+    const {
+      invoice_id,
+      amount,
+      mode,
+      invoice_date,
+      due_date,
+      status,
+      sales_by,
+      category,
+      client_id,
+    } = req.body;
+    // Validation: Make sure essential fields are present
+    console.log(req.body);
+
+    if (!invoice_id || !amount || !invoice_date || !due_date) {
+      return res.status(400).json({ msg: "Missing required fields." });
+    }
+
+    const insertQuery = `
+      INSERT INTO invoices (invoice_id, amount,mode, invoice_date, due_date, status, sales_by, category,client_id)
+      VALUES (?, ?, ?,?, ?, ?, ?, ?,?)
+      `;
+
+    const values = [
+      invoice_id,
+      amount,
+      mode,
+      invoice_date,
+      due_date,
+      status,
+      sales_by,
+      category,
+      client_id || null,
+    ];
+
+    const [result] = await db.query(insertQuery, values);
+    if (result.affectedRows === 0) {
+      throw new Error("Invoice insertion failed.");
+    }
+    res.status(200).redirect("/admin/form");
+  } catch (error) {
+    console.error("Error inserting invoice:", error);
+    res.status(500).json({ status: false, msg: "Failed to insert invoice." });
+  }
+};
+
+exports.invoice_Add_Form = async (req, res) => {
+  try {
+    let query = `SELECT id, name FROM clients ORDER BY id `;
     const [results] = await db.query(query);
-    res.status(200).render("../views/admin/queries.ejs", { data: results });
+
+    res.status(200).render("../views/admin/form.ejs", { data: results });
   } catch (error) {
-    console.error("E rror fetching properties:", error);
-    res.status(500).send("Error fetching properties.");
+    console.error("Error fetching leads:", error);
+    res.status(500).send("Error fetching leads.");
   }
 };
 
-exports.insertProp = async (req, res) => {
-  upload.array("upload__inputfile", 20)(req, res, async (err) => {
-    if (err) {
-      console.error("File upload error:", err);
-      return res.status(500).json({ msg: "File upload failed." });
-    }
+// exports.ownersPage = async (req, res) => {
+//   try {
+//     let query = `SELECT * FROM owners ORDER BY id DESC`;
+//     let params = [];
 
-    try {
-      const formData = req.body;
-      const uploadedFiles = req.files;
+//     if (req.query.search) {
+//       query = `SELECT * FROM owners WHERE name LIKE ? OR email LIKE ? OR contact LIKE ? ORDER BY id DESC`;
+//       const search = `%${req.query.search}%`;
+//       params = [search, search, search];
+//     }
 
-      if (!uploadedFiles || uploadedFiles.length === 0) {
-        return res
-          .status(400)
-          .json({ msg: "No files uploaded. Please upload files." });
-      }
-      const query = `INSERT INTO properties (name, number, location, bhk, floor, map_link, owner_name, owner_number, category,amount) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?)`;
-      const values = [
-        formData.name,
-        formData.number,
-        formData.location,
-        formData.bhk,
-        formData.floor,
-        formData.map_link,
-        formData.owner_name,
-        formData.owner_number,
-        formData.category,
-        formData.amount,
-      ];
-
-      const [result] = await db.query(query, values);
-      const propertyId = result.insertId;
-
-      if (!propertyId) {
-        throw new Error("Property insertion failed. No propertyId returned.");
-      }
-      const imageQuery = `INSERT INTO prop_images (prop_id, location, pref) VALUES ?`;
-      const imageData = uploadedFiles.map((file) => [
-        propertyId,
-        file.filename,
-        file.originalname,
-      ]);
-      console.log("Start Time:", Date.now());
-      await db.query(imageQuery, [imageData]);
-      console.log("End Time:", Date.now());
-      console.log("All images inserted successfully");
-      res.redirect("/admin/dashboard?from=0&to=1");
-    } catch (error) {
-      console.error("Error inserting property:", error);
-      res.status(500).json({ msg: "Failed to insert property." });
-    }
-  });
-};
-
-exports.PropertiesForm = async (req, res) => {
-  res.status(200).render("../views/admin/form.ejs");
-};
-
-exports.PropertiesDetailsPage = async (req, res) => {
-  const query = `SELECT properties.id AS property_id,
-    properties.name,properties.number,properties.location,properties.bhk,properties.floor,properties.map_link,properties.owner_name,properties.owner_number,properties.category,properties.amount,prop_images.prop_id,
-    prop_images.location AS image_location,prop_images.pref AS image_pref FROM properties LEFT JOIN prop_images ON prop_images.prop_id = properties.id WHERE properties.id = ?;`;
-  try {
-    const [results] = await db.query(query, [req.params.id]);
-    if (results.length === 0) {
-      return res.status(404).send("Property not found.");
-    }
-    const metadata = {
-      id: results[0].property_id,
-      name: results[0].name,
-      number: results[0].number,
-      location: results[0].location,
-      bhk: results[0].bhk,
-      floor: results[0].floor,
-      map_link: results[0].map_link,
-      owner_name: results[0].owner_name,
-      owner_number: results[0].owner_number,
-      category: results[0].category,
-      amount: results[0].amount,
-      prop_id: results[0].prop_id,
-    };
-    const images = results.map((row) => ({
-      location: row.image_location,
-      pref: row.image_pref,
-    }));
-    const responseData = { metadata, images };
-    res
-      .status(200)
-      .render("../views/admin/propertieDetails.ejs", { data: responseData });
-  } catch (error) {
-    console.error("Error fetching properties:", error);
-    res.status(500).send("Error fetching properties.");
-  }
-};
+//     const [results] = await db.query(query, params);
+//     res.status(200).render("../views/admin/owners.ejs", {
+//       data: results,
+//       search: req.query.search || "",
+//     });
+//   } catch (error) {
+//     console.error("Error fetching owners:", error);
+//     res.status(500).send("Error fetching owners.");
+//   }
+// };

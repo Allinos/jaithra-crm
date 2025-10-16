@@ -589,7 +589,7 @@ nav .nav-lists svg {
     width: 81%;
     height: 90vh;
     padding: 20px;
-    overflow: scroll;
+    /* overflow: scroll; */
     scroll-behavior: smooth;
     z-index: inherit;
 }
