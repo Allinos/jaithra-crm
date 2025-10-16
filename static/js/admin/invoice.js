@@ -7,15 +7,27 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // ✅ Highlight Due Dates + Notifications + Sound
 function highlightDueDates() {
-  const dueDateElements = document.querySelectorAll(
-    ".emp_bhk span:nth-child(2)"
-  );
+  const dueDateElements = document.querySelectorAll(".emp_bhk span:nth-child(2)");
   const today = new Date();
   const alertThresholdDays = 3;
 
   dueDateElements.forEach(function (span) {
+    const parentContainer = span.closest(".accordion-content"); // find the full block
+    if (!parentContainer) return;
+
+    // find the payment status dropdown within this container
+    const paymentStatusSelect = parentContainer.querySelector(".payment_status");
+    const paymentStatus = paymentStatusSelect ? paymentStatusSelect.value.trim().toLowerCase() : "";
+
+    // ✅ skip highlighting if payment is Paid
+    console.log(paymentStatusSelect);
+    console.log(paymentStatus);
+    console.log(parentContainer);
+    
+    if (paymentStatus == "paid") return;
+
     const text = span.textContent.trim();
-    const dueDate = new Date(text);
+    const dueDate = new Date(text.replace(/-/g, "/")); // normalize format
 
     if (isNaN(dueDate)) return;
 
@@ -23,31 +35,29 @@ function highlightDueDates() {
     const dayDiff = Math.ceil(diff / (1000 * 3600 * 24));
 
     if (dayDiff <= alertThresholdDays && dayDiff >= 0) {
+      // 🔴 highlight due date
       span.style.color = "red";
       span.style.fontWeight = "bold";
 
-      // Notification
-      if ("Notification" in window && Notification.permission === "granted") {
-        new Notification("Payment Due Soon!", {
-          body: `Due in ${dayDiff} day(s): ${text}`,
-        });
-      } else if (
-        "Notification" in window &&
-        Notification.permission !== "denied"
-      ) {
-        Notification.requestPermission().then(function (permission) {
-          if (permission === "granted") {
-            new Notification("Payment Due Soon!", {
-              body: `Due in ${dayDiff} day(s): ${text}`,
-            });
-          }
-        });
+      // 🔔 browser notification
+      if ("Notification" in window) {
+        if (Notification.permission === "granted") {
+          new Notification("Payment Due Soon!", {
+            body: `Due in ${dayDiff} day(s): ${text}`,
+          });
+        } else if (Notification.permission !== "denied") {
+          Notification.requestPermission().then(function (permission) {
+            if (permission === "granted") {
+              new Notification("Payment Due Soon!", {
+                body: `Due in ${dayDiff} day(s): ${text}`,
+              });
+            }
+          });
+        }
       }
 
-      // Sound
-      const audio = new Audio(
-        "https://www.soundjay.com/buttons/sounds/beep-07.mp3"
-      );
+      // 🔊 sound alert
+      const audio = new Audio("../../rsc/beep-sound.mp3");
       audio.play();
     }
   });

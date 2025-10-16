@@ -407,7 +407,8 @@
   .view-map {
     font-size: small;
   }
-
+</style> -->
+<style>
   @media (min-width: 1300px) {
     .cards_item {
       width: 25%;
@@ -416,6 +417,8 @@
     .main-card {
       max-width: unset;
     }
+
+   
   }
 
   @media (min-width: 1300px) and (max-width:1500px) {
@@ -429,9 +432,9 @@
     .cards_item {
       width: 20%;
     }
-
   }
-</style> -->
+</style>
+
 
 <body>
   <%- include('../partials/admin.header.ejs') %>
@@ -595,9 +598,10 @@
                 <p class="emp_date">
                   <span class="uppercase hide block phead">Status</span>
                   <span>
-                    <% let statusClass="" ; switch (e?.status) { case "Paid" : statusClass="status-paid" ; break; case "Unpaid"
-                      : statusClass="status-unpaid" ; break; case "Pay soon" : statusClass="status-soon" ; break; case "Credit" :
-                      statusClass="status-credit" ; break; default: statusClass="status-default" ; } %>
+                    <% let statusClass="" ; switch (e?.status) { case "Paid" : statusClass="status-paid" ; break;
+                      case "Unpaid" : statusClass="status-unpaid" ; break; case "Pay soon" : statusClass="status-soon" ;
+                      break; case "Credit" : statusClass="status-credit" ; break; default: statusClass="status-default"
+                      ; } %>
 
                       <select class="payment_status <%= statusClass %>" id="paymentStatus"
                         onchange="changeStatus(this, <%= e.id %>)">
@@ -863,7 +867,7 @@
             select.classList.add('status-default');
         }
       }
-      let payments_statusCtn= document.querySelectorAll('.payment_status');
+      let payments_statusCtn = document.querySelectorAll('.payment_status');
       payments_statusCtn.forEach(e => {
         e.addEventListener('change', function () {
           updatePaymentStatusColor(this);
@@ -874,7 +878,7 @@
       document.addEventListener("DOMContentLoaded", function () {
         const dueDateElements = document.querySelectorAll(".emp_bhk span:nth-child(2)");
         const today = new Date();
-        const alertThresholdDays = 3; 
+        const alertThresholdDays = 3;
         dueDateElements.forEach(function (span) {
           const dueDateText = span.textContent.trim();
           if (!dueDateText) return;
