@@ -41,10 +41,10 @@ app.use('/uploads', express.static('uploads'));
 
 
 // For Admin **********
-app.use('/admin', auth)
-app.use('/admin', indexRoutes)
-app.use('/admin/settings', settings)
-app.use('/admin', apiRoute)
+app.use('/crm', auth)
+app.use('/crm', indexRoutes)
+app.use('/crm/settings', settings)
+app.use('/crm', apiRoute)
 
 
 
