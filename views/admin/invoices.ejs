@@ -418,7 +418,7 @@
       max-width: unset;
     }
 
-   
+
   }
 
   @media (min-width: 1300px) and (max-width:1500px) {
@@ -567,8 +567,12 @@
                 </p>
                 <p class="invoice_number none">
                   <span class="uppercase hide block phead">Invoice NO</span>
-                  <span><%= e.invoice_id %></span><br>
-                  <span style="font-size: 12px; color: #6e6e6e;" ><%= e.name %> %></span>
+                  <span>
+                    <%= e.invoice_id %>
+                  </span><br>
+                  <span style="font-size: 12px; color: #6e6e6e;">
+                    <%= e.name %> %>
+                  </span>
                 </p>
                 <p class="pro">
                   <span class="uppercase hide block phead">Date</span>
@@ -762,84 +766,6 @@
     <script src="../../js/admin/header.js"></script>
     <script src="../../js/admin/common.js"></script>
     <script src="../../js/admin/invoice.js"></script>
-    <!-- <script>
-      let currentImageIndex = 0;
-      let images = [];
-      async function loadGallery(e) {
-        const popup = document.getElementById('popup');
-        const popupContent = document.getElementById('popupContent');
-        popup.style.display = 'flex';
-        popupContent.innerHTML = '<p>Loading...</p>';
-        console.log(location.origin + '/admin/get-image/' + e);
-
-        try {
-          const response = await fetch(location.origin + '/admin/get-image/' + e);
-          const data = await response.json();
-          if (data.data && data.data.length > 0) {
-            images = data.data.map(img => `${location.origin}/uploads/${img.location}`);
-            console.log(images);
-
-            popupContent.innerHTML = '<div class="gallery" id="gallery"></div>';
-            const gallery = document.getElementById('gallery');
-            images.forEach((src, index) => {
-              const img = document.createElement('img');
-              img.src = src;
-              img.dataset.index = index;
-              gallery.appendChild(img);
-              img.addEventListener('click', () => {
-                showLargeImage(index);
-              });
-            });
-          } else {
-            popupContent.innerHTML = '<p>No images found.</p>';
-          }
-        } catch (error) {
-          console.error('Error fetching images:', error);
-          popupContent.innerHTML = '<p>Failed to load images.</p>';
-        }
-      }
-      document.getElementById('closePopup').addEventListener('click', function () {
-        document.getElementById('popup').style.display = 'none';
-      });
-      const largeImageContainer = document.getElementById('largeImageContainer');
-      const largeImage = document.getElementById('largeImage');
-
-      function showLargeImage(index) {
-        currentImageIndex = index;
-        largeImage.src = images[index];
-        largeImageContainer.style.display = 'flex';
-      }
-      largeImage.addEventListener('click', () => {
-        largeImageContainer.style.display = 'none';
-      });
-      document.getElementById('prevImage').addEventListener('click', () => {
-        currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
-        largeImage.src = images[currentImageIndex];
-      });
-      document.getElementById('nextImage').addEventListener('click', () => {
-        currentImageIndex = (currentImageIndex + 1) % images.length;
-        largeImage.src = images[currentImageIndex];
-      });
-
-      function FillterOps(e) {
-        location.href = location.origin + location.pathname + `?category=${e}`
-      }
-
-      function copyLink(e) {
-        const alertBox = document.getElementById("copyAlert");
-        navigator.clipboard
-          .writeText(location.origin + `/property/` + e)
-          .then(() => {
-            alertBox.classList.add("show");
-            setTimeout(() => {
-              alertBox.classList.remove("show");
-            }, 3000);
-          })
-          .catch((err) => {
-            console.error("Failed to copy text:", err);
-          });
-      }
-    </script> -->
     <script>
       function updatePaymentStatusColor(select) {
         select.classList.remove(
@@ -872,6 +798,7 @@
           updatePaymentStatusColor(this);
         });
       });
+      
     </script>
     <script>
       document.addEventListener("DOMContentLoaded", function () {
@@ -907,8 +834,9 @@
           }
         });
       });
-    </script>
 
+    </script>
+   
 
 </body>
 
