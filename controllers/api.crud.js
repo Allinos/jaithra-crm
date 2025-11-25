@@ -233,7 +233,8 @@ exports.AddClientPayment = async (req, res) => {
       [client_id, amount, mode, date, remark, recievedby]
     );
 
-    res.status(201).json({ message: "Payment added successfully", paymentId: result.insertId });
+    // res.status(201).json({ message: "Payment added successfully", paymentId: result.insertId });
+    res.status(201).redirect('/admin/clients');
   } catch (error) {
     console.error("Error adding client payment:", error.message);
     res.status(500).json({ error: "Internal server error", details: error.message });
