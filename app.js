@@ -45,7 +45,7 @@ app.use('/', auth)
 app.use('/', indexRoutes)
 app.use('/settings', settings)
 app.use('/', apiRoute)
-
+app.use('/crm', router)
 
 
 
