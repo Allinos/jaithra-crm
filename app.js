@@ -39,6 +39,7 @@ app.set('views', __dirname + '/views')
 app.set('view engine', ejs)
 app.use(cookieParser());
 app.use('/uploads', express.static('uploads'));
+app.use(express.static(path.join(__dirname, 'static_files')));
 
 
 
